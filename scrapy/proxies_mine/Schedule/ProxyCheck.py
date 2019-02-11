@@ -10,16 +10,16 @@
                    2017/9/26: 多线程验证useful_proxy
 -------------------------------------------------
 """
-__author__ = 'J_hao'
+# __author__ = 'J_hao'
 
 import sys
 from threading import Thread
 
 sys.path.append('../')
 
-from Util.utilFunction import validUsefulProxy
-from Manager.ProxyManager import ProxyManager
-from Util.LogHandler import LogHandler
+from scrapy.proxies_mine.Util.utilFunction import validUsefulProxy
+from scrapy.proxies_mine.Manager.ProxyManager import ProxyManager
+from scrapy.proxies_mine.Util.LogHandler import LogHandler
 
 FAIL_COUNT = 1  # 校验失败次数， 超过次数删除代理
 

@@ -10,7 +10,7 @@
                    2017/3/31: 验证useful_proxy_queue中的代理
 -------------------------------------------------
 """
-__author__ = 'JHao'
+# __author__ = 'JHao'
 
 import sys
 import time
@@ -22,8 +22,8 @@ except:
 
 sys.path.append('../')
 
-from Schedule.ProxyCheck import ProxyCheck
-from Manager.ProxyManager import ProxyManager
+from scrapy.proxies_mine.Schedule.ProxyCheck import ProxyCheck
+from scrapy.proxies_mine.Manager.ProxyManager import ProxyManager
 
 
 class ProxyValidSchedule(ProxyManager, object):

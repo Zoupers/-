@@ -16,8 +16,8 @@ __author__ = 'JHao'
 import os
 import sys
 
-from Util.GetConfig import config
-from Util.utilClass import Singleton
+from scrapy.proxies_mine.Util.GetConfig import config
+from scrapy.proxies_mine.Util.utilClass import Singleton
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 

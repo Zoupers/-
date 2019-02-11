@@ -19,8 +19,8 @@ from flask import Flask, jsonify, request
 
 sys.path.append('../')
 
-from Util.GetConfig import config
-from Manager.ProxyManager import ProxyManager
+from scrapy.proxies_mine.Util.GetConfig import config
+from scrapy.proxies_mine.Manager.ProxyManager import ProxyManager
 
 app = Flask(__name__)
 
@@ -74,6 +74,7 @@ def refresh():
 def getAll_http():
     proxies = ProxyManager('http').getAll()
     return proxies
+
 
 @app.route('/get_all/https/')
 def getAll_https():

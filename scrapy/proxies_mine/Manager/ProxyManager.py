@@ -11,16 +11,16 @@
                    2016/12/3:
 -------------------------------------------------
 """
-__author__ = 'JHao'
+# __author__ = 'JHao'
 
 import random
 
-from Util import EnvUtil
-from DB.DbClient import DbClient
-from Util.GetConfig import config
-from Util.LogHandler import LogHandler
-from Util.utilFunction import verifyProxyFormat
-from ProxyGetter.getFreeProxy import GetFreeProxy
+from scrapy.proxies_mine.Util import EnvUtil
+from scrapy.proxies_mine.DB.DbClient import DbClient
+from scrapy.proxies_mine.Util.GetConfig import config
+from scrapy.proxies_mine.Util.LogHandler import LogHandler
+from scrapy.proxies_mine.Util.utilFunction import verifyProxyFormat
+from scrapy.proxies_mine.ProxyGetter.getFreeProxy import GetFreeProxy
 
 
 class ProxyManager(object):

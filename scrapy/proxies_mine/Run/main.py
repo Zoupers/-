@@ -10,23 +10,23 @@
                    2017/4/1: 
 -------------------------------------------------
 """
-__author__ = 'JHao'
+# __author__ = 'JHao'
 
 import sys
 from multiprocessing import Process
 
 sys.path.append('.')
 sys.path.append('..')
-
-from Api.ProxyApi import run as ProxyApiRun
-from Schedule.ProxyValidSchedule import run as ValidRun
-from Schedule.ProxyRefreshSchedule import run as RefreshRun
+# from Api.ProxyApi import run as ProxyApiRun
+from scrapy.proxies_mine.Schedule.ProxyValidSchedule import run as ValidRun
+from scrapy.proxies_mine.Schedule.ProxyRefreshSchedule import run as RefreshRun
 
 
 def run():
     p_list = list()
-    p1 = Process(target=ProxyApiRun, name='ProxyApiRun')
-    p_list.append(p1)
+    # 可以根据需要启动flask网站
+    # p1 = Process(target=ProxyApiRun, name='ProxyApiRun')
+    # p_list.append(p1)
     p2_http = Process(target=ValidRun, name='ValidRun_http', args=('http',))
     p_list.append(p2_http)
     p2_https = Process(target=ValidRun, name='ValidRun_https', args=('https',))
@@ -39,8 +39,8 @@ def run():
     for p in p_list:
         p.daemon = True
         p.start()
-    for p in p_list:
-        p.join()
+    # for p in p_list:
+    #     p.join()
 
 
 if __name__ == '__main__':

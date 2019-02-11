@@ -10,15 +10,15 @@
                    2018/7/10: CheckProxy
 -------------------------------------------------
 """
-__author__ = 'JHao'
+# __author__ = 'JHao'
 
 import sys
-from getFreeProxy import GetFreeProxy
-from Util.utilFunction import verifyProxyFormat
+from scrapy.proxies_mine.getFreeProxy import GetFreeProxy
+from scrapy.proxies_mine.Util.utilFunction import verifyProxyFormat
 
 sys.path.append('../')
 
-from Util.LogHandler import LogHandler
+from scrapy.proxies_mine.Util.LogHandler import LogHandler
 
 log = LogHandler('check_proxy', file=False)
 

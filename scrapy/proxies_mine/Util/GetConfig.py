@@ -14,8 +14,8 @@
 __author__ = 'JHao'
 
 import os
-from Util.utilClass import ConfigParse
-from Util.utilClass import LazyProperty
+from scrapy.proxies_mine.Util.utilClass import ConfigParse
+from scrapy.proxies_mine.Util.utilClass import LazyProperty
 
 
 class GetConfig(object):

@@ -13,12 +13,12 @@
 """
 import re
 import sys
-import requests
+# import requests
 
 sys.path.append('..')
 
-from Util.WebRequest import WebRequest
-from Util.utilFunction import getHtmlTree
+from scrapy.proxies_mine.Util.WebRequest import WebRequest
+from scrapy.proxies_mine.Util.utilFunction import getHtmlTree
 
 # for debug to disable insecureWarning
 # requests.packages.urllib3.disable_warnings()

@@ -22,11 +22,11 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 sys.path.append('../')
 
-from Util.utilFunction import validUsefulProxy
-from Manager.ProxyManager import ProxyManager
-from Util.LogHandler import LogHandler
+from scrapy.proxies_mine.Util.utilFunction import validUsefulProxy
+from scrapy.proxies_mine.Manager.ProxyManager import ProxyManager
+from scrapy.proxies_mine.Util.LogHandler import LogHandler
 
-__author__ = 'JHao'
+# __author__ = 'JHao'
 
 logging.basicConfig()
 

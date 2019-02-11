@@ -15,7 +15,7 @@
 """
 __author__ = 'JHao'
 
-from Util import EnvUtil
+from scrapy.proxies_mine.Util import EnvUtil
 
 from redis.connection import BlockingConnectionPool
 from redis import Redis

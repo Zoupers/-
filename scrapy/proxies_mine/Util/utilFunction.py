@@ -15,8 +15,8 @@ import requests
 import time
 from lxml import etree
 
-from Util.LogHandler import LogHandler
-from Util.WebRequest import WebRequest
+from scrapy.proxies_mine.Util.LogHandler import LogHandler
+from scrapy.proxies_mine.Util.WebRequest import WebRequest
 
 # logger = LogHandler(__name__, stream=False)
 

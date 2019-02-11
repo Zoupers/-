@@ -10,4 +10,15 @@
                    2016/12/3: 
 -------------------------------------------------
 """
-__author__ = 'JHao'
+# __author__ = 'JHao'
+
+from . import DB
+from . import log
+from . import Manager
+from . import ProxyGetter
+from . import Schedule
+from . import Util
+import sys
+
+sys.path.append("..")
+sys.path.append(".")
