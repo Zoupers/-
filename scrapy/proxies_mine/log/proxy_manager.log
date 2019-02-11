@@ -1,0 +1,44 @@
+2019-02-11 13:15:49,414 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 13:15:49,495 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 13:16:09,461 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 13:16:11,129 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 13:29:23,893 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 13:29:24,041 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 13:29:52,291 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 13:30:00,356 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 13:34:52,294 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 13:35:00,359 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 13:35:23,196 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 13:35:53,230 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 13:40:23,197 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 13:40:38,567 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 13:40:53,232 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 13:41:07,765 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 13:45:38,568 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 13:46:07,766 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 13:46:09,414 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 13:46:28,664 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 13:51:09,417 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 13:51:23,053 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 13:51:28,665 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 13:51:58,401 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 13:56:23,056 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 13:56:49,107 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 13:56:58,403 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 13:57:16,668 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 14:01:49,119 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 14:02:10,113 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 14:02:16,673 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 14:02:42,205 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 14:07:10,116 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 14:07:28,223 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 14:07:42,207 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 14:08:12,387 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 14:12:28,225 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 14:13:02,397 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 14:13:12,390 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 14:13:37,991 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
+2019-02-11 14:18:02,401 ProxyValidSchedule.py[line:57] INFO Mode:http Start valid useful proxy
+2019-02-11 14:18:13,776 ProxyValidSchedule.py[line:60] INFO Mode:http Valid Complete! sleep 5 minutes.
+2019-02-11 14:18:37,993 ProxyValidSchedule.py[line:57] INFO Mode:https Start valid useful proxy
+2019-02-11 14:18:55,861 ProxyValidSchedule.py[line:60] INFO Mode:https Valid Complete! sleep 5 minutes.
