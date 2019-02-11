@@ -56,7 +56,7 @@ class AsyncGet(object):
 
     # 提供异步获取网页内容的接口，最好500个以上
     @property
-    def a_get_content(self):
+    def get_content(self):
         loop = asyncio.get_event_loop()
         asyncio.Semaphore(300)
         tasks = []
