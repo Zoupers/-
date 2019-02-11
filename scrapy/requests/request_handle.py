@@ -35,31 +35,36 @@ def get_content(url):
     return req.text
 
 
-async def asy_do(_id, url):
-    async with ClientSession() as req:
-        user_agent = fake.random
-        headers = {'User-Agent': user_agent}
-        async with req.get(url=url, headers=headers) as response:
-            print('req', time.time() - t)
-            text = await response.text()
-    return _id, text
+class a_get(object):
+    def __init__(self, urls: 'a list of urls'):
+        self.urls = urls
 
+    async def asy_do(self, _id, url):
+        async with ClientSession() as req:
+            user_agent = fake.random
+            headers = {'User-Agent': user_agent}
+            async with req.get(url=url, headers=headers) as response:
+                print('req', time.time() - t)
+                text = await response.text()
+        return _id, text
 
-# 提供异步获取网页内容的接口，最好500个以上
-def a_get_content(urls):
-    loop = asyncio.get_event_loop()
-    asyncio.Semaphore(300)
-    tasks = []
-    for url in urls:
-        task = asyncio.ensure_future(asy_do(*url))
-        tasks.append(task)
-    contents = loop.run_until_complete(asyncio.gather(*tasks))
-    return contents
+    # 提供异步获取网页内容的接口，最好500个以上
+    @property
+    def a_get_content(self):
+        loop = asyncio.get_event_loop()
+        asyncio.Semaphore(300)
+        tasks = []
+        for url in self.urls:
+            task = asyncio.ensure_future(self.asy_do(*url))
+            tasks.append(task)
+        contents = loop.run_until_complete(asyncio.gather(*tasks))
+        return contents
 
 
 if __name__ == '__main__':
     req = get_content('http://www.baidu.com')
     req1 = get_content('http://www.sohu.com')
     print(time.time()-t)
-    req2 = a_get_content([(1, 'http://www.baidu.com'), (2, 'http://www.sohu.com')])
+    req2 = a_get(urls=[(1, 'http://www.baidu.com'), (2, 'http://www.sohu.com')])
+    print(req2.a_get_content)
     print(time.time() - t)
