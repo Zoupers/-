@@ -1,17 +1,12 @@
 # handle url and content get request
 
 import requests
-from random import randint
 from fake_useragent import UserAgent
 import asyncio
 from aiohttp.client import ClientSession
 # import time
 fake = UserAgent()
 # t = time.time()
-# 用文件的话太麻烦
-# with open('useragent.txt', 'r', encoding='utf-8') as f:
-#     useragent = [i[:-1] for i in f.readlines()]
-#     print(time.time()-t)
 
 
 # 使用代理的话中间会花很多不必要的时间， 但是如果是异步的话，可以一试
@@ -22,14 +17,26 @@ def get_proxies():
     return {'http': 'http://'+http, 'https': 'https://'+https}
 
 
+proxies = get_proxies()
+
+
 # 堵塞式获取网页内容的接口
 def get_content(url):
     useragent = fake.random
-    headers = {'User-Agent': useragent}
     # print(time.time()-t)
     # proxies = get_proxies()
-    req = requests.get(url, headers=headers)
-    # req = requests.get(url, headers=headers, proxies=proxies)
+    kwargs = dict()
+    kwargs['headers'] = {'User-Agent': useragent}
+    # 避免出现没用的代理
+    while True:
+        proxies = get_proxies()
+        try:
+            kwargs['proxies'] = proxies
+            # print(kwargs['proxies'])
+            req = requests.get(url, **kwargs)
+            break
+        except Exception as e:
+            print(e)
     req.encoding = 'utf-8'
     return req.text
 
@@ -45,21 +52,6 @@ class AsyncGet(object):
         :type urls: list of urls
         """
         self.urls = urls
-        # 在这里用自己开代理服务器有点麻烦。。。还费时间
-        # self.proxy = proxy
-        # if proxy:
-        #     self.open_proxy_pool()
-        #     import threading
-        #     threading.Thread(target=self.open_proxy_pool).run()
-        #     print('Waiting 10s since proxies pool beginning!')
-        #     import time
-        #     time.sleep(20)
-        #     del time
-
-    # @staticmethod
-    # def open_proxy_pool():
-    #     from scrapy.proxies_mine.Run import main
-    #     main.run()
 
     async def asy_do(self, url):
         async with ClientSession() as req:
@@ -70,6 +62,7 @@ class AsyncGet(object):
             #     kwargs['proxy'] = 'http://'+get_http()
             #     print(kwargs['proxy'])
             # print(**kwargs)
+            # kwargs['proxy'] = 'http://' + get_content('http://127.0.0.1:8080/get/http')
             kwargs['headers'] = {'User-Agent': user_agent}
             async with req.get(url=url, **kwargs) as response:
                 # print('req', time.time() - t)

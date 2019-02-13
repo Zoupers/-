@@ -262,6 +262,39 @@ class GetFreeProxy(object):
                 yield tr.xpath("./td[2]/text()")[0] + ":" + tr.xpath("./td[3]/text()")[0]
 
     @staticmethod
+    def freeProxyThirteen():
+        """
+        国内高匿http代理网站
+        https://www.kuaidaili.com/free/inha/1/
+        """
+        for i in range(1, 60):
+            url = 'https://www.kuaidaili.com/free/inha/%s/' % i
+            html_tree = getHtmlTree(url)
+            tr_list = html_tree.xpath('//*[@id="list"]/table/tbody/tr')
+            if len(tr_list) == 0:
+                continue
+            for tr in tr_list:
+                yield tr.xpath('./td[1]/text()')[0] + ":" + tr.xpath("./td[2]/text()")[0]
+
+    @staticmethod
+    def freeProxyForteen():
+        """
+        http://31f.cn/
+        代理比较多
+        """
+        url = 'http://31f.cn/'
+        wr = WebRequest()
+        text = wr.get(url).text
+        block = re.findall('<tbody>.*?</tbody>', text, re.S)
+        urls = re.findall('a href="(.*?)"', block[1])
+        for i in urls:
+            html_tree = getHtmlTree(url + i[1:])
+            tr_list = html_tree.xpath('/html/body/div[1]/table[1]/tbody/tr')[1:]
+            for tr in tr_list:
+                yield tr.xpath('./td[2]/text()')[0] + ':' + tr.xpath('./td[3]/text()')[0]
+
+
+    @staticmethod
     def freeProxyWallFirst():
         """
         墙外网站 cn-proxy

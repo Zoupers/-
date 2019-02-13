@@ -31,9 +31,9 @@ class ProxyManager(object):
     def __init__(self, mode):
         self.mode = mode
         self.db = DbClient(mode)
-        self.raw_proxy_queue = 'raw_proxy'
+        self.raw_proxy_queue = 'raw_proxy'+mode
         self.log = LogHandler('proxy_manager')
-        self.useful_proxy_queue = 'useful_proxy'
+        self.useful_proxy_queue = 'useful_proxy'+mode
 
     def refresh(self):
         """
@@ -86,7 +86,6 @@ class ProxyManager(object):
                 return random.choice(item_dict.keys())
         return None
         # return self.db.pop()
-        
 
     def delete(self, proxy):
         """
