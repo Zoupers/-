@@ -39,6 +39,8 @@ class DbHandle(object):
             _filter = 'WHERE id = {}'.format(_id)
         elif type(_id) == tuple:
             _filter = 'WHERE id >= {} and id < {}'.format(*_id)
+        else:
+            raise Exception("Unknown Error")
         return self.get(table, _filter=_filter)
 
     def save(self, data, table=None):
