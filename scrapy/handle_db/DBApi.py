@@ -20,9 +20,9 @@ class DbHandle(object):
             table = self.table
         select = 'SELECT * FROM %s' % table
         if _filter:
-            self.cursor.execute(select+' '+_filter)
+            self.execute(select+' '+_filter)
         else:
-            self.cursor.execute(select)
+            self.execute(select)
         return self.cursor.fetchall()
 
     def get_by_id(self, _id, table=None):
@@ -32,7 +32,7 @@ class DbHandle(object):
         :type _id: int or tuple
         :return:
         """
-        assert type(_id) in (int, tuple)
+        assert type(_id) in (int, tuple), '_id 应该是int或者tuple类型，而不是%s' % type(_id)
         if not table:
             table = self.table
         if type(_id) == int:
@@ -43,11 +43,15 @@ class DbHandle(object):
             raise Exception("Unknown Error")
         return self.get(table, _filter=_filter)
 
+    def update(self, data, table=None):
+        sql = 'UPDATE TABLE'
+        self.execute(sql)
+
     def save(self, data, table=None):
         if not table:
             table = self.table
         insert_sql = 'INSERT INTO {table} VALUES {values}'.format(table=table, data=data)
-        self.cursor.execute(insert_sql)
+        self.execute(insert_sql)
 
     def execute(self, query, *args):
         self.cursor.execute(query, *args)
