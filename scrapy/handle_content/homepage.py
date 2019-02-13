@@ -7,21 +7,22 @@ import re
 from bs4 import BeautifulSoup
 
 
-db = DbHandle(database='ranking')
-db.create_table('')
+# db = DbHandle(database='ranking')
+# db.create_table('')
 #url = "https://movie.douban.com/top250?start=200&filter="
-a=[]
+# a=[]
 
 
 def get_url():
-    url_list = db.get(table='init_url', _range=('name', 'url'))
+    # url_list = db.get(table='init_url', _range=('name', 'url'))
     for url in url_list:
-        get_content(url=url, hook=handle_content)
+        # get_content(url=url, hook=handle_content)
+        pass
 
 
-def get_content(url):
-    r = requests.get(url)
-    demo = r.text
+# def get_content(url):
+#     r = requests.get(url)
+#     demo = r.text
 
 
 def handle_content(demo):
@@ -60,7 +61,6 @@ def handle_content(demo):
         else:
             review = 'none review'
 
-
         content = {"movie_name" : movie_name,
                    "rank" : rank,
                    "star_num" : star_num,
@@ -72,9 +72,11 @@ def handle_content(demo):
                    "class" : class_,
                    "review" : review
         }
-        db.save(table='brife_movie', data=content)
+        with open('d://movie.txt', 'w', encoding='utf-8') as f:
+            f.write('\n'.join([a+': '+b for a, b in content.items()]))
+        # db.save(table='brife_movie', data=content)
         # a.append(content)
-        print(a)
+        # print(a)
 
 
 

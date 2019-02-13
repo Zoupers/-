@@ -52,6 +52,7 @@ class DbHandle(object):
             table = self.table
         insert_sql = 'INSERT INTO {table} VALUES {values}'.format(table=table, data=data)
         self.execute(insert_sql)
+        self.db.commit()
 
     def execute(self, query, *args):
         self.cursor.execute(query, *args)

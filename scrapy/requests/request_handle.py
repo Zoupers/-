@@ -21,12 +21,14 @@ proxies = get_proxies()
 
 
 # 堵塞式获取网页内容的接口
-def get_content(url):
+def get_content(url, hook=None):
     useragent = fake.random
     # print(time.time()-t)
     # proxies = get_proxies()
     kwargs = dict()
     kwargs['headers'] = {'User-Agent': useragent}
+    if hook:
+        kwargs['hooks'] = {'response': hook}
     # 避免出现没用的代理
     while True:
         proxies = get_proxies()
