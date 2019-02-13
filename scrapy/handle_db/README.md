@@ -32,6 +32,10 @@ db.get_by_id(table='你要查询的表名', _filter=None ,_id=)
 # 保存数据
 db.save(table='你要查询的表名', data)
 
+# 更新数据
+db.update(data=['更新的数据的列的名字', '更新的数据', id], table='要更新的数据所在的数据表')
+db.updatemany(data=[['同上面的data相同'],],table='')
+
 # 执行sql语句
 db.execute(query='你要执行的语句')
 # 执行多条sql语句

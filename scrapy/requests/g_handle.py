@@ -51,53 +51,50 @@ class GUrlHandle(object):
         # print({'http': 'http://'+http, 'https': 'https://'+https})
         return {'http': 'http://'+http, 'https': 'https://'+https}
 
-    def get_content(self, url):
+    def get_content(self, url, hooks=None):
         kwargs['headers'] = {'User-Agent': 'Mozilla/5.0 (X11; CrOS i686 3912.101.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
-        try:
-            return requests.get(url, **kwargs).text
-        except requests.exceptions.ProxyError as e:
-            kwargs['proxies'] = self.verify(self.get_proxies())
-            print(e)
-            return requests.get(url, **kwargs).text
+        kwargs['timeout'] = 5
+        if hooks:
+            kwargs['hooks'] = {'response': hooks}
+        while True:
+            try:
+                return requests.get(url, **kwargs).text
+            except requests.exceptions.ProxyError as e:
+                kwargs['proxies'] = self.verify(self.get_proxies())
+                pass
 
     def get_contents(self, urls):
         if len(urls) <= 60:
             return self._get_contents(urls)
         n = 0
         l = len(urls)
-        final_contents = []
         for i in range(60, l, 60):
             print(type(n), n, type(i), i)
             url = urls[n:i]
             while True:
                 try:
-                    contents = self._get_contents(url)
-                    if None in contents:
-                        continue
+                    self._get_contents(url)
                     break
                 except Exception as e:
                     self.n += 1
                     if self.n == len(self.useragent):
                         self.n = 0
                     self.kwargs['proxies'] = self.get_proxies()
-            final_contents.extend(contents)
             n = i
             if l - i <= 60:
                 url = urls[i:l]
-                contents = self._get_contents(url)
-                final_contents.extend(contents)
+                self._get_contents(url)
                 break
-        return final_contents
 
     # 每一百个用一个
     def _get_contents(self, urls):
         kwargs['proxies'] = self.verify(self.get_proxies())
-        kwargs['hooks'] = {'handle': self.hook}
+        kwargs['hooks'] = {'response': self.hook}
         print("G event")
         req = []
         for url in urls:
             req.append(grequests.get(url, **kwargs))
-        contents = grequests.map(req)
+        contents = grequests.map(req, exception_handler=self.again)
         print('G END')
         print(time.time() - t)
 
@@ -106,20 +103,41 @@ class GUrlHandle(object):
             self.content_handle(r.text)
         return r
 
+    # grequests 的 exception_handler
+    def again(self, request, exception):
+        print("Get Again Exception %s" % exception)
+        kwargs = dict()
+        kwargs['headers'] = self.kwargs['headers']
+        kwargs['proxies'] = self.get_proxies()
+        kwargs['hooks'] = {'response': self.content_handle}
+        n = 0
+        # try:
+            # del self.kwargs['timeout']
+        # except Exception as e:
+            # print(e)
+        while True:
+            n += 1
+            print("%s 第%s次重试" % (request.url, n))
+            try:
+                requests.get(request.url, **kwargs)
+            except Exception as e:
+                print(e)
+                kwargs['proxies'] = self.get_proxies()
+
 
 def test():
     final_urls = []
-    x = GUrlHandle(lambda x: print(x))
+    x = GUrlHandle(lambda a: print(getattr(a, 'text', 'None')))
     for i in range(1):
         response = x.get_content('https://movie.douban.com/top250?start=%s&filter=' % (25 * i))
         urls = re.findall('<a href="(https://movie.douban.com/subject/.*?)"', response)
         final_urls.extend(urls)
-    contents = x.get_contents(final_urls)
-    print(len(contents))
-    for n, i in zip(range(1, len(contents)+1), contents):
+    x.get_contents(final_urls)
+    # print(len(contents))
+    # for n, i in zip(range(1, len(contents)+1), contents):
         # with open("d://test//%s.html" % n, 'wb') as f:
         #     f.write(i)
-        print(dir(i), i)
+        # print(dir(i), i)
     print(time.time() - t)
 
 

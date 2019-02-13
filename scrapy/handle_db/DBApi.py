@@ -44,8 +44,15 @@ class DbHandle(object):
         return self.get(table, _filter=_filter)
 
     def update(self, data, table=None):
-        sql = 'UPDATE TABLE'
+        sql = 'UPDATE {} set `{}`={} WHERE `id`={}'.format(table, *data)
         self.execute(sql)
+        self.db.commit()
+
+    def updatemany(self, data, table=None):
+        for i in data:
+            sql = 'UPDATE {} set `{}`={} WHERE `id`={}'.format(table, *i)
+            self.execute(sql)
+            self.db.commit()
 
     def save(self, data, table=None):
         if not table:

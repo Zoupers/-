@@ -10,10 +10,14 @@ fake = UserAgent()
 
 
 # 使用代理的话中间会花很多不必要的时间， 但是如果是异步的话，可以一试
-def get_proxies():
+def get_proxies(x=False, y=False):
     http = requests.get('http://127.0.0.1:8080/get/http').text
     https = requests.get('http://127.0.0.1:8080/get/https').text
     # print({'http': 'http://'+http, 'https': 'https://'+https})
+    if x:
+        return https.split(':')[0]
+    if y:
+        return http.split(':')[0]
     return {'http': 'http://'+http, 'https': 'https://'+https}
 
 
@@ -49,23 +53,29 @@ class AsyncGet(object):
     """
     def __init__(self, urls: "a list of urls",
                  # proxy=False
+                 x_forwarded_for=None
                  ):
         """
         :type urls: list of urls
         """
         self.urls = urls
+        if x_forwarded_for:
+            self.x_forwarded_for = x_forwarded_for
+        else:
+            self.x_forward_for = None
 
     async def asy_do(self, url):
         async with ClientSession() as req:
             user_agent = fake.random
             kwargs = dict()
-            # if self.proxy:
-            #     from scrapy.proxies_mine.get_proxies import get_http
-            #     kwargs['proxy'] = 'http://'+get_http()
-            #     print(kwargs['proxy'])
-            # print(**kwargs)
-            # kwargs['proxy'] = 'http://' + get_content('http://127.0.0.1:8080/get/http')
             kwargs['headers'] = {'User-Agent': user_agent}
+            if self.x_forwarded_for:
+                kwargs['headers']['X-Forwarded-For'] = get_proxies(x=True)
+                print(kwargs['headers']['X-Forwarded-For'])
+                kwargs['headers']['X-Client-IP'] = get_proxies(y=True)
+                kwargs['headers']['X-Remote-IP'] = get_proxies(y=True)
+                kwargs['headers']['X-Remote-Addr'] = get_proxies(x=True)
+                kwargs['headers']['X-Originating-IP'] = get_proxies(y=True)
             async with req.get(url=url, **kwargs) as response:
                 # print('req', time.time() - t)
                 text = await response.text()

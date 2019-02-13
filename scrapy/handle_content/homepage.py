@@ -2,22 +2,22 @@
 # -*- coding:utf-8 -*-
 import requests
 from scrapy.handle_db.DBApi import DbHandle
-from scrapy.requests.request_handle import get_content
+# from scrapy.requests.request_handle import get_content
 import re
 from bs4 import BeautifulSoup
 
 
-# db = DbHandle(database='ranking')
+db = DbHandle(database='ranking')
 # db.create_table('')
 #url = "https://movie.douban.com/top250?start=200&filter="
 # a=[]
 
 
 def get_url():
-    # url_list = db.get(table='init_url', _range=('name', 'url'))
-    for url in url_list:
-        # get_content(url=url, hook=handle_content)
-        pass
+    url_list = db.get(table='init', _range=('name', 'urls'))
+    for name, urls in url_list:
+        # get_content(url=urls, hook=handle_content)
+        print(name, urls)
 
 
 # def get_content(url):
@@ -85,7 +85,9 @@ def geturl(n):
 
     return url
 
+
 if __name__ == '__main__':
-    for n in range(0,10):
-        url = geturl(n)
-        get_content(url)
+    # for n in range(0,10):
+    #     url = geturl(n)
+    #     get_content(url)
+    get_url()

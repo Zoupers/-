@@ -3,24 +3,37 @@ import re
 from fake_useragent import UserAgent
 from scrapy.requests.request_handle import AsyncGet, get_content
 import time
+import requests
+from scrapy.handle_db.DBApi import DbHandle
+db = DbHandle()
 t = time.time()
 fake = UserAgent
 
 
+def get_proxies():
+    http = requests.get('http://127.0.0.1:8080/get/http').text
+    https = requests.get('http://127.0.0.1:8080/get/https').text
+    # print({'http': 'http://'+http, 'https': 'https://'+https})
+    return https.split(':')[0]
+
+
 def main():
-    # response = get_content('https://movie.douban.com/top250')
-    # url_find = re.findall('<a href="(https://movie.douban.com/subject/.*?)"', response)
-    # print(len(url_find))
-    # x = AsyncGet(url_find)
-    for i in range(10):
-        x = get_content('https://movie.douban.com/top250')
-        # print(len(x.get_content))
-        print(x)
-    # for i in range(5):
-    #     print(len(x.get_content[i]))
+    urls_ = db.get(table='init')[0][1]
+    import json
+    urls = json.loads(urls_)
+    tx = AsyncGet(urls, x_forwarded_for='27.23.252.35')
+    for i in tx.get_content:
+        print(i)
+        u = re.findall('<a href="(https://movie.douban.com/subject/.*?)"', i)
+        for z in u:
+            print(z)
+        tt = AsyncGet(u, x_forwarded_for=get_proxies())
+        print(len(tt.get_content))
+    t1 = AsyncGet(urls, x_forwarded_for='175.148.77.188')
+    print(t1.get_content)
+    t2 = AsyncGet(urls, x_forwarded_for='218.26.227.108')
+    print(t2.get_content)
     print(time.time() - t)
-    # y = get_content('http://www.baidu.com')
-    # print(x.get_content, y)
 
 
 if __name__ == '__main__':
