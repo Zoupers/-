@@ -2,6 +2,8 @@ import requests
 from lxml import etree
 
 url = 'https://movie.douban.com/subject/1292052/awards/'
+
+
 def get_awards(url):
     sessions = requests.session()
     sessions.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36'
@@ -30,4 +32,7 @@ def awards_handle(text):
 
 def save_awards(movie_id, data):
     pass
-get_awards(url)
+
+
+if __name__ == '__main__':
+    get_awards(url)
