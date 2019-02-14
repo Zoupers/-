@@ -2,8 +2,8 @@ import pymysql
 
 
 class DbHandle(object):
-    def __init__(self, host='localhost', port=3306, user='root', password='131421', database='ranking'):
-        self.db = pymysql.connect(host=host, port=port, user=user, password=password)
+    def __init__(self, host='localhost', port=3306, user='root', password='131421', database='ranking', charset='utf8mb4'):
+        self.db = pymysql.connect(host=host, port=port, user=user, password=password, charset=charset)
         self.cursor = self.db.cursor()
         self.cursor.execute('SHOW DATABASES')
         if (database,) not in self.cursor.fetchall():
@@ -11,9 +11,14 @@ class DbHandle(object):
         self.cursor.execute('USE %s' % database)
         self.table = None
 
-    def create_table(self, sql):
-        self.cursor.execute(sql)
+    def create_table(self, sql=None):
+        if not sql:
+            sql = 'CREATE TABLE `default`(`url` TEXT NOT NULL );'
+        self.execute(sql)
         return True
+
+    def delete_table(self, table=None):
+        self.execute('DROP TABLE `%s`' % table)
 
     def get(self, table=None, _filter=None, _range='*'):
         if not table:
@@ -57,16 +62,19 @@ class DbHandle(object):
     def save(self, data, table=None):
         if not table:
             table = self.table
-        insert_sql = 'INSERT INTO {table} VALUES {values}'.format(table=table, data=data)
-        self.execute(insert_sql)
+        insert_sql = 'INSERT INTO `{table}` VALUES(%s)'.format(table=table)
+        insert_sql %= ('%s, '*(len(data)-1)+'%s')
+        self.execute(insert_sql, data)
         self.db.commit()
 
-    def execute(self, query, *args):
-        self.cursor.execute(query, *args)
-        return True
+    def commit(self):
+        self.db.commit()
+
+    def execute(self, query, *args, **kwargs):
+        return self.cursor.execute(query, *args, **kwargs)
 
     def executemany(self, *args, **kwargs):
-        self.cursor.executemany(*args, **kwargs)
+        return self.cursor.executemany(*args, **kwargs)
 
     def fetchall(self):
         return self.cursor.fetchall()
@@ -77,8 +85,10 @@ class DbHandle(object):
     def fetchmany(self, size):
         return self.cursor.fetchmany(size)
 
-    def do(self, method, *args, **kwargs):
-        pass
+    def __delete__(self, instance):
+        print("DELETE")
+        self.db.close()
+
 
 
 if __name__ == '__main__':

@@ -1,11 +1,12 @@
-from multiprocessing import Process, Pool
+from multiprocessing import Process, Pool, Queue
 import requests
 from fake_useragent import UserAgent
 import time
+from scrapy.handle_db.DBApi import DbHandle
+db = DbHandle()
 fake = UserAgent()
 t = time.time()
-requests.adapters.DEFAULT_RETRIES = 5
-error_urls = []
+requests.adapters.DEFAULT_RETRIES = 10
 
 
 def get_proxies(x=False, y=False):
@@ -27,9 +28,7 @@ def handle(r, *args, **kwargs):
 
 class Get(object):
     def __init__(self, urls=None, content_handle=None, callback=None):
-        self.error_urls = []
         self.urls = urls
-
         if content_handle:
             self.handler = content_handle
         else:
@@ -54,8 +53,6 @@ class Get(object):
         self.pool.join()
 
     def error_handle(self, e):
-        if len(self.error_urls) != 0:
-            self.get_by_pool(urls=self.error_urls)
         print(e)
 
 
@@ -90,16 +87,52 @@ def req(url, kwargs):
         proxies = get_proxies()
         s.keep_alive = False
         response = s.get(url, headers=headers, proxies=proxies, timeout=5)
+        if response.status_code != 200:
+            raise Exception(response)
         return response
     except Exception as e:
-        error_urls.append(url)
-        print(e)
-        print("Have got %d error url" % len(error_urls))
-        if len(error_urls) == 20:
+        d = db_()
+        d.save(url)
+        print(d.num)
+        print("Have got %d error url" % d.num)
+        if d.num >= 20:
             print("Handle Error URLS")
+            urls = []
+            for _ in range(d.num):
+                urls.append(_[0])
             g = Get()
-            g.get_by_pool(urls=error_urls)
-            error_urls.clear()
+            g.get_by_pool(urls=urls)
+
+
+class db_(object):
+    def __init__(self, table=None):
+        try:
+            # db.create_table()
+            self.db = db
+            if table:
+                self.db.table = table
+            else:
+                self.db.table = 'default'
+        except Exception as e:
+            self.db = DbHandle()
+            if table:
+                self.db.table = table
+            else:
+                self.db.table = 'default'
+            print(e)
+
+    def save(self, url):
+        try:
+            self.db.save(url)
+        except Exception as e:
+            print(e)
+
+    def get(self):
+        return self.db.get()
+
+    @property
+    def num(self):
+        return len(self.db.get())
 
 
 def back(r, *args, **kwargs):
@@ -130,8 +163,6 @@ class urls_handle(object):
 
 def test():
     import json
-    from scrapy.handle_db.DBApi import DbHandle
-    db = DbHandle()
     urls = json.loads(db.get(table='init')[0][1])
     for i in urls:
         print(i)
