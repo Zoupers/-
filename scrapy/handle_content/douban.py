@@ -5,90 +5,58 @@
 # @Site    : 
 # @File    : 爬虫-电影简介.py
 # @Software: PyCharm
-from urllib.request import Request,urlopen
-from urllib.parse import urlencode
-from bs4 import BeautifulSoup
-from selenium import webdriver
+from scrapy.requests.g_handle import GUrlHandle
 from scrapy.handle_db.DBApi import DbHandle
-import time
-db = DbHandle()
-# db.create_table('')
+from bs4 import BeautifulSoup
+import json
 
 
-def get_html():
-    args = {
-        'subject':xxx#subject代号（网址）
-    }
-    args = urlencode(args)
-    url = 'https://movie.douban.com/subject/?{}'.format(args)
-    headers = {
-    'User-Agent': ' Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
-    }
-    request = Request(url,headers=headers)
-    reponse = urlopen(request)
-    html = reponse.read().decode()
-    return html
-# def get_dit(html):
-#     soup = BeautifulSoup(html,'lxml')
-#     s1 = soup.find_all('div',{'id':'info'})
-#     text = []
-#     for net in s1.select('span'):
-#         con = net.get_text()
-#         text = text.append(con)
-#     return text
-def get_actorsurl(html):
+def get_urls():
+    db = DbHandle()
+    urls_list = db.get(table='movie', _range='id')
+    urls = ['https://movie.douban.com/subject/%s/' % _id[0] for _id in urls_list]
+    print(urls)
+    request = GUrlHandle(content_handle=content_handle)
+    request.get_contents(urls)
+
+
+def content_handle(html):
     # html = get_more('more-actor')
     soup = BeautifulSoup(html,'lxml')
-    s1 = soup.find_all('div', {'id': 'info'})
-    content = s1.select('span[class="all hidden"]').get_text()
-    text = []
-    for net in s1.select('span'):
-        con = net.get_text()
-        text = text.append(con)
+    # s1 = soup.find_all('div', {'id': 'info'})[0]
+    try:
+        content = soup.select('span[property="v:summary"]')[0].get_text().strip()
+    except Exception as e:
+        print('寻找简介', e)
+        content = soup.select('span[class="all hidden"]')[0].get_text().strip()
+    dic = soup.find_all('script', attrs={'type': "application/ld+json"})[0]
+    # 不把换行符替换了的话，有些内容无法转化为字典
+    dic = dic.getText().replace('\n', '')
+    try:
+        dic = json.loads(dic, encoding='utf-8')
+    except Exception as e:
+        print(e)
+        print(dic)
+    _id = dic['url'].split('/')[-2]
+    del dic['@type'], dic['@context'], dic['description'], dic['aggregateRating']['@type']
+    for director in dic['director']:
+        del director['@type']
+    for author in dic['author']:
+        del author['@type']
+    for actor in dic['actor']:
+        del actor['@type']
+    dic['describe'] = content
+    final_dic = json.dumps(dic, ensure_ascii=False)
+    print(final_dic)
+    db = DbHandle()
+    db.table = 'movie'
+    db.execute('UPDATE `movie` SET `details`=%s where `id`=%s', (final_dic, _id))
+    db.commit()
 
-    name = []
-    author_url = []
-    actors = []
-    actor_url = []
-    actors_url = []
-    dic = soup.find_all('script', {'type="application/ld+json"'})
-    director = dic['director']
 
-    director_url = director['url']
-    director = director['name']
-    actors_url.append(director_url)
 
-    author = dic['author']
-    for auth in author:
-        auth = auth['name']
-        name.append(auth)
-        auth_url = auth['url']
-        _url = 'http://movie.douban.com/?{}'.format(auth_url)
-        author_url.append(_url)
-    actors_url += author_url
-    actor = dic['actor']
-    for act in actor:
-        act = act['name']
-        actors.append(act)
-        act_url = act['url']
-        __url = 'http://movie.douban.com/?{}'.format(act_url)
-        actor_url.append(__url)
-    actors_url += actor_url
-    final = {
-        'director':director,
-        'author':name,
-        'actor':actors,
-        'dit':text,
-        'short': content,
-        'actors_url':actors_url
-        #'actors_url': [{'director_url':director_url,'auth_url':author_url,'actors_url':actor_url}]
-    }
-    db.save(final, table='')
-    # return actor_url
-
-def handle_html():
-    dit = get_dir(html)
-
+if __name__ == '__main__':
+    get_urls()
 
 
 

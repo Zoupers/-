@@ -21,9 +21,10 @@ class DbHandle(object):
         self.execute('DROP TABLE `%s`' % table)
 
     def get(self, table=None, _filter=None, _range='*'):
+        sql = 'SELECT {range} FROM %s'.format(range=_range)
         if not table:
             table = self.table
-        select = 'SELECT * FROM %s' % table
+        select = sql % table
         if _filter:
             self.execute(select+' '+_filter)
         else:
@@ -49,20 +50,31 @@ class DbHandle(object):
         return self.get(table, _filter=_filter)
 
     def update(self, data, table=None):
-        sql = 'UPDATE {} set `{}`={} WHERE `id`={}'.format(table, *data)
-        self.execute(sql)
+        if not table:
+            table = self.table
+        sql = 'UPDATE {table} set `{col}`=%s WHERE `id`=%s'.format(table=table)
+        sql.format(col=data[0])
+        self.execute(sql, data[1:])
         self.db.commit()
 
     def updatemany(self, data, table=None):
-        for i in data:
-            sql = 'UPDATE {} set `{}`={} WHERE `id`={}'.format(table, *i)
-            self.execute(sql)
-            self.db.commit()
-
-    def save(self, data, table=None):
         if not table:
             table = self.table
-        insert_sql = 'INSERT INTO `{table}` VALUES(%s)'.format(table=table)
+        for i in data:
+            sql = 'UPDATE {table} set `{col}`=%s WHERE `id`=%s'.format(table=table)
+            sql.format(col=i[0])
+            self.execute(sql, i[1:])
+            self.db.commit()
+
+    def save(self, data, table=None, _range=None):
+        sql = 'INSERT INTO `{table}`{_range} VALUES(%s)'
+        if _range:
+            sql.format(_range='('+_range+')')
+        else:
+            sql.format(_range='')
+        if not table:
+            table = self.table
+        insert_sql = sql.format(table=table)
         insert_sql %= ('%s, '*(len(data)-1)+'%s')
         self.execute(insert_sql, data)
         self.db.commit()
@@ -84,11 +96,6 @@ class DbHandle(object):
 
     def fetchmany(self, size):
         return self.cursor.fetchmany(size)
-
-    def __delete__(self, instance):
-        print("DELETE")
-        self.db.close()
-
 
 
 if __name__ == '__main__':

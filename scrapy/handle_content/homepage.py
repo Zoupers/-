@@ -1,9 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding:utf-8 -*-
 from scrapy.requests.g_handle import GUrlHandle
-import requests
 from scrapy.handle_db.DBApi import DbHandle
-import pymysql
 import re
 import json
 from bs4 import BeautifulSoup
@@ -13,7 +11,7 @@ def table_create(database=None):
     # db = pymysql.connect(host='localhost', user='root', password='131421', database='ranking')
     db = DbHandle(database='ranking')
     # cursor = db.cursor()
-    sql = '''CREATE TABLE `brief_movie`(
+    sql = '''CREATE TABLE `movie`(
         `movie_name` CHAR(30) NOT NULL ,
         `rank` FLOAT,
         `star_num` VARCHAR(15),
@@ -23,7 +21,8 @@ def table_create(database=None):
         `class` VARCHAR(20),
         `countries` VARCHAR(20),
         `id` CHAR(15) PRIMARY KEY NOT NULL ,
-        `review` TEXT
+        `review` TEXT,
+        `details`
         )'''
     try:
         db.execute(query=sql)
@@ -34,19 +33,19 @@ def table_create(database=None):
 def get_url():
     table_create()
     db = DbHandle(database='ranking')
-    request = GUrlHandle(content_handle=handle_content)
-    url_list = db.get(table='init', _range=('name', 'urls'))
+    request = GUrlHandle(content_handle=content_handle)
+    url_list = db.get(table='init', _range='name, urls')
     for i in url_list:
         urls = json.loads(i[1])
         print(urls)
         request.get_contents(urls)
 
 
-def handle_content(demo):
+def content_handle(demo):
     # db = pymysql.connect(host='localhost', user='root', password='131421', database='ranking')
     # cursor = db.cursor()
     db = DbHandle()
-    db.table = 'brief_movie'
+    db.table = 'movie'
     soup = BeautifulSoup(demo, 'html.parser')
     ol = soup.find('ol', class_='grid_view')
     for i in ol.find_all('li'):
@@ -89,18 +88,9 @@ def handle_content(demo):
         else:
             review = 'none review'
         data.append(review)
-        print(data)
-        if db.execute('SELECT * FROM `brief_movie` where id=%s', (_id, )) == 0:
-            # db.execute('''
-            # INSERT INTO `brief_movie2`
-            # VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''', data)
-            db.save(data)
-
-
-def geturl(n):
-    url = 'https://movie.douban.com/top250?start='+str(25*n)+'&filter='
-
-    return url
+        # print(data)
+        if db.execute('SELECT * FROM `movie` where id=%s', (_id, )) == 0:
+            db.save(data,_range='movie_name,rank,star_num,director,main_actors,year,class,countries,id,review')
 
 
 if __name__ == '__main__':
