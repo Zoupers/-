@@ -1,3 +1,4 @@
+from scrapy.requests.g_handle import GUrlHandle
 from bs4 import BeautifulSoup
 import re
 import requests
@@ -40,8 +41,8 @@ def Get_actor_jpg(url):
     for adr in adrs:
         _id = re.findall(r'public/(.*?)\.jpg',adr)
         try:
-            request.urlretrieve(adr, r'C:\Users\10184\Desktop\云顶文件\actor_jpg\%s.jpg' % _id[0])
-            result.append((_id[0], r'C:\Users\10184\Desktop\云顶文件\actor_jpg\%s.jpg'%_id[0]))
+            request.urlretrieve(adr, r'D:\YDproject\movie_jpg\%s.jpg' % _id[0])
+            result.append((_id[0], r'D:\YDproject\actor_jpg\%s.jpg'%_id[0]))
         except:
             pass
     return result

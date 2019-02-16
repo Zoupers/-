@@ -67,14 +67,16 @@ class DbHandle(object):
             self.db.commit()
 
     def save(self, data, table=None, _range=None):
-        sql = 'INSERT INTO `{table}`{_range} VALUES(%s)'
+        sql1 = 'INSERT INTO `{table}`'
+        sql2 = '{_range} VALUES(%s)'
         if _range:
-            sql.format(_range='('+_range+')')
+            sql2 = sql2.format(_range='('+_range+')')
         else:
-            sql.format(_range='')
+            sql2 = sql2.format(_range='')
         if not table:
             table = self.table
-        insert_sql = sql.format(table=table)
+        sql1 = sql1.format(table=table)
+        insert_sql = sql1+sql2
         insert_sql %= ('%s, '*(len(data)-1)+'%s')
         self.execute(insert_sql, data)
         self.db.commit()

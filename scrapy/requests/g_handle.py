@@ -112,6 +112,7 @@ class GUrlHandle(object):
         kwargs = dict()
         kwargs['headers'] = self.kwargs['headers']
         kwargs['proxies'] = self.get_proxies()
+        kwargs['timeout'] = 2
         kwargs['hooks'] = {'response': self.hook}
         n = 0
         while True:

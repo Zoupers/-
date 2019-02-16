@@ -9,6 +9,7 @@ def comment_table_create(_id, database=None):
     db = DbHandle(database='comment')
     # cursor = db.cursor()
     sql = '''CREATE TABLE `%s`(
+        `user_id` VARCHAR(30),
         `user_name` VARCHAR(30),
         `date` VARCHAR(30),
         `comment` TEXT
@@ -25,7 +26,7 @@ def main():
 
 def get_urls():
     db = DbHandle()
-    db.table = 'brief_movie'
+    db.table = 'movie'
     _id_list = db.get(_range='id')
     id_list = [i[0] for i in _id_list]
     urls = ['https://movie.douban.com/subject/%s/comments?status=P' % _id for _id in id_list]
@@ -49,12 +50,13 @@ def content_handle(movie):
     block = block[0]
     # soup = BeautifulSoup(movie, 'lxml')
     # comments = soup.find_all(class_='comment-item')
-    pattern = 'src="(.*?)".*?class="">(.*?)<.*?comment-time.*?title="(.*?)".*?short">(.*?)<'
+    pattern = 'title="(.*?)".*?"https://www.douban.com/people/(.*?)/".*?src="(.*?)".*?<.*?comment-time.*?title="(.*?)".*?short">(.*?)<'
     comments = re.findall(pattern, block, re.S)
     # x = 1
     for comment in comments[:10]:
-        data = [comment[1], str(comment[2]).replace('\n', ''), '''{}'''.format(comment[3])]
-        print(_id, comment[0], comment[1], str(comment[2]).replace('\n', ''), '''{}'''.format(comment[3]))
+        pic = re.sub('/u(.*?)-.*?\\.', '/ul\\1.', comment[2])
+        data = [comment[1], comment[0], str(comment[3]).replace('\n', ''), '''{}'''.format(comment[4])]
+        print(_id, comment[1], pic, comment[2], str(comment[3]).replace('\n', ''), '''{}'''.format(comment[4]))
         db.save(data)
         # 存入数据库
         # name = comment[0]
