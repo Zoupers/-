@@ -1,39 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 {% load staticfiles %}
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
+{% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
-    {% block css %}{% endblock %}
-    {% block js %}{% endblock %}
-</head>
-<body>
-<header class="header">
-		<div class="title">
-			<img src="{% static 'source/logo.jpg' %}" class="title-logo-img" alt="">
-			<div class="title-logo">
-				<span class="title-logo-name">云顶电影榜</span>
-			</div>
-			<div class="title-right">
-				<a href="#" class="title-login title-a">登录|</a><a href="#" class="title-register title-a">注册</a>
-			</div>
-			<div class="box">
-       			<input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
-       			<div class="search"><img src="{% static 'source/research.jpg' %}" alt="" class="box-img"></div>
-   			</div>
-   			<div class="title-choose">
-   				<ul class="title-choose-ul">
-   					<li class="title-choose-li"><a href="" style="color: gray">TOP100榜</a></li>
-   					<li class="title-choose-li"><a href="" style="color: gray">国内票房榜</a></li>
-   					<li class="title-choose-li"><a href="" style="color: gray">热议新片榜</a></li>
-   					<li class="title-choose-li"><a href="" style="color: white">热映高分榜</a></li>
-   				</ul>
-   			</div>
-		</div>
-	</header>
-	<section class="ranking-all">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+{% endblock %}
+{% block title %}电影{% endblock %}
+{% block main_body %}
+    <section class="ranking-all">
 
 		<div class="center">
 			<p class="center-word">每天早上8点更新数据，统计昨日国内热映电影，并取评分前10</p>
@@ -93,5 +66,5 @@
 			</div>
 		</div>
 	</section>
-</body>
-</html>
+{% endblock %}
+

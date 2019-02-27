@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% block css %}{% endblock %}
+    {% block js %}{% endblock %}
+</head>
+<body>
+<header class="header">
+		<div class="title">
+			<img src="{% static 'source/logo.jpg' %}" class="title-logo-img" alt="">
+			<div class="title-logo">
+				<span class="title-logo-name">云顶电影榜</span>
+			</div>
+            {% block login %}
+                <div class="title-right">
+                    <a href="#" class="title-login title-a">登录|</a><a href="#" class="title-register title-a">注册</a>
+                </div>
+            {% endblock %}
+			<div class="box">
+       			<input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
+       			<div class="search"><img src="{% static 'source/research.jpg' %}" alt="" class="box-img"></div>
+   			</div>
+   			<div class="title-choose">
+   				<ul class="title-choose-ul">
+   					<li class="title-choose-li"><a href="" style="color: gray">TOP100榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: gray">国内票房榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: gray">热议新片榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: white">热映高分榜</a></li>
+   				</ul>
+   			</div>
+		</div>
+	</header>
+    {% block main_body %}
+    {% endblock %}
+
+</body>
+</html>

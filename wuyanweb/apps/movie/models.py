@@ -33,7 +33,7 @@ class MPR(models.Model):
     """
     电影与演员的关系
     """
-    _type = models.CharField(max_length=10, verbose_name='职位', choices=(('1', '导演'), ('2', '编剧'), ('3', '演员')))
+    type = models.CharField(max_length=10, verbose_name='职位', choices=(('1', '导演'), ('2', '编剧'), ('3', '演员')))
     movie = models.ForeignKey(Movie, null=True, on_delete=models.SET_NULL, verbose_name='电影')
     person = models.ForeignKey(Person, on_delete=models.DO_NOTHING, verbose_name='人物')
 
