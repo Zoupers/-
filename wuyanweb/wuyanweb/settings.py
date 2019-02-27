@@ -42,7 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'xadmin',
-    'crispy_forms'
+    'crispy_forms',
+    'apps.movie',
+    'apps.person',
+    'apps.ranking',
+    'apps.user'
 ]
 
 MIDDLEWARE = [
@@ -69,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
             ],
         },
     },
@@ -82,9 +87,19 @@ WSGI_APPLICATION = 'wuyanweb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ranking',
+        'USER': 'wuyan',
+        'PASSWORD': '123456',
+        'HOST': 'localhost',
+    },
+    'comment': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'comment',
+        'USER': 'wuyan',
+        'PASSWORD': '123456',
+        'HOST': 'localhost',
+    },
 }
 
 
@@ -126,5 +141,11 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    # os.path.join(BASE_DIR, 'static'),
+    ('user', os.path.join(BASE_DIR, 'static/source/user'.replace('\\', '/'))),
+    ('person', os.path.join(BASE_DIR, 'static/source/person'.replace('\\', '/'))),
+    ('movie', os.path.join(BASE_DIR, 'static/source/movie'.replace('\\', '/'))),
+    ('css', os.path.join(BASE_DIR, 'static/css').replace('\\', '/')),
+    ('js', os.path.join(BASE_DIR, 'static/js').replace('\\', '/')),
+    ('source', os.path.join(BASE_DIR, 'static/source').replace('\\', '/')),
 ]

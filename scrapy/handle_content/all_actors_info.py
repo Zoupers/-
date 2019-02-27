@@ -32,27 +32,25 @@ def get_urls():
         else:
             continue
     urls.remove('https://movie.douban.com/celebrity/1376098/')
-    db.table = 'person'
-    actor_ids = db.get(_range='id')
-    have_urls = []
-    for ids in actor_ids:
-        url = 'https://movie.douban.com/celebrity/%s/' % ids
-        have_urls.append(url)
-
-    print(len(have_urls))
-    u = list(set(urls) ^ set(have_urls))
-    print(len(set(have_urls)), len(set(urls)))
-    print(len(u))
-    # u.remove('https://movie.douban.com/celebrity/1369442/')
-    request = GUrlHandle(content_handle=content_handle, max=400)
-    request.get_contents(u)
+    # db.table = 'person'
+    # actor_ids = db.get(_range='id')
+    # have_urls = []
+    # for ids in actor_ids:
+    #     url = 'https://movie.douban.com/celebrity/%s/' % ids
+    #     have_urls.append(url)
+    #
+    # print(len(have_urls))
+    # u = list(set(urls) ^ set(have_urls))
+    # print(len(set(have_urls)), len(set(urls)))
+    # print(len(u))
+    # # u.remove('https://movie.douban.com/celebrity/1369442/')
+    request = GUrlHandle(content_handle=content_handle, max_=400)
+    request.get_contents(urls)
 
 
 def content_handle(info):
     # all_actor_information = []
     _id = re.findall('id="headline".*?rel="nofollow".*?https://movie.douban.com/celebrity/(\d*?)/', info, re.S)
-    if _id[0] == '1250852':
-        print(info)
     data = [_id[0]]
     name = re.findall(r'<div id="content">.*?<h1>(.+)</h1>', info, re.S)[0]
     try:
@@ -119,7 +117,7 @@ def content_handle(info):
     if data[-1] == '</div>':
         data[-1] = None
     db = DbHandle()
-    db.table = 'person'
+    db.table = 'movie_person'
     if not db.get_by_id(_id=int(_id[0])):
         print(data)
         db.save(data)

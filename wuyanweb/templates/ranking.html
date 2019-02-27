@@ -1,0 +1,54 @@
+{% extends 'ranking_base.html' %}
+{% load staticfiles %}
+{% block title %}电影{% endblock %}
+{% block movies %}
+    {% for movie in movies %}
+                <div style=" width: 850px;height: 210px; margin:30px 0px;">
+						<div ><img class="right-img" src="{% static movie.movie.poster %}" alt=""></div>
+						<div class="rank-name">
+                        <div>
+                            <div style="float: left; width: 30px;height: 50px; margin-right: 10px">
+                                <p class="m_rank" style="font-size: 20px">{{ movie.rank }}</p>
+                            </div>
+                            <div style="float: left;">
+                                <h1 class="movie_name">{{ movie.movie.name }}</h1>
+                            </div>
+                        </div>
+							<p class="person"></p>
+							<p class="publishDate" style="font-size: 10px">上映日期: {{ movie.movie.year }}</p>
+                            {% if movie.movie.review %}
+                                <p class="person">{{ movie.movie.review }}</p>
+                            {% endif %}
+						</div>
+						<div class="rank-grand">
+							<h1 class="rank">{{ moive.movie.rank }}</h1>
+							<p class="star_num">{{ movie.movie.star_num }}人评分</p>
+						</div>
+					</div>
+    {% endfor %}
+    <div class="paginator">
+        			<span class="prev">
+                        {% if pages.prev %}
+                            <link rel="prev" href="{{ pages.prev_url }}">
+                            <a href="{{ pages.prev_url }}">前页&gt;</a>
+                        {% endif %}
+			        </span>
+                        {% for page, url in pages.final %}
+                            {% ifequal page pages.now %}
+                                <span class="thispage">{{ page }}</span>
+                            {% else %}
+                                <a href="{{ url }}">{{ page }}</a>
+                            {% endifequal %}
+                        {% endfor %}
+                     <span class="next">
+                         {% if pages.next %}
+                            <link rel="next" href="{{ pages.next_url }}">
+                            <a href="{{ pages.next_url }}">后页&gt;</a>
+                        {% endif %}
+{#			            <link rel="next" href="?start=25&amp;filter=">#}
+{#			            <a href="?start=25&amp;filter=">后页&gt;</a>#}
+			        </span>
+
+            <span class="count">(共{{ pages.total }}条)</span>
+        </div>
+{% endblock %}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    {% block css %}{% endblock %}
+    {% block js %}{% endblock %}
+</head>
+<body>
+<header class="header">
+		<div class="title">
+			<img src="{% static 'source/logo.jpg' %}" class="title-logo-img" alt="">
+			<div class="title-logo">
+				<span class="title-logo-name">云顶电影榜</span>
+			</div>
+			<div class="title-right">
+				<a href="#" class="title-login title-a">登录|</a><a href="#" class="title-register title-a">注册</a>
+			</div>
+			<div class="box">
+       			<input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
+       			<div class="search"><img src="{% static 'source/research.jpg' %}" alt="" class="box-img"></div>
+   			</div>
+   			<div class="title-choose">
+   				<ul class="title-choose-ul">
+   					<li class="title-choose-li"><a href="" style="color: gray">TOP100榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: gray">国内票房榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: gray">热议新片榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: white">热映高分榜</a></li>
+   				</ul>
+   			</div>
+		</div>
+	</header>
+	<section class="ranking-all">
+
+		<div class="center">
+			<p class="center-word">每天早上8点更新数据，统计昨日国内热映电影，并取评分前10</p>
+			<div class="ranking">
+				<div  class="item1">
+                {% block movies %}{% endblock %}
+				</div>
+				<div  class="item2">
+					<h1 class="item2-h">分类排行榜</h1>
+                    {% block type %}
+                    <p><a href="#">剧情</a> <a href="#">喜剧</a> <a href="#">动作</a> <a href="#">爱情</a> <a href="#">科幻</a> <a href="#">动画</a></p>
+					<p><a href="#">悬疑</a> <a href="#">惊悚</a> <a href="#">恐怖</a> <a href="#">纪录片</a> <a href="#">短片</a> <a href="#">情色</a></p>
+					<p><a href="#">同性</a> <a href="#">音乐</a> <a href="#">歌舞</a> <a href="#">家庭</a> <a href="#">儿童</a> <a href="#">传记</a></p>
+					<p><a href="#">传记</a> <a href="#">战争</a> <a href="#">犯罪</a> <a href="#">西部</a> <a href="#">奇幻</a> <a href="#">冒险</a></p>
+					<p><a href="#">灾难</a> <a href="#">武侠</a> <a href="#">古装</a> <a href="#">运动</a> <a href="#">黑色电影</a> </p>
+                    {% endblock %}
+				</div>
+				<div  class="item3">
+					<h1 class="item2-h">周口碑榜<span class="right" style="font-size: 12px; color: gray" >1-30日更新</span></h1>
+					<p class="item3-name1 item3-rank"><span class="item3-rank-numb">1</span>1324</p>
+					<p class="item3-name2 item3-rank"><span class="item3-rank-numb">2</span>1324</p>
+					<p class="item3-name3 item3-rank"><span class="item3-rank-numb">3</span>1324</p>
+					<p class="item3-name4 item3-rank"><span class="item3-rank-numb">4</span>1324</p>
+					<p class="item3-name5 item3-rank"><span class="item3-rank-numb">5</span>1324</p>
+					<p class="item3-name6 item3-rank"><span class="item3-rank-numb">6</span>1324</p>
+					<p class="item3-name7 item3-rank"><span class="item3-rank-numb">7</span>1324</p>
+					<p class="item3-name8 item3-rank"><span class="item3-rank-numb">8</span>1324</p>
+					<p class="item3-name9 item3-rank"><span class="item3-rank-numb">9</span>1324</p>
+					<p class="item3-name10 item3-rank"><span class="item3-rank-numb">10</span>1324</p>
+				</div>
+				<div  class="item4">
+					<h1 class="item2-h">北美票房榜<span class="right" style="font-size: 12px; color: gray" >1-30日更新/美元</span></h1>
+					<p class="item3-name1 item3-rank"><span class="item3-rank-numb">1</span>1324</p>
+					<p class="item3-name2 item3-rank"><span class="item3-rank-numb">2</span>1324</p>
+					<p class="item3-name3 item3-rank"><span class="item3-rank-numb">3</span>1324</p>
+					<p class="item3-name4 item3-rank"><span class="item3-rank-numb">4</span>1324</p>
+					<p class="item3-name5 item3-rank"><span class="item3-rank-numb">5</span>1324</p>
+					<p class="item3-name6 item3-rank"><span class="item3-rank-numb">6</span>1324</p>
+					<p class="item3-name7 item3-rank"><span class="item3-rank-numb">7</span>1324</p>
+					<p class="item3-name8 item3-rank"><span class="item3-rank-numb">8</span>1324</p>
+					<p class="item3-name9 item3-rank"><span class="item3-rank-numb">9</span>1324</p>
+					<p class="item3-name10 item3-rank"><span class="item3-rank-numb">10</span>1324</p>
+				</div>
+				<div  class="item5">
+					<h1 class="item2-h">周热议榜<span class="right" style="font-size: 12px; color: gray" >1-30日更新 (评论数)</span></h1>
+					<p class="item3-name1 item3-rank"><span class="item3-rank-numb">1</span>1324</p>
+					<p class="item3-name2 item3-rank"><span class="item3-rank-numb">2</span>1324</p>
+					<p class="item3-name3 item3-rank"><span class="item3-rank-numb">3</span>1324</p>
+					<p class="item3-name4 item3-rank"><span class="item3-rank-numb">4</span>1324</p>
+					<p class="item3-name5 item3-rank"><span class="item3-rank-numb">5</span>1324</p>
+					<p class="item3-name6 item3-rank"><span class="item3-rank-numb">6</span>1324</p>
+					<p class="item3-name7 item3-rank"><span class="item3-rank-numb">7</span>1324</p>
+					<p class="item3-name8 item3-rank"><span class="item3-rank-numb">8</span>1324</p>
+					<p class="item3-name9 item3-rank"><span class="item3-rank-numb">9</span>1324</p>
+					<p class="item3-name10 item3-rank"><span class="item3-rank-numb">10</span>1324</p>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

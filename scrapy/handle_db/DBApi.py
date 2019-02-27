@@ -21,10 +21,10 @@ class DbHandle(object):
         self.execute('DROP TABLE `%s`' % table)
 
     def get(self, table=None, _filter=None, _range='*'):
-        sql = 'SELECT {range} FROM %s'.format(range=_range)
+        sql = 'SELECT {range} FROM '.format(range=_range)
         if not table:
             table = self.table
-        select = sql % table
+        select = sql + '`' + table + '`'
         if _filter:
             self.execute(select+' '+_filter)
         else:
@@ -98,6 +98,9 @@ class DbHandle(object):
 
     def fetchmany(self, size):
         return self.cursor.fetchmany(size)
+
+    def close(self):
+        self.db.close()
 
 
 if __name__ == '__main__':

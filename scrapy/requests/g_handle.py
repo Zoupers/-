@@ -17,10 +17,12 @@ d_kwargs['timeout'] = 2
 
 
 class GUrlHandle(object):
-    def __init__(self, content_handle, max=60):
-        self.max = max
+    def __init__(self, content_handle=None, max_=60, use_id=False):
+        self.max = max_
+        self.use_id = use_id
         self.kwargs = dict()
-        self.content_handle = content_handle
+        if content_handle:
+            self.content_handle = content_handle
         self.kwargs['headers'] = {'User-Agent': fake.random}
         self.kwargs['proxies'] = self.verify(self.get_proxies())
 
@@ -43,6 +45,9 @@ class GUrlHandle(object):
     def get_proxies():
         http = requests.get('http://127.0.0.1:8080/get/http').text
         https = requests.get('http://127.0.0.1:8080/get/https').text
+        # qiye
+        # http = requests.get('http://127.0.0.1:8765/random?types=0&protocol=0&country=国内').text.strip('"')
+        # https = requests.get('http://127.0.0.1:8765/random?types=0&protocol=1&country=国内').text.strip('"')
         # print({'http': 'http://'+http, 'https': 'https://'+https})
         return {'http': 'http://'+http, 'https': 'https://'+https}
 
@@ -70,7 +75,7 @@ class GUrlHandle(object):
         urls = list(set(urls))
         l = len(urls)
         for i in range(max, l, max):
-            print(type(n), n, type(i), i)
+            print(n, i)
             url = urls[n:i]
             while True:
                 try:
@@ -78,12 +83,17 @@ class GUrlHandle(object):
                     break
                 except Exception as e:
                     print(e)
-                    self.kwargs['proxies'] = self.get_proxies()
+                    # self.kwargs['proxies'] = self.get_proxies()
             n = i
             if l - i <= max:
                 url = urls[i:l]
-                self._get_contents(url)
-                break
+                while True:
+                    try:
+                        self._get_contents(url)
+                        break
+                    except Exception as e:
+                        print(e)
+                        # self.kwargs['proxies'] = self.get_proxies()
 
     # 每n个用一个
     def _get_contents(self, urls):
@@ -99,11 +109,19 @@ class GUrlHandle(object):
 
     def hook(self, r, *args, **kwargs):
         # print('r.status_code from hook', r.status_code)
-        if r.status_code == 200:
-            # print(r.text)
-            self.content_handle(r.text)
+        if self.use_id:
+            _id = re.findall('https://movie.douban.com/subject/(.*?)/', r.url)[0]
+            if r.status_code == 200:
+                # print(r.text)
+                self.content_handle(_id, r.text)
+            else:
+                raise Exception("NOT 200")
         else:
-            raise Exception("NOT 200")
+            if r.status_code == 200:
+                # print(r.text)
+                self.content_handle(r.text)
+            else:
+                raise Exception("NOT 200")
         return r
 
     # grequests 的 exception_handler
@@ -117,7 +135,11 @@ class GUrlHandle(object):
         n = 0
         while True:
             n += 1
-            time.sleep(1)
+            if n == 10:
+                del kwargs['proxies']
+            if n == 20:
+                break
+            # time.sleep(1)
             print("%s 第%s次重试" % (request.url, n))
             try:
                 result = requests.get(request.url, **kwargs)

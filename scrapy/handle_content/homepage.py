@@ -22,7 +22,7 @@ def table_create(database=None):
         `countries` VARCHAR(20),
         `id` CHAR(15) PRIMARY KEY NOT NULL ,
         `review` TEXT,
-        `details`
+        `details` TEXT
         )'''
     try:
         db.execute(query=sql)
