@@ -12,39 +12,32 @@
 				<div class="left-first">
 					<p style="font-size: 12px;">导演Doctor</p>
                     {% for foo in mpr %}
-{#                        {{ foo }}#}
                         {% ifequal foo.type '1' %}
-                            {{ foo.person.name }}
-                            <div><img style="width: 75px; height: 100px;" src="{% static foo.person.poster %}" alt=""></div>
+                            <div class="people">
+                            <div class="head">
+                            <div>
+                                <img src="{% static foo.person.poster %}" alt="">
+                            </div>
+                            </div>
+                            <p>{{ foo.person.name }}</p>
                         {% endifequal %}
-                        <div class="people">
-						<div class="head"></div>
-
-						<p>123</p>
 					</div>
                     {% endfor %}
-
-
-					<div class="people">
-						<div class="head"></div>
-						<p>123</p>
-					</div>
-					<div class="people">
-						<div class="head"></div>
-						<p>123</p>
-					</div>
-					<div class="people">
-						<div class="head"></div>
-						<p>123</p>
-					</div>
 				</div>
 
 				<div class="left-second">
 					<p style="font-size: 12px;">演员Cast</p>
-					<div class="people">
-						<div class="head"></div>
-						<p>123</p>
-					</div>
+					{% for foo in mpr %}
+                        {% ifequal foo.type '3' %}
+                            <div class="people">
+                            <div class="head">
+                                <img src="{% static foo.person.poster %}" alt="">
+                            </div>
+                            <p>{{ foo.person.name }}</p>
+                            </div>
+                        {% endifequal %}
+
+                    {% endfor %}
 					<div class="people">
 						<div class="head"></div>
 						<p>123</p>
