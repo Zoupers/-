@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.views import View
 from .models import RMR
 # Create your views here.
@@ -42,7 +42,13 @@ class RankingView(View):
     def get(self, request):
         movie = RMR.objects.filter(_type='top250').order_by('rank')
         num = 10
-        start = int(request.GET.get('start'))
+        _type = None
+        # 判断是否有第几页的要求
+        if request.GET.get('start'):
+            start = int(request.GET.get('start'))
+        else:
+            start = 0
+        # 判断排行榜类别
         if request.GET.get('type'):
             _type = request.GET.get('type')
             movie = RMR.objects.filter(_type=_type).order_by('rank')
@@ -54,8 +60,36 @@ class RankingView(View):
         if start or start == 0:
             if start % num == 0 or start == 0:
                 movies = movie[start:start+10]
-                return render(request, 'ranking.html', {'movies': movies, 'pages': pages})
+                # 根据类别返回内容
+                if _type:
+                    return render(request, 'ranking.html', {'movies': movies, 'pages': pages, 'type': _type})
+                return render(request, 'ranking.html', {'movies': movies, 'pages': pages, 'top250': True})
             else:
                 return
         movies = movie[:10]
-        return render(request, 'ranking.html', {'movies': movies})
+        return render(request, 'ranking.html', {'movies': movies, 'top250': True})
+
+
+class BoxOfficeView(View):
+    """
+    国内票房榜
+    """
+
+    def get(self, request):
+        return render(request, 'box_office.html', {'boxoffice': True})
+
+
+class ChartView(View):
+    """
+    热议新片榜
+    """
+    def get(self, request):
+        return render(request, 'chart.html', {'chart': True})
+
+
+class NowPlayingView(View):
+    """
+    热映高分榜
+    """
+    def get(self, request):
+        return render(request, 'nowplaying.html', {'nowplaying': True})

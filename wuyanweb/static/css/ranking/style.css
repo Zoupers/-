@@ -68,7 +68,7 @@ body{
 	.box-img{
 		padding-top: 6px;
 		height: 20px;
-		width: 30px;
+		width: 24px;
 		cursor: pointer;
 		border-left: none;
 	}
@@ -99,7 +99,7 @@ body{
 		margin: 0 auto;
 		width: 1200px;
 	    display: grid;
-	    grid-template-columns: 893px 307px;
+	    grid-template-columns: 880px 256px;
 	    grid-template-rows: 240px 376px 376px 376px; 
 	}
 	.item1 {
@@ -117,9 +117,6 @@ body{
 			height: 210px;
 			width: 550px;
 		}
-			.m_rank{
-				font-size: 30px;
-			}
 			.movie_name{
 				padding-top: 0px;
 				font-size: 20px;
@@ -129,14 +126,17 @@ body{
 				font-size: 12px;
 				font-family: gary;
 			}
+			.review{
+				font-family: 华文楷体;
+			}
 			.publishDate{
 				font-size: 12px;
 			}
 			.rank-grand{
 			float: right;
-			margin-top: 10%;
 		}
 			.rank{
+				margin-top: 14px;
 				color: #E86263;
 				font-size: 36px;
 				margin-bottom: 5px;
@@ -151,6 +151,10 @@ body{
 		border-left:4px solid red;
 		padding-left: 20px;
 	}
+		.classify{
+			width: 64px;
+			float: left;
+		}
 	.item3-rank{
 		font-size: 12px;
 		margin: 18px 0px;

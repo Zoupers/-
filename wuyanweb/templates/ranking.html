@@ -1,29 +1,41 @@
 {% extends 'ranking_base.html' %}
 {% load staticfiles %}
+{% block title %}
+{% if type %}
+    {{ type }}排行榜
+{% else %}
+    Top250
+{% endif %}
+{% endblock %}
 {% block movies %}
     {% for movie in movies %}
                 <div style=" width: 850px;height: 210px; margin:30px 0px;">
 						<div ><img class="right-img" src="{% static movie.movie.poster %}" alt=""></div>
 						<div class="rank-name">
-                        <div>
-                            <div style="float: left; width: 30px;height: 50px; margin-right: 10px">
-                                <p class="m_rank" style="font-size: 20px">{{ movie.rank }}</p>
-                            </div>
+
+{#                            <div style="float: left; width: 30px;height: 50px; margin-right: 10px">#}
+{#                                <p class="m_rank" style="font-size: 20px"></p>#}
+{#                            </div>#}
                             <div style="float: left;">
-                                <h1 class="movie_name">{{ movie.movie.name }}</h1>
-                            </div>
-                        </div>
-							<p class="person"></p>
-							<p class="publishDate" style="font-size: 10px">上映日期: {{ movie.movie.year }}</p>
+                                <h1 class="movie_name">
+                                    <span>{{ movie.rank }}.</span>
+                                    <a style="color: #3c3c3c" href="/movie/?id={{ movie.movie_id }}">{{ movie.movie.name }}</a>
+                                </h1>
+                            <p class="publishDate" style="font-size: 10px">上映日期: {{ movie.movie.year }}</p>
+                            <p style="font-size: 15px;">导演：导演人员</p>
+                            <p style="font-size: 15px;">编剧：编剧</p>
                             {% if movie.movie.review %}
-                                <p class="person">{{ movie.movie.review }}</p>
+                            <p class="review">{{ movie.movie.review }}</p>
                             {% endif %}
-						</div>
+                            </div>
+
+
 						<div class="rank-grand">
-							<h1 class="rank">{{ moive.movie.rank }}</h1>
+							<h1 class="rank">{{ movie.movie.rank }}</h1>
 							<p class="star_num">{{ movie.movie.star_num }}人评分</p>
 						</div>
 					</div>
+                </div>
     {% endfor %}
     <div class="paginator">
         			<span class="prev">

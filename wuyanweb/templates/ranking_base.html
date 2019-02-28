@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/reset.css' %}">
 {% endblock %}
 {% block title %}电影{% endblock %}
 {% block main_body %}
@@ -17,11 +17,11 @@
 				<div  class="item2">
 					<h1 class="item2-h">分类排行榜</h1>
                     {% block type %}
-                    <p><a href="#">剧情</a> <a href="#">喜剧</a> <a href="#">动作</a> <a href="#">爱情</a> <a href="#">科幻</a> <a href="#">动画</a></p>
-					<p><a href="#">悬疑</a> <a href="#">惊悚</a> <a href="#">恐怖</a> <a href="#">纪录片</a> <a href="#">短片</a> <a href="#">情色</a></p>
-					<p><a href="#">同性</a> <a href="#">音乐</a> <a href="#">歌舞</a> <a href="#">家庭</a> <a href="#">儿童</a> <a href="#">传记</a></p>
-					<p><a href="#">传记</a> <a href="#">战争</a> <a href="#">犯罪</a> <a href="#">西部</a> <a href="#">奇幻</a> <a href="#">冒险</a></p>
-					<p><a href="#">灾难</a> <a href="#">武侠</a> <a href="#">古装</a> <a href="#">运动</a> <a href="#">黑色电影</a> </p>
+                    <div class="classify"><a href="#">剧情</a></div> <div class="classify"><a href="#">喜剧</a></div> <div class="classify"><a href="#">动作</a></div> <div class="classify"><a href="#">爱情</a></div> <div class="classify"><a href="#">科幻</a></div> <div class="classify"><a href="#">动画</a></div>
+					<div class="classify"><a href="#">悬疑</a></div> <div class="classify"><a href="#">惊悚</a></div> <div class="classify"><a href="#">恐怖</a></div> <div class="classify"><a href="#">纪录片</a></div> <div class="classify"><a href="#">短片</a></div> <div class="classify"><a href="#">情色</a></div>
+                    <div class="classify"><a href="#">同性</a></div> <div class="classify"><a href="#">音乐</a></div> <div class="classify"><a href="#">歌舞</a></div> <div class="classify"><a href="#">家庭</a></div> <div class="classify"><a href="#">儿童</a></div> <div class="classify"><a href="#">传记</a></div>
+					<div class="classify"><a href="#">传记</a></div> <div class="classify"><a href="#">战争</a></div> <div class="classify"><a href="#">犯罪</a></div> <div class="classify"><a href="#">西部</a></div> <div class="classify"><a href="#">奇幻</a></div> <div class="classify"><a href="#">冒险</a></div>
+					<div class="classify"><a href="#">灾难</a></div> <div class="classify"><a href="#">武侠</a></div> <div class="classify"><a href="#">古装</a></div> <div class="classify"><a href="#">运动</a></div> <div class="classify"><a href="#">黑色电影</a></div>
                     {% endblock %}
 				</div>
 				<div  class="item3">

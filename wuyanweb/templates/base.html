@@ -20,21 +20,23 @@
                 </div>
             {% endblock %}
 			<div class="box">
-       			<input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
-       			<div class="search"><img src="{% static 'source/research.jpg' %}" alt="" class="box-img"></div>
+                <form action="#">
+                    <input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
+                    <div class="search"><img src="{% static 'source/research.jpg' %}" alt="" class="box-img"></div>
+                </form>
    			</div>
    			<div class="title-choose">
    				<ul class="title-choose-ul">
-   					<li class="title-choose-li"><a href="{% url 'apps.ranking:ranking' %}" style="color: gray">TOP250榜</a></li>
-   					<li class="title-choose-li"><a href="" style="color: gray">国内票房榜</a></li>
-   					<li class="title-choose-li"><a href="" style="color: gray">热议新片榜</a></li>
-   					<li class="title-choose-li"><a href="" style="color: white">热映高分榜</a></li>
+                    <li class="title-choose-li"><a href="{% url 'apps.ranking:ranking' %}" {% if type %}style="color: white"{% endif %}>分类排行榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:top250' %}" {% if top250 %}style="color: white"{% endif %}>TOP250榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:box_office' %}" {% if boxoffice %}style="color: white"{% endif %}>国内票房榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:chart' %}" {% if chart %}style="color: white"{% endif %}>热议新片榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:now_playing' %}" {% if nowplaying %}style="color: white"{% endif %}>热映高分榜</a></li>
    				</ul>
    			</div>
 		</div>
 	</header>
     {% block main_body %}
     {% endblock %}
-
 </body>
 </html>

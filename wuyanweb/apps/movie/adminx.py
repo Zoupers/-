@@ -13,10 +13,10 @@ class MovieAdmin(object):
 
 
 class MPRAdmin(object):
-    list_display = ['_type', 'movie', 'person']
-    search_fields = ['person__id', 'person__name', '_type']
+    list_display = ['type', 'movie', 'person']
+    search_fields = ['person__id', 'person__name', 'type']
     list_editable = []
-    list_filter = ['movie__name', 'movie__id', '_type']
+    list_filter = ['movie__name', 'movie__id', 'type']
 
 
 xadmin.site.register(Movie, MovieAdmin)
