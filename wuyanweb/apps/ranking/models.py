@@ -4,7 +4,7 @@ from apps.movie.models import Movie
 
 
 class RMR(models.Model):
-    _type = models.CharField(max_length=10, verbose_name='排行榜种类')
+    type = models.CharField(max_length=10, verbose_name='排行榜种类')
     rank = models.IntegerField(verbose_name='排名')
     movie = models.ForeignKey(Movie, on_delete=models.DO_NOTHING, verbose_name='电影')
 

@@ -14,7 +14,7 @@ class Movie(models.Model):
     year = models.CharField(max_length=100, null=True, verbose_name='上映日期')
     _class = models.CharField(max_length=50, null=True, verbose_name='类型')
     countries = models.CharField(max_length=50, null=True, verbose_name='制片国家/地区')
-    id = models.CharField(max_length=15, verbose_name='ID', unique=True, primary_key=True)
+    id = models.IntegerField(verbose_name='ID', unique=True, primary_key=True)
     review = models.TextField(verbose_name='简评', null=True)
     # 注意，这个details中的信息是电影详情页中的信息
     details = models.TextField(verbose_name='详细信息', null=True)

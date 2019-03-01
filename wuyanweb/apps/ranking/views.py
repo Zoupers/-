@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, Http404
 from django.views import View
 from .models import RMR
 # Create your views here.
@@ -8,7 +8,7 @@ def page(film, num, start, _type=None):
     """
 
     :param film: 总的电影的集合
-    :param num: 每页的个数
+    :param num: 每页的电影个数
     :param start: 从多少开始
     :return:
     """
@@ -43,6 +43,12 @@ class RankingView(View):
         movie = RMR.objects.filter(_type='top250').order_by('rank')
         num = 10
         _type = None
+        # 将要传进网页的参数
+        base = dict()
+        # 加载类别
+        all_type = set()
+        for movie_ in movie:
+            all_type.add(movie_.type)
         # 判断是否有第几页的要求
         if request.GET.get('start'):
             start = int(request.GET.get('start'))
@@ -55,8 +61,7 @@ class RankingView(View):
             pages = page(movie, num, start, _type=_type)
         else:
             pages = page(movie, num, start)
-        if not start:
-            start = 0
+        # 返回对应页数的内容
         if start or start == 0:
             if start % num == 0 or start == 0:
                 movies = movie[start:start+10]
@@ -65,9 +70,9 @@ class RankingView(View):
                     return render(request, 'ranking.html', {'movies': movies, 'pages': pages, 'type': _type})
                 return render(request, 'ranking.html', {'movies': movies, 'pages': pages, 'top250': True})
             else:
-                return
-        movies = movie[:10]
-        return render(request, 'ranking.html', {'movies': movies, 'top250': True})
+                return Http404()
+        # movies = movie[:10]
+        # return render(request, 'ranking.html', {'movies': movies, 'top250': True})
 
 
 class BoxOfficeView(View):
