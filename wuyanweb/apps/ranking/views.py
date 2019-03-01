@@ -40,7 +40,7 @@ def page(film, num, start, _type=None):
 class RankingView(View):
 
     def get(self, request):
-        movie = RMR.objects.filter(_type='top250').order_by('rank')
+        movie = RMR.objects.filter(type='top250').order_by('rank')
         num = 10
         _type = None
         # 将要传进网页的参数
@@ -57,7 +57,7 @@ class RankingView(View):
         # 判断排行榜类别
         if request.GET.get('type'):
             _type = request.GET.get('type')
-            movie = RMR.objects.filter(_type=_type).order_by('rank')
+            movie = RMR.objects.filter(type=_type).order_by('rank')
             pages = page(movie, num, start, _type=_type)
         else:
             pages = page(movie, num, start)
