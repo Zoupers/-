@@ -60,10 +60,9 @@ body{
 	}
 	.search{
 	    width: 50px;
-	    height: 32px;
-	    float: right;
-	    background: black;
-
+		height: 32px;
+		float: right;
+		border: none;
 	}
 	.box-img{
 		padding-top: 6px;
@@ -99,7 +98,7 @@ body{
 		margin: 0 auto;
 		width: 1200px;
 	    display: grid;
-	    grid-template-columns: 880px 256px;
+	    grid-template-columns: 880px 280px;
 	    grid-template-rows: 240px 376px 376px 376px; 
 	}
 	.item1 {
@@ -152,7 +151,7 @@ body{
 		padding-left: 20px;
 	}
 		.classify{
-			width: 64px;
+			width: 70px;
 			float: left;
 		}
 	.item3-rank{

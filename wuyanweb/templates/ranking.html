@@ -1,11 +1,16 @@
 {% extends 'ranking_base.html' %}
 {% load staticfiles %}
 {% block title %}
-{% if type %}
-    {{ type }}排行榜
-{% else %}
-    Top250
-{% endif %}
+    {% ifequal type 'top250' %}
+        Top250
+    {% else %}
+        {{ type }}排行榜
+    {% endifequal %}
+{% endblock %}
+{% block type %}
+    {% for i in classify %}
+    <div class="classify"><a href="/ranking/?type={{ i }}">{{ i }}</a></div>
+    {% endfor %}
 {% endblock %}
 {% block movies %}
     {% for movie in movies %}
@@ -22,8 +27,28 @@
                                     <a style="color: #3c3c3c" href="/movie/?id={{ movie.movie_id }}">{{ movie.movie.name }}</a>
                                 </h1>
                             <p class="publishDate" style="font-size: 10px">上映日期: {{ movie.movie.year }}</p>
-                            <p style="font-size: 15px;">导演：导演人员</p>
-                            <p style="font-size: 15px;">编剧：编剧</p>
+                            <p style="font-size: 15px;">导演：
+                            {% for p in person %}
+                                {% ifequal p.movie_id movie.movie_id %}
+                                    {% ifequal p.type '1' %}
+                                        {{ p.person.name.split|first }}
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endfor %}
+
+                            </p>
+                            <p style="font-size: 15px;">编剧：
+                            {% for p in person %}
+                                {% ifequal p.movie_id movie.movie_id %}
+                                    {% ifequal p.type '2' %}
+                                        {{ p.person.name.split|first }}
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endfor %}
+                            </p>
+                            <p style="font-size: 12px">
+                                片长：{{ movie.movie.long }}
+                            </p>
                             {% if movie.movie.review %}
                             <p class="review">{{ movie.movie.review }}</p>
                             {% endif %}
@@ -63,3 +88,4 @@
             <span class="count">(共{{ pages.total }}条)</span>
         </div>
 {% endblock %}
+

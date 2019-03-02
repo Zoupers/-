@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    {% block css %}{% endblock %}
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/reset.css' %}">
+    {% endblock %}
     {% block js %}{% endblock %}
 </head>
 <body>
@@ -15,14 +18,14 @@
 				<span class="title-logo-name">云顶电影榜</span>
 			</div>
             {% block login %}
-                <div class="title-right">
-                    <a href="#" class="title-login title-a">登录|</a><a href="#" class="title-register title-a">注册</a>
-                </div>
+            <div class="title-right">
+                <a href="#" class="title-login title-a">登录|</a><a href="#" class="title-register title-a">注册</a>
+            </div>
             {% endblock %}
 			<div class="box">
-                <form action="#">
+                <form name="" action="">
                     <input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
-                    <div class="search"><img src="{% static 'source/research.jpg' %}" alt="" class="box-img"></div>
+                    <input type="submit" class="search" style="background: url('{% static 'source/research.png' %}') no-repeat center center;" value=".">
                 </form>
    			</div>
    			<div class="title-choose">

@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, Http404
 from django.views import View
 from django.core import serializers
 from .models import Movie
@@ -16,7 +16,7 @@ class MovieView(View):
     def get(self, request):
         movie_id = request.GET.get('id')
         movie = Movie.objects.filter(id=movie_id)[0]
-        return render(request, 'base.html', {'movie': movie})
+        return render(request, 'movie_base.html', {'movie': movie})
 
 
 class CastView(View):
@@ -31,4 +31,16 @@ class CastView(View):
         else:
             n = int(num_actor/6) + 1
         height = n * 185
-        return render(request, 'cast.html', {'mpr': movie_cast, 'height': height, 'movie': movie_cast[0].movie})
+        return render(request, 'movie_cast.html', {'mpr': movie_cast, 'height': height, 'movie': movie_cast[0].movie})
+
+
+class PhotoView(View):
+
+    def get(self, request):
+        movie_id = request.GET.get('id')
+        movie = Movie.objects.filter(id=movie_id)
+        if not movie:
+            raise Http404(request)
+        movie = movie[0]
+        photo = json.loads(movie.image)
+        return render(request, 'movie_photo.html', {'movie': movie, 'image': photo})

@@ -36,6 +36,7 @@ class MPR(models.Model):
     type = models.CharField(max_length=10, verbose_name='职位', choices=(('1', '导演'), ('2', '编剧'), ('3', '演员')))
     movie = models.ForeignKey(Movie, null=True, on_delete=models.SET_NULL, verbose_name='电影')
     person = models.ForeignKey(Person, on_delete=models.DO_NOTHING, verbose_name='人物')
+    part = models.TextField(verbose_name='角色', default=None, null=True, blank=True)
 
     class Meta(object):
         verbose_name = '电影演员关系'

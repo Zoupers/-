@@ -1,7 +1,11 @@
 from django.shortcuts import render, Http404
 from django.views import View
 from .models import RMR
+from apps.movie.models import MPR
 # Create your views here.
+
+
+classify = list(set([i.type for i in RMR.objects.all() if i.type != 'top250']))
 
 
 def page(film, num, start, _type=None):
@@ -45,6 +49,8 @@ class RankingView(View):
         _type = None
         # 将要传进网页的参数
         base = dict()
+        # 分类排行榜种类
+        base['classify'] = classify
         # 加载类别
         all_type = set()
         for movie_ in movie:
@@ -61,14 +67,19 @@ class RankingView(View):
             pages = page(movie, num, start, _type=_type)
         else:
             pages = page(movie, num, start)
+        base['type'] = 'top250' if not _type else _type
+        # 有了类别就好这个电影集就好找电影的阵容了
+        base['person'] = []
+        for m in movie:
+            base['person'].extend(MPR.objects.filter(movie_id=m.movie_id))
+        base['pages'] = pages
         # 返回对应页数的内容
         if start or start == 0:
             if start % num == 0 or start == 0:
                 movies = movie[start:start+10]
+                base['movies'] = movies
                 # 根据类别返回内容
-                if _type:
-                    return render(request, 'ranking.html', {'movies': movies, 'pages': pages, 'type': _type})
-                return render(request, 'ranking.html', {'movies': movies, 'pages': pages, 'top250': True})
+                return render(request, 'ranking.html', base)
             else:
                 return Http404()
         # movies = movie[:10]
