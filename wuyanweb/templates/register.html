@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>注册</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/user/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/user/style.css' %}">
+	<style type="text/css">
+    #canvas{
+        cursor:pointer;
+    }
+	</style>
+</head>
+<body>
+	<header class="header">
+		<div class="title">	
+			<img src="{% static 'img/logo.jpg' %}" class="title-logo-img">
+			<div class="title-logo">
+				<span class="title-logo-name">云顶电影榜</span>
+			</div>
+			<div class="title-right">
+				<a href="#" class="title-login title-a">登录|</a><a href="#" class="title-register title-a">注册</a>
+			</div>
+			<div class="box">
+       			<input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
+       			<div class="search"><img src="{% static 'img/research.jpg' %}" alt="" class="box-img"></div>
+   			</div>
+   			<div class="title-choose">
+   				<ul class="title-choose-ul">
+   					<li class="title-choose-li"><a href="" style="color: gray">TOP100榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: gray">国内票房榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: gray">热议新片榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: white">热映高分榜</a></li>  					
+   				</ul>
+   			</div>
+		</div>
+	</header>
+	<div class="register-all">
+	  <form action="" name="" method="post">
+	     <table class="register">
+		    <tr>
+		        <td class="first">账号注册</td>
+		    </tr>
+	        <tr>
+	            <td class="tele">
+                        <input type="text" name="userName" placeholder="请输入用户名" maxlength="11" style="border:0px;outline:none;cursor: pointer;">
+				</td>
+	        </tr>
+		  	<tr>
+	            <td class="tele">
+					<input type="text" name="email" placeholder="请输入验证邮箱" maxlength="20" style="border:0px;outline:none;cursor: pointer;">
+                    <i class="send">发送验证码</i>
+				</td>
+	        </tr>
+	        <tr>
+	            <td class="password-input">
+					<input type="password" name="userPassword1" placeholder="请输入密码" style="border:0px;outline:none;cursor: pointer;">
+				</td>	
+	        </tr>
+	    	<tr>
+	            <td class="password-confirm">
+					<input type="password" name="userPassword2" placeholder="请确认密码" style="border:0px;outline:none;cursor: pointer;">
+				</td>	
+	        </tr>
+			<tr>
+				<td class="button">
+                    <button class="register-button">注册</button>
+				</td>
+			</tr>
+            {% csrf_token %}
+            {{ message }}
+            {{ Email }}
+			<tr>
+				<td class="foot">
+					<i class="absence">已有账号去<a class="login" href="/login/">登录</a></i>
+				</td>				
+			</tr>
+	     </table>
+	   </form>
+	</div>
+<script>
+    function randomNum(min,max){
+        return Math.floor(Math.random()*(max-min)+min);
+    }
+    function randomColor(min,max){
+        var _r = randomNum(min,max);
+        var _g = randomNum(min,max);
+        var _b = randomNum(min,max);
+        return "rgb("+_r+","+_g+","+_b+")";
+    }
+    document.getElementById("canvas").onclick = function(e){
+        e.preventDefault();
+        drawPic();
+    };
+    function drawPic(){
+        var $canvas = document.getElementById("canvas");
+        var _str = "0123456789";
+        var _picTxt = "";
+        var _num = 4;
+        var _width = $canvas.width;
+        var _height = $canvas.height;
+        var ctx = $canvas.getContext("2d");
+        ctx.textBaseline = "bottom";
+        ctx.fillStyle = randomColor(180,240);
+        ctx.fillRect(0,0,_width,_height);
+        for(var i=0; i<_num; i++){
+            var x = (_width-10)/_num*i+10;
+            var y = randomNum(_height/2,_height);
+            var deg = randomNum(-45,45);
+            var txt = _str[randomNum(0,_str.length)];
+            _picTxt += txt;
+            ctx.fillStyle = randomColor(10,100);
+            ctx.font = randomNum(16,40)+"px SimHei";
+            ctx.translate(x,y);
+            ctx.rotate(deg*Math.PI/180);
+            ctx.fillText(txt, 0,0);
+            ctx.rotate(-deg*Math.PI/180);
+            ctx.translate(-x,-y);
+        }
+        for(var i=0; i<_num; i++){
+            ctx.strokeStyle = randomColor(90,180);
+            ctx.beginPath();
+            ctx.moveTo(randomNum(0,_width), randomNum(0,_height));
+            ctx.lineTo(randomNum(0,_width), randomNum(0,_height));
+            ctx.stroke();
+        }
+        for(var i=0; i<_num*10; i++){
+            ctx.fillStyle = randomColor(0,255);
+            ctx.beginPath();
+            ctx.arc(randomNum(0,_width),randomNum(0,_height), 1, 0, 2*Math.PI);
+            ctx.fill();
+        }
+        return _picTxt;
+    }
+    drawPic();
+</script>
+</body>
+</html>
