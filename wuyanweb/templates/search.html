@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/search/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/search/reset.css' %}">
+{% endblock %}
+{% block title %}搜索{% endblock %}
+{% block main_body %}
+<section>
+    {% if result_left %}
+
+		<div class="center">
+			<div class="result">
+				<div class="center-result-left">
+                    {% for movie in result_left %}
+                    <div style="height: 280px;width: 100%;">
+                        <div>
+						<div ><img class="right-img" src="{% static movie.poster %}" alt=""></div>
+                            <div class="rank-name">
+                                <div style="float: left;">
+                                    <h1 class="movie_name">
+                                        <a style="color: #3c3c3c" href="/movie/?id={{ movie.id }}">{{ movie.name }}</a>
+                                    </h1>
+                                <p class="publishDate" style="font-size: 10px">上映日期: {{ movie.year }}</p>
+                                <p style="font-size: 15px;">导演：
+{#                                {% for p in person %}#}
+{#                                    {% ifequal p.movie_id movie.movie_id %}#}
+{#                                        {% ifequal p.type '1' %}#}
+{#                                            {{ p.person.name.split|first }}#}
+{#                                        {% endifequal %}#}
+{#                                    {% endifequal %}#}
+{#                                {% endfor %}#}
+
+                                </p>
+                                <p style="font-size: 15px;">编剧：
+                                {% for p in person %}
+                                    {% ifequal p.movie_id movie.movie_id %}
+                                        {% ifequal p.type '2' %}
+                                            {{ p.person.name.split|first }}
+                                        {% endifequal %}
+                                    {% endifequal %}
+                                {% endfor %}
+                                </p>
+                                <p style="font-size: 12px">
+                                    片长：{{ movie.long }}
+                                </p>
+                                {% if movie.review %}
+                                <p class="review">{{ movie.review }}</p>
+                                {% endif %}
+                                </div>
+
+
+                                <div class="rank-grand">
+                                    <h1 class="rank">{{ movie.rank }}</h1>
+                                    <p class="star_num">{{ movie.star_num }}人评分</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+				</div>
+				<div class="center-result-right">
+                    {% for movie in result_right %}
+                    <div style="height: 280px;width: 100%;">
+                        <div>
+						<div ><img class="right-img" src="{% static movie.poster %}" alt=""></div>
+                            <div class="rank-name">
+                                <div style="float: left;">
+                                    <h1 class="movie_name">
+                                        <a style="color: #3c3c3c" href="/movie/?id={{ movie.id }}">{{ movie.name }}</a>
+                                    </h1>
+                                <p class="publishDate" style="font-size: 10px">上映日期: {{ movie.year }}</p>
+                                <p style="font-size: 15px;">导演：
+{#                                {% for p in person %}#}
+{#                                    {% ifequal p.movie_id movie.movie_id %}#}
+{#                                        {% ifequal p.type '1' %}#}
+{#                                            {{ p.person.name.split|first }}#}
+{#                                        {% endifequal %}#}
+{#                                    {% endifequal %}#}
+{#                                {% endfor %}#}
+                                </p>
+                                <p style="font-size: 15px;">编剧：
+                                {% for p in person %}
+                                    {% ifequal p.movie_id movie.movie_id %}
+                                        {% ifequal p.type '2' %}
+                                            {{ p.person.name.split|first }}
+                                        {% endifequal %}
+                                    {% endifequal %}
+                                {% endfor %}
+                                </p>
+                                <p style="font-size: 12px">
+                                    片长：{{ movie.long }}
+                                </p>
+                                {% if movie.review %}
+                                <p class="review">{{ movie.review }}</p>
+                                {% endif %}
+                                </div>
+
+
+                                <div class="rank-grand">
+                                    <h1 class="rank">{{ movie.rank }}</h1>
+                                    <p class="star_num">{{ movie.star_num }}人评分</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+				</div>
+			</div>
+
+		</div>
+    {% else %}
+        <div style="height: auto">
+        对不起，未查询到
+        </div>
+    {% endif %}
+    </section>
+{% endblock %}

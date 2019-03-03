@@ -1,5 +1,6 @@
 from django.db import models
-from _datetime import datetime
+from datetime import datetime
+from apps.movie.models import Movie
 
 
 class MovieComments(models.Model):
@@ -8,7 +9,7 @@ class MovieComments(models.Model):
         user = models.ForeignKey(User, verbose_name="用户")
         movie = models.ForeignKey(Movie, verbose_name="电影")
         comments = models.CharField(max_length=200, verbose_name="评论")
-        add_time = models.DateTimeField(default=datetime.now(), verbose_name="评论时间")
+        add_time = models.DateTimeField(auto_now_add=True, verbose_name="评论时间")
 
         class Meta:
                 verbose_name = u"课程评论"
@@ -21,7 +22,7 @@ class UserFavorite(models.Model):
         user = models.ForeignKey(User, verbose_name="用户")
         fav_id = models.IntegerField(default=0, verbose_name=u"收藏数据id")
         fav_type = models.IntegerField(choices=((1, "电影"), (2, "演员")), default=1, verbose_name="收藏类型")
-        add_time = models.DateTimeField(default=datetime.now(), verbose_name="收藏时间")
+        add_time = models.DateTimeField(auto_now_add=True, verbose_name="收藏时间")
 
         class Meta:
                 verbose_name = u"用户收藏"

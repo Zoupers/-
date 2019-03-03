@@ -42,7 +42,7 @@ body{
     width: 265px;
     margin: 30px auto;
     font-family: 'Microsoft YaHei';
-   border: 1px solid gray;
+    border: 1px solid gray;
     font-size: 14px;
     background-color: black;
     float: right;
@@ -59,11 +59,11 @@ body{
     color: #fff;
 }
 .search{
-    width: 50px;
-    height: 32px;
-    float: right;
-    background: black;
-
+	    width: 50px;
+		height: 32px;
+		float: right;
+		border: none;
+		outline: none;
 }
 .box-img{
 	padding-top: 6px;
@@ -116,6 +116,7 @@ body{
 		margin-right: 10px;
 		margin-left: 10px;
 		float: left;
+		height: 225px;
 	}
 	.people .head{
 		width:100%;
@@ -124,7 +125,13 @@ body{
 .left-second{
 	width: 870px;
 }
+.left-third{
+	height: 225px;
+}
 .right{
 	float: right;
 	width: 330px;
+}
+.role{
+
 }

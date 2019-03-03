@@ -70,13 +70,13 @@ class RankingView(View):
         base['type'] = 'top250' if not _type else _type
         # 有了类别就好这个电影集就好找电影的阵容了
         base['person'] = []
-        for m in movie:
-            base['person'].extend(MPR.objects.filter(movie_id=m.movie_id))
-        base['pages'] = pages
         # 返回对应页数的内容
         if start or start == 0:
             if start % num == 0 or start == 0:
                 movies = movie[start:start+10]
+                for m in movies:
+                    base['person'].extend(MPR.objects.filter(movie_id=m.movie_id))
+                base['pages'] = pages
                 base['movies'] = movies
                 # 根据类别返回内容
                 return render(request, 'ranking.html', base)

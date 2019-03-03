@@ -1,7 +1,7 @@
-from django.core.mail import send_mail,send_mass_mail
-from douban_movie import settings
+from django.core.mail import send_mail
+from wuyanweb import settings
 import random
-import string
+
 
 def random_str():
     seed = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -11,7 +11,8 @@ def random_str():
     salt = ''.join(sa)
     return salt
 
-#注册账号验证
+
+# 注册账号验证
 def send_A_email(req,name):
     title = '云顶电影注册'
     reciever = []
@@ -21,7 +22,8 @@ def send_A_email(req,name):
     res = send_mail(title, msg,settings.EMAIL_HOST_USER, reciever)
     return res,random
 
-#改密验证
+
+# 改密验证
 def send_B_email(req,name):
     title = '云顶电影密码找回'
     reciever = []

@@ -1,5 +1,78 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie/reset.css' %}">
+{% endblock %}
 {% block title %}{{ movie.name }}{% endblock %}
 {% block main_body %}
+    <div class="main">
+		<div class="main-box">
+			<div class="movie" style="width: 100%;background-image: url('{% static movie.poster %}');">
+				<div class="movie-position">
+					<img class="movie-picture" src="{% static movie.poster %}" alt="">
+				</div>
+				<div class="movie-overview">
+					<p class="movie-name">{{ movie.name }}</p>
+				</div>
+			</div>
+			<div class="movie-details">
+				<div class="synopsis">
+					<i class="synopsos-first">剧情简介· · · · · ·</i>
+					<p class="synopsos-second">{{ movie.details }}</p>
+				</div>
+				<div class="performer">
+					<i class="performer-first">演职人员· · · · · ·
+                    <a style="cursor: pointer" href="\movie\cast\?id={{ movie.id }}">全部{{ person_count }}人</a></i>
+                        <div class="performer-second">
+                        {% for person in cast %}
+
+                                <div class="people">
+                                    <div class="head">
+                                        <img src="{% static person.person.poster %}" style="width: 104px;height: 148px" alt="">
+                                    </div>
+                                    <p>{{ person.person.name }}</p>
+                                    {% if person.part %}
+                                        <p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">({{ person.part }}</p>
+                                    {% endif %}
+                                </div>
+
+                        {% endfor %}
+                        </div>
+				</div>
+				<div class="stills">
+					<i class="stills-first">剧照· · · · · ·
+                    <a href="#">全部{{ image_count }}张</a></i>
+					<div style="padding-top: 10px;padding-left: 10px" class="stills-second">
+                        {% for photo in image %}
+                            <img style="padding-right: 10px;" class="stills-photo" src="{% static photo %}" alt="">
+                        {% endfor %}
+					</div>
+				</div>
+				<div class="review">
+                    <i class="review-first">影评· · · · · ·<a href="#">
+                        共{{ comment_count }}条
+                    </a></i>
+					<p class="score">评分 :</p>
+					<div class="review-second">
+                        <a class="else" href="#">热门</a>
+						<a class="else" href="#">最新</a>
+						<a class="else" href="#">楼层</a>
+
+                        <form method="post" action="" name="comment">
+                            {% csrf_token %}
+                            <div class="input">
+                                <input type="text" style="height: 88px;width: 810px" placeholder="请输入您的评论" value="">
+
+                            </div>
+{#                            <textarea onsubmit="alert('Success')"></textarea>#}
+                            <button class="submit">提交</button>
+                        </form>
+						<div class="member">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -4,10 +4,10 @@ from django.core.mail import send_mail,send_mass_mail
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.views import View
-from user import email as email_sent
-from user.models import User,Registing_User,Resetting_User
+from . import email as email_sent
+from .models import User,Registing_User,Resetting_User
 from django.contrib.auth.hashers import make_password,check_password
-from user.form import UserForm
+from .form import UserForm
 import json
 # Create your views here.
 
@@ -25,16 +25,19 @@ def refresh_captcha(request):
     return HttpResponse(json.dumps(captcha()), content_type='application/json')
 
 #登录
-def login(request):
-    if request.session.get('is_login',None):
-        request.session.flush()
-        return redirect('/index')
+class LoginView(View):
 
-    hashkey = CaptchaStore.generate_key()
-    image_url = captcha_image_url(hashkey)
-    user_form = UserForm()
+    def get(self, request):
+        if request.session.get('is_login', None):
+            request.session.flush()
+            return redirect('/index')
 
-    if request.method == 'POST':
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+        user_form = UserForm()
+        return render(request, 'login.html', {'user_form': user_form})
+
+    def post(self, request):
         user_form = UserForm(request.POST)
         if user_form.is_valid():
             username = user_form.cleaned_data['userName']
@@ -51,10 +54,7 @@ def login(request):
                     message = '密码不正确！'
             except:
                 message = '用户不存在！'
-        return render(request,'login.html',locals())
-
-    return render(request,'login.html',locals())
-
+        return render(request, 'login.html', locals())
 
 
 #注册

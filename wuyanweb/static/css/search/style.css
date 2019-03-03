@@ -42,14 +42,14 @@ body{
 	    width: 265px;
 	    margin: 30px auto;
 	    font-family: 'Microsoft YaHei';
-	   border: 1px solid gray;
+	   	border: 1px solid gray;
 	    font-size: 14px;
 	    background-color: black;
 	    float: right;
 	}
 	.title-input{
 	    width: 200px;
-	   
+
 	    border: none;
 	    height: 32px;
 	    float: left;
@@ -90,23 +90,20 @@ body{
 	margin:0 auto;
 	width: 1200px;
 }
-	.center-word{
-		font-size: 12px;
-		color: gray;
-		padding-left: 400px;
-	}
-	.ranking{
+	.result{
 		margin: 0 auto;
 		width: 1200px;
-	    display: grid;
-	    grid-template-columns: 880px 280px;
-	    grid-template-rows: 240px 376px 376px 376px; 
+		display: grid;
+		grid-template-columns: 600px 600px;
 	}
-	.item1 {
-	    grid-row-start: 1;
-	    grid-row-end: 5;
+	/*.center-result-left{
+		grid-column-start: 1;
+		grid-column-end: 2;
 	}
-		.right-img{
+	.center-result-right{
+		
+	}*/
+.right-img{
 			width: 152px;
 			height: 210px;
 			float: left;
@@ -115,11 +112,15 @@ body{
 		.rank-name{
 			float: left;
 			height: 210px;
-			width: 550px;
+			width: 400px;
 		}
 			.movie_name{
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 				padding-top: 0px;
 				font-size: 20px;
+				width: 250px;
 			}
 			.person{
 				padding-top: 14px;
@@ -146,23 +147,3 @@ body{
 				color: #999999;
 				margin-top: 5px;
 			}
-	.item2-h{
-		font-size: 14px;
-		border-left:4px solid red;
-		padding-left: 20px;
-	}
-		.classify{
-			width: 70px;
-			float: left;
-		}
-	.item3-rank{
-		font-size: 12px;
-		margin: 18px 0px;
-	}
-	.item3-rank-numb{
-		padding-right: 10px;
-	}
-	.paginator{
-		margin:0 auto;
-		width: 400px;
-	}

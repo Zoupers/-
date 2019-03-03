@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>登录</title>
 	{% load staticfiles %}
-	<link rel="stylesheet" type="text/css" href="{% static 'css/user/style.css' %}" >
+	<link rel="stylesheet" type="text/css" href="{% static 'css/user/style.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/user/reset.css' %}">
     <style type="text/css">
     #canvas{
@@ -15,7 +15,7 @@
 <body>
 	<header class="header">
 		<div class="title">	
-			<img src="{% static 'img/logo.jpg' %}" class="title-logo-img">
+			<img src="{% static 'source/logo.jpg' %}" class="title-logo-img">
 			<div class="title-logo">
 				<span class="title-logo-name">云顶电影榜</span>
 			</div>
@@ -24,7 +24,7 @@
 			</div>
 			<div class="box">
        			<input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
-       			<div class="search"><img src="{% static 'img/research.jpg' %}" alt="" class="box-img"></div>
+       			<div class="search"><img src="{% static 'source/research.png' %}" alt="" class="box-img"></div>
    			</div>
    			<div class="title-choose">
    				<ul class="title-choose-ul">
@@ -54,8 +54,8 @@
                 <tr>
                 <td class="graph-verification">
 					<input type="text" name='captcha' class="form-control" placeholder="输入验证码" required style="width: 55%;display: inline-block;margin-right: 8%;">
-					<a href="refresh_captcha" class="captcha"><img src="{{captcha.image_url}}" alt="点击换一张" id="id_captcha"></a>
-					<input value="{{captcha.hashkey}}" name="hashkey" type="hidden" id="id_captcha_0">
+					<a href="{% url 'apps.user:refresh_captcha' %}" class="captcha"><img src="{{ captcha.image_url }}" alt="点击换一张" id="id_captcha"></a>
+					<input value="{{ captcha.hashkey }}" name="hashkey" type="hidden" id="id_captcha_0">
 				</td>
             </tr>
 	         </tr>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie/reset.css' %}">
+{% endblock %}
+{% block title %}{{ actor.name }}{% endblock %}
+{% block main_body %}
+    <div class="main">
+		<div class="main-box">
+			<div class="movie" style="width: 100%;background-image: url('{% static movie.poster %}');">
+				<div class="movie-position">
+					<img class="movie-picture" src="{% static actor.poster %}" alt="">
+				</div>
+				<div class="movie-overview">
+					<p class="movie-name">{{ actor.name }}</p>
+				</div>
+			</div>
+			<div class="movie-details">
+				<div class="synopsis">
+					<i class="synopsos-first">个人简介· · · · · ·</i>
+					<p class="synopsos-second">{{ actor.introduce }}</p>
+				</div>
+				<div class="stills">
+					<i class="stills-first">照片· · · · · ·
+                    <a href="#">全部{{ image_count }}张</a></i>
+					<div style="padding-top: 10px;padding-left: 10px" class="stills-second">
+                        {% for photo in image %}
+                            <img style="padding-right: 10px;" class="stills-photo" src="{% static photo %}" alt="">
+                        {% endfor %}
+					</div>
+				</div>
+            </div>
+		</div>
+	</div>
+{% endblock %}

@@ -23,15 +23,16 @@
             </div>
             {% endblock %}
 			<div class="box">
-                <form name="" action="">
-                    <input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
-                    <input type="submit" class="search" style="background: url('{% static 'source/research.png' %}') no-repeat center center;" value=".">
+                <form name="search" method="post" autocomplete="off" action="{% url 'search' %}">
+                    {% csrf_token %}
+                    <input type="text" name="msg" placeholder="请输入想搜索的电影..." class="title-input">
+                    <input formmethod="post" type="submit" class="search" style="background: url('{% static 'source/research.png' %}') no-repeat center center;" value=".">
                 </form>
    			</div>
    			<div class="title-choose">
    				<ul class="title-choose-ul">
-                    <li class="title-choose-li"><a href="{% url 'apps.ranking:ranking' %}" {% if type %}style="color: white"{% endif %}>分类排行榜</a></li>
-   					<li class="title-choose-li"><a href="{% url 'apps.ranking:top250' %}" {% if top250 %}style="color: white"{% endif %}>TOP250榜</a></li>
+                    <li class="title-choose-li"><a href="{% url 'apps.ranking:ranking' %}" {% if type %}{% ifnotequal type 'top250' %}style="color: white"{% endifnotequal %}{% endif %}>分类排行榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:top250' %}" {% ifequal type 'top250' %}style="color: white"{% endifequal %}>TOP250榜</a></li>
    					<li class="title-choose-li"><a href="{% url 'apps.ranking:box_office' %}" {% if boxoffice %}style="color: white"{% endif %}>国内票房榜</a></li>
    					<li class="title-choose-li"><a href="{% url 'apps.ranking:chart' %}" {% if chart %}style="color: white"{% endif %}>热议新片榜</a></li>
    					<li class="title-choose-li"><a href="{% url 'apps.ranking:now_playing' %}" {% if nowplaying %}style="color: white"{% endif %}>热映高分榜</a></li>
