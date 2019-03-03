@@ -2,13 +2,14 @@ from django.shortcuts import render
 from .models import MovieComments, UserFavorite
 from django.http import HttpResponse
 from django.views.generic.base import View
+from movie.models import Movie
 # Create your views here.
 
 
 class CommentsView(View):
     # 评论页面
     # 这里需要一个包含Movie基础信息的
-    @staticmethod
+
     def get(self, request, movie_id):
         movie = Movie.objects.get(id=int(movie_id))
         all_comments = MovieComments.objects.all()
@@ -20,7 +21,7 @@ class CommentsView(View):
 
 class AddCommentsView(View):
     # 添加评论后的页面
-    @staticmethod
+
     def post(self, request):
         if not request.user.is_authenticated():
             # 判断用户登录状态
