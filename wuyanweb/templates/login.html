@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>登录</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/user/style.css' %}" >
+	<link rel="stylesheet" type="text/css" href="{% static 'css/user/reset.css' %}">
+    <style type="text/css">
+    #canvas{
+        cursor:pointer;
+    }
+	</style>
+</head>
+<body>
+	<header class="header">
+		<div class="title">	
+			<img src="{% static 'img/logo.jpg' %}" class="title-logo-img">
+			<div class="title-logo">
+				<span class="title-logo-name">云顶电影榜</span>
+			</div>
+			<div class="title-right">
+				<a href="#" class="title-login title-a">登录|</a><a href="#" class="title-register title-a">注册</a>
+			</div>
+			<div class="box">
+       			<input type="text" name="search" placeholder="请输入想搜索的电影..." class="title-input">
+       			<div class="search"><img src="{% static 'img/research.jpg' %}" alt="" class="box-img"></div>
+   			</div>
+   			<div class="title-choose">
+   				<ul class="title-choose-ul">
+   					<li class="title-choose-li"><a href="" style="color: gray">TOP100榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: gray">国内票房榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: gray">热议新片榜</a></li>
+   					<li class="title-choose-li"><a href="" style="color: white">热映高分榜</a></li>  					
+   				</ul>
+   			</div>
+		</div>
+	</header>
+	<div class="login-all">
+	  <form action="" name="" method="post">
+	     <table class="login">
+		     <tr>
+		        <td class="first">账号登录</td>
+		     </tr>
+	         <tr>
+	            <td class="tele">
+					<input type="text" name="userName" placeholder="请输入手机号" maxlength="11" style="border:0px;outline:none;cursor: pointer;">
+				</td>
+	         </tr>
+	         <tr>
+	            <td class="password">
+					<input type="password" name="userPassword" placeholder="请输入密码" style="border:0px;outline:none;cursor: pointer;">
+				</td>
+                <tr>
+                <td class="graph-verification">
+					<input type="text" name='captcha' class="form-control" placeholder="输入验证码" required style="width: 55%;display: inline-block;margin-right: 8%;">
+					<a href="refresh_captcha" class="captcha">
+						{% user_form.captcha %}
+						<img src="{{ captcha.image_url }}" alt="点击换一张" id="id_captcha"></a>
+					<input value="{{ captcha.hashkey }}" name="hashkey" type="hidden" id="id_captcha_0">
+				</td>
+            </tr>
+	         </tr>
+	         <tr>
+	            <td class="else" colspan="2">
+					<a class="verification change" id="verification" href="#">验证码登录</a>
+		            <a class="forget change" id="forget" href="/reset/">忘记密码</a>
+				</td>
+	         </tr>
+			<tr>
+				<td>
+					<button class="login-button">登录</button>
+				</td>				
+			</tr>
+			<tr>
+				<td class="foot">
+					<i class="absence">没有账号去<a class="register" href="/register/">注册</a></i>
+				</td>				
+			</tr>
+	      </table>
+	   </form>
+        {{ message }}
+	</div>
+<script>
+    $(document).ready(function(){
+        $('.captcha').click(function () {
+            $.getJSON("/ims/refresh_captcha/", function (result) {
+                $('#id_captcha').attr('src', result['image_url']);
+                $('#id_captcha_0').val(result['hashkey'])
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>

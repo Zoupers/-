@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'apps.movie',
     'apps.person',
     'apps.ranking',
-    'apps.user'
+    'apps.user',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,21 @@ STATICFILES_DIRS = [
     ('js', os.path.join(BASE_DIR, 'static/js').replace('\\', '/')),
     ('source', os.path.join(BASE_DIR, 'static/source').replace('\\', '/')),
 ]
+
+
+#邮件配置
+EMAIL_USE_SSL = True
+
+EMAIL_HOST = 'smtp.qq.com'
+
+EMAIL_PORT = 465
+
+EMAIL_HOST_USER = '1018471226@qq.com'
+
+EMAIL_HOST_PASSWORD = 'wwrnujnatjpobffh'
+
+#验证码配置
+CAPTCHA_OUTPUT_FORMAT = '%(image)s %(text_field)s %(hidden_field)s '
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_null',)
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+CAPTCHA_TIMEOUT = 1
