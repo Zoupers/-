@@ -54,8 +54,10 @@
                 <tr>
                 <td class="graph-verification">
 					<input type="text" name='captcha' class="form-control" placeholder="输入验证码" required style="width: 55%;display: inline-block;margin-right: 8%;">
-					<a href="refresh_captcha" class="captcha"><img src="{{captcha.image_url}}" alt="点击换一张" id="id_captcha"></a>
-					<input value="{{captcha.hashkey}}" name="hashkey" type="hidden" id="id_captcha_0">
+					<a href="refresh_captcha" class="captcha">
+						{% user_form.captcha %}
+						<img src="{{ captcha.image_url }}" alt="点击换一张" id="id_captcha"></a>
+					<input value="{{ captcha.hashkey }}" name="hashkey" type="hidden" id="id_captcha_0">
 				</td>
             </tr>
 	         </tr>

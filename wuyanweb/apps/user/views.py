@@ -4,10 +4,10 @@ from django.core.mail import send_mail,send_mass_mail
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.views import View
-from user import email as email_sent
-from user.models import User,Registing_User,Resetting_User
+from . import email as email_sent
+from .models import User,Registing_User,Resetting_User
 from django.contrib.auth.hashers import make_password,check_password
-from user.form import UserForm
+from .form import UserForm
 import json
 # Create your views here.
 
@@ -34,6 +34,9 @@ def login(request):
     image_url = captcha_image_url(hashkey)
     user_form = UserForm()
 
+    if request.method == 'GET':
+        return render(request, 'login.html', {'user_from': user_form})
+
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         if user_form.is_valid():
@@ -52,8 +55,6 @@ def login(request):
             except:
                 message = '用户不存在！'
         return render(request,'login.html',locals())
-
-    return render(request,'login.html',locals())
 
 
 
