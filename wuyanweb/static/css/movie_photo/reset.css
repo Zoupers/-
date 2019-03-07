@@ -5,4 +5,5 @@ body,input,box-img{
 }
 a{
 	text-decoration: none;
+	color: gray;
 }

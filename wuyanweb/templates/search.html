@@ -12,29 +12,22 @@
 		<div class="center">
 			<div class="result">
 				<div class="center-result-left">
-                    {% for movie in result_left %}
-                    <div style="height: 280px;width: 100%;">
+                    {% for item in result_left %}
+                        {% if item.rank %}
+                            <div style="height: 280px;width: 100%;">
                         <div>
-						<div ><img class="right-img" src="{% static movie.poster %}" alt=""></div>
+						<div ><img class="right-img" src="{% static item.poster %}" alt=""></div>
                             <div class="rank-name">
                                 <div style="float: left;">
                                     <h1 class="movie_name">
-                                        <a style="color: #3c3c3c" href="/movie/?id={{ movie.id }}">{{ movie.name }}</a>
+                                        <a style="color: #3c3c3c" href="/movie/?id={{ item.id }}">{{ item.name }}</a>
                                     </h1>
-                                <p class="publishDate" style="font-size: 10px">上映日期: {{ movie.year }}</p>
+                                <p class="publishDate" style="font-size: 10px">上映日期: {{ item.year }}</p>
                                 <p style="font-size: 15px;">导演：
-{#                                {% for p in person %}#}
-{#                                    {% ifequal p.movie_id movie.movie_id %}#}
-{#                                        {% ifequal p.type '1' %}#}
-{#                                            {{ p.person.name.split|first }}#}
-{#                                        {% endifequal %}#}
-{#                                    {% endifequal %}#}
-{#                                {% endfor %}#}
-
                                 </p>
                                 <p style="font-size: 15px;">编剧：
                                 {% for p in person %}
-                                    {% ifequal p.movie_id movie.movie_id %}
+                                    {% ifequal p.movie_id item.movie_id %}
                                         {% ifequal p.type '2' %}
                                             {{ p.person.name.split|first }}
                                         {% endifequal %}
@@ -42,46 +35,70 @@
                                 {% endfor %}
                                 </p>
                                 <p style="font-size: 12px">
-                                    片长：{{ movie.long }}
+                                    片长：{{ item.long }}
                                 </p>
-                                {% if movie.review %}
-                                <p class="review">{{ movie.review }}</p>
+                                {% if item.review %}
+                                <p class="review">{{ item.review }}</p>
                                 {% endif %}
                                 </div>
 
 
                                 <div class="rank-grand">
-                                    <h1 class="rank">{{ movie.rank }}</h1>
-                                    <p class="star_num">{{ movie.star_num }}人评分</p>
+                                    <h1 class="rank">{{ item.rank }}</h1>
+                                    <p class="star_num">{{ item.star_num }}人评分</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
-				</div>
-				<div class="center-result-right">
-                    {% for movie in result_right %}
-                    <div style="height: 280px;width: 100%;">
+                            {% elif item.sex %}
+                            <div style="height: 280px;width: 100%;">
                         <div>
-						<div ><img class="right-img" src="{% static movie.poster %}" alt=""></div>
+						<div ><img class="right-img" src="{% static item.poster %}" alt=""></div>
                             <div class="rank-name">
                                 <div style="float: left;">
                                     <h1 class="movie_name">
-                                        <a style="color: #3c3c3c" href="/movie/?id={{ movie.id }}">{{ movie.name }}</a>
+                                        <a style="color: #3c3c3c" href="/person/?id={{ item.id }}">{{ item.name }}</a>
                                     </h1>
-                                <p class="publishDate" style="font-size: 10px">上映日期: {{ movie.year }}</p>
+                                {% if item.sex %}
+                                <p style="font-size: 15px;">性别：{{ item.sex }}
+                                </p>
+                                {% endif %}
+                                {% if item.birthday %}
+                                <p style="font-size: 15px;">生卒日期：{{ item.birthday }}
+                                </p>
+                                {% endif %}
+
+                                {% if item.age %}
+                                    <p style="font-size: 12px">
+                                        年龄：{{ item.age }}
+                                    </p>
+                                {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        {% endif %}
+
+                    {% endfor %}
+				</div>
+				<div class="center-result-right">
+                    {% for item in result_right %}
+                        {% if item.rank %}
+                        <div style="height: 280px;width: 100%;">
+                        <div>
+						    <div ><img class="right-img" src="{% static item.poster %}" alt=""></div>
+                            <div class="rank-name">
+                                <div style="float: left;">
+                                    <h1 class="movie_name">
+                                        <a style="color: #3c3c3c" href="/movie/?id={{ item.id }}">{{ item.name }}</a>
+                                    </h1>
+                                <p class="publishDate" style="font-size: 10px">上映日期: {{ item.year }}</p>
                                 <p style="font-size: 15px;">导演：
-{#                                {% for p in person %}#}
-{#                                    {% ifequal p.movie_id movie.movie_id %}#}
-{#                                        {% ifequal p.type '1' %}#}
-{#                                            {{ p.person.name.split|first }}#}
-{#                                        {% endifequal %}#}
-{#                                    {% endifequal %}#}
-{#                                {% endfor %}#}
                                 </p>
                                 <p style="font-size: 15px;">编剧：
                                 {% for p in person %}
-                                    {% ifequal p.movie_id movie.movie_id %}
+                                    {% ifequal p.movie_id item.movie_id %}
                                         {% ifequal p.type '2' %}
                                             {{ p.person.name.split|first }}
                                         {% endifequal %}
@@ -89,17 +106,45 @@
                                 {% endfor %}
                                 </p>
                                 <p style="font-size: 12px">
-                                    片长：{{ movie.long }}
+                                    片长：{{ item.long }}
                                 </p>
-                                {% if movie.review %}
-                                <p class="review">{{ movie.review }}</p>
+                                {% if item.review %}
+                                <p class="review">{{ item.review }}</p>
                                 {% endif %}
                                 </div>
 
 
                                 <div class="rank-grand">
-                                    <h1 class="rank">{{ movie.rank }}</h1>
-                                    <p class="star_num">{{ movie.star_num }}人评分</p>
+                                    <h1 class="rank">{{ item.rank }}</h1>
+                                    <p class="star_num">{{ item.star_num }}人评分</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        {% endif %}
+                        <div style="height: 280px;width: 100%;">
+                        <div>
+						<div ><img class="right-img" src="{% static item.poster %}" alt=""></div>
+                            <div class="rank-name">
+                                <div style="float: left;">
+                                    <h1 class="movie_name">
+                                        <a style="color: #3c3c3c" href="/person/?id={{ item.id }}">{{ item.name }}</a>
+                                    </h1>
+                                {% if item.sex %}
+                                <p style="font-size: 15px;">
+                                    性别：{{ item.sex }}
+                                </p>
+                                {% endif %}
+                                {% if item.birthday %}
+                                <p style="font-size: 15px;">
+                                    生卒日期：{{ item.birthday }}
+                                </p>
+                                {% endif %}
+                                {% if item.age %}
+                                <p style="font-size: 12px">
+                                    年龄：{{ item.age }}
+                                </p>
+                                {% endif %}
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 from django.db import models
 from apps.person.models import Person
+from apps.user.models import User
 # Create your models here.
 
 
@@ -41,4 +42,25 @@ class MPR(models.Model):
     class Meta(object):
         verbose_name = '电影演员关系'
         verbose_name_plural = verbose_name
+
+
+class Comment(models.Model):
+    """
+    设置comment表
+    """
+    movie = models.ForeignKey(Movie, on_delete=models.DO_NOTHING, verbose_name='电影')
+    user = models.ForeignKey(User, verbose_name='用户', on_delete=models.DO_NOTHING)
+    user_name = models.CharField(max_length=30, verbose_name='用户名')
+    rank = models.IntegerField(verbose_name='评分', null=True, blank=True)
+    comment = models.TextField(verbose_name='评论')
+    comment_time = models.DateTimeField(auto_created=True, auto_now_add=True)
+    image = models.CharField(max_length=30, null=True, blank=True, verbose_name='用户头像')
+
+    class Meta(object):
+        verbose_name = '用户评论'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.comment[:15]
+
 

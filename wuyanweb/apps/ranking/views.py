@@ -5,7 +5,7 @@ from apps.movie.models import MPR
 # Create your views here.
 
 
-classify = list(set([i.type for i in RMR.objects.all() if i.type != 'top250']))
+classify = list(set([i.type for i in RMR.objects.all() if i.type not in ['top250', '新片榜', '热映榜']]))
 
 
 def page(film, num, start, _type=None):
@@ -51,6 +51,8 @@ class RankingView(View):
         base = dict()
         # 分类排行榜种类
         base['classify'] = classify
+        base['chart_'] = RMR.objects.filter(type='新片榜').order_by('rank')
+        base['nowplaying_'] = RMR.objects.filter(type='热映榜').order_by('rank')
         # 加载类别
         all_type = set()
         for movie_ in movie:
@@ -81,7 +83,7 @@ class RankingView(View):
                 # 根据类别返回内容
                 return render(request, 'ranking.html', base)
             else:
-                return Http404()
+                raise Http404
         # movies = movie[:10]
         # return render(request, 'ranking.html', {'movies': movies, 'top250': True})
 
@@ -90,8 +92,12 @@ class BoxOfficeView(View):
     """
     国内票房榜
     """
-
     def get(self, request):
+        base = dict()
+        base['boxoffice'] = True
+        base['classify'] = classify
+        base['nowplaying_'] = RMR.objects.filter(type='热映榜').order_by('rank')
+        base['chart_'] = RMR.objects.filter(type='新片榜').order_by('rank')
         return render(request, 'box_office.html', {'boxoffice': True})
 
 
@@ -100,7 +106,19 @@ class ChartView(View):
     热议新片榜
     """
     def get(self, request):
-        return render(request, 'chart.html', {'chart': True})
+        base = dict()
+        # 提示哪个排行榜
+        base['chart'] = True
+        base['classify'] = classify
+        base['nowplaying_'] = RMR.objects.filter(type='热映榜').order_by('rank')
+        # 获取电影
+        movies = RMR.objects.filter(type='新片榜').order_by('rank')
+        base['movies'] = movies
+        # 加载人物
+        base['person'] = []
+        for movie in movies:
+            base['person'].extend(MPR.objects.filter(movie_id=movie.movie_id))
+        return render(request, 'chart.html', base)
 
 
 class NowPlayingView(View):
@@ -108,4 +126,16 @@ class NowPlayingView(View):
     热映高分榜
     """
     def get(self, request):
-        return render(request, 'nowplaying.html', {'nowplaying': True})
+        base = dict()
+        # 提示哪个排行榜
+        base['nowplaying'] = True
+        base['classify'] = classify
+        base['chart_'] = RMR.objects.filter(type='新片榜').order_by('rank')
+        # 获取电影
+        movies = RMR.objects.filter(type='热映榜')
+        base['movies'] = movies
+        # 加载人物
+        base['person'] = []
+        for movie in movies:
+            base['person'].extend(MPR.objects.filter(movie_id=movie.movie_id))
+        return render(request, 'nowplaying.html', base)

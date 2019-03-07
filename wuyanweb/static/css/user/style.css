@@ -1,164 +1,66 @@
-body{
-	background-color: #f6f6f6;
-}
-.header{
-	height:88px;
-	background-color: black;
-}
-.title{
-	height: 88px;
-	width: 1200px;
-	margin: 0 auto;
-}
-.title-logo{
-	height: 88px;
-	width: 138px;
-	padding-top: 26px;
-	line-height: 36px;
-	float: left;
-}
-.title-logo-img{
-	width: 88px;
-	height: 56px;
-	padding-top: 16px;
-	float: left;
-}
-.title-logo-name{
-	font-size: 20px;
-	color: #fff;
-	font-family: Segoe UI;
-}
-.title-right{
-	float: right;
-	line-height: 88px;
-	width: 68px;
-	margin-left: 50px;
-}
-.title-a{
-	color: gray;
-	font-size: 14px;
-}
-.box{
-    width: 265px;
-    margin: 30px auto;
-    font-family: 'Microsoft YaHei';
-   border: 1px solid gray;
-    font-size: 14px;
-    background-color: black;
-    float: right;
-}
-.title-input{
-    width: 200px;
-   
-    border: none;
-    height: 32px;
-    float: left;
-    background-color: black;
-    padding:0 0 0 10px;
-    outline:medium;
-    color: #fff;
-}
-.search{
-    width: 50px;
-    height: 32px;
-    float: right;
-    background: black;
 
+.center{
+	width: 1200px;
+	margin:0 auto;
+	height: 900px;
 }
-.box-img{
-	padding-top: 6px;
-	height: 20px;
-	width: 30px;
-	cursor: pointer;
-	border-left: none;
+.left{
+	width: 260px;
+	height: 440px;
+	background-color: #fff;
+	margin-top: 20px;
+	margin-left: 20px;
+	
 }
-.title-choose{
-	float: right;
-	line-height: 58px;
-	margin-right: 50px;
+.personal-data{
+	border-left:  red solid 3px;
+	padding-left: 10px;
+	font-size: 12px;
+	float: left;
 }
-.title-choose-ul{
-	list-style: none;
-}
-.title-choose-li{
-	font-size: 14px;
-	color: gray;
-	float: right;
-	padding: 0 15px;
-}
-.login-all{
-	height: 300px;
-	width: 400px;
+.avatar{
+	height: 96px;
+	width: 96px;
+	padding-top: 80px;
+	padding-bottom: 40px;
 	margin: 0 auto;
-	background-color: white;
-	margin-top: 160px;
 }
-.login{
-	border: none;
+.name{
 	text-align: center;
-	width: 370px;
+	font-size: 14px;
+}
+.personal-information{
+	margin-top: 100px;
+	margin-left: 10px;
+	font-size: 12px;
+}
+.right{
+
+	width: 900px;
+	height: 847px;
+	background-color: #fff;
+	margin-left: 300px;
+	margin-top: -440px;
+	
+}
+.right-personal{
+	padding-top: 6px;
+}
+.right-personal-data{
+
+	font-size: 12px;
+	
+	border-left: red 3px solid;
 	padding-left: 30px;
 }
-.first{
-	color: #999999;
-	border: none;
-	font-size:16px;
-	font-family: "Arial";
+.comment{
+	width: 820px;
+	margin: 0 auto;
+	height: 100px;
+}
+.view-more{
 	text-align: center;
-}
-.tele{
-	padding-top: 15px;
-	text-align: center;
-	border: none;
-	border-bottom: 1.5px solid #FEF3F3;
-}
-.password{
-	padding-top: 30px;
-	text-align: center;
-	border: none;
-	border-bottom: 1.5px solid #FEF3F3;
-}
-.else{
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-.change{  
-	font-family:"Arial";
-	font-size:12px;
-	margin:3px;
-	color:#999999;
-}
-.change:hover{
-	color:#999999;
-	opacity: 0.6;
-}
-.login-button { 
-	width: 340px;
-	height: 30px;
-	border-width: 0px;
-	background: #E86263; 
-	cursor: pointer; 
-	outline: none; 
-	font-family:"Arial";
-	color: white;
-	font-size: 14px; 
-}
-.login-button:hover { 
-	background: #E86263; 
-	opacity: 0.5;
-}
-.foot{
-	padding-top: 15px;
-}
-.absence{
-	font-style:normal;
-	font-size:12px;
-	color: #999999;
-}
-.register{
-	color: #E86263; 
-}
-.change.register:hover{
-	color: #E86263; 
-	opacity: 0.5;
+	font-size: 12px;
+	color: gray;
+	margin-top: 150px;
 }

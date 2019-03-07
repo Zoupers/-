@@ -29,11 +29,13 @@
 					{% for foo in mpr %}
                         {% ifequal foo.type '3' %}
                             <div class="people">
-                            <div class="head">
+                            <a style="color: black" href="/person/?id={{ foo.person.id }}">
+                                <div class="head">
                                 <img src="{% static foo.person.poster %}" style="width: 104px;height: 148px" alt="">
-                            </div>
-                            <p>{{ foo.person.name }}</p>
-                            <p>({{ foo.part }}</p>
+                                </div>
+                                <p>{{ foo.person.name }}</p>
+                                <p>({{ foo.part }}</p>
+                            </a>
                             </div>
                         {% endifequal %}
                     {% endfor %}

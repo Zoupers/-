@@ -1,10 +1,58 @@
-{% extends 'base.html' %}
+{% extends 'ranking_base.html' %}
 {% load staticfiles %}
-{% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/reset.css' %}">
-{% endblock %}
 {% block title %}热议新片榜{% endblock %}
-{% block main_body %}
+{% block movies %}
+    {% for movie in movies %}
+                <div style=" width: 850px;height: 210px; margin:30px 0px;">
+						<div ><img class="right-img" src="{% static movie.movie.poster %}" alt=""></div>
+						<div class="rank-name">
+                            <div style="float: left;">
+                                <h1 class="movie_name">
+                                    <span>{{ movie.rank }}.</span>
+                                    <a style="color: #3c3c3c" href="/movie/?id={{ movie.movie_id }}">{{ movie.movie.name }}</a>
+                                </h1>
+                            {% if movie.movie.year %}
+                                <p class="publishDate" style="font-size: 10px">上映日期: {{ movie.movie.year }}</p>
+                            {% endif %}
+                            {% if person %}
+                            <p style="font-size: 15px;width: 380px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">导演：
+                            {% for p in person %}
+                                {% ifequal p.movie_id movie.movie_id %}
+                                    {% ifequal p.type '1' %}
+                                        {{ p.person.name.split|first }}
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endfor %}
+                            </p>
+                            <p style="width: 380px;font-size: 15px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">编剧：
+                            {% for p in person %}
+                                {% ifequal p.movie_id movie.movie_id %}
+                                    {% ifequal p.type '2' %}
+                                        {{ p.person.name.split|first }}
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endfor %}
+                            </p>
+                            {% endif %}
+                            {% if movie.movie.long %}
+                                <p style="width: 380px;font-size: 15px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                    片长：{{ movie.movie.long }}
+                                </p>
+                            {% endif %}
+                            {% if movie.movie.review %}
+                            <p class="review">{{ movie.movie.review }}</p>
+                            {% endif %}
+                            </div>
+
+
+						<div class="rank-grand">
+							<h1 class="rank">{{ movie.movie.rank }}</h1>
+{#							<p style="width: 450px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="review">{{ movie.movie.review }}</p>#}
+						</div>
+					</div>
+                </div>
+    {% endfor %}
+{% endblock %}
+{% block chart %}
 {% endblock %}
 

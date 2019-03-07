@@ -20,6 +20,7 @@ import apps.person.urls as person_urls
 import apps.ranking.urls as ranking_urls
 import apps.user.urls as user_urls
 from apps.research.views import ResearchView
+import captcha.urls
 import xadmin
 
 urlpatterns = [
@@ -28,5 +29,6 @@ urlpatterns = [
     path('person/', include((person_urls, 'apps.person'), namespace='person')),
     path('ranking/', include((ranking_urls, 'apps.ranking'), namespace='ranking')),
     path('user/', include((user_urls, 'apps.user'), namespace='user')),
-    path('search/', ResearchView.as_view(), name='search')
+    path('search/', ResearchView.as_view(), name='search'),
+    path('captcha/', include(captcha.urls))
 ]

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bas_head_style.css' %}">
     {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/reset.css' %}">
@@ -18,9 +19,21 @@
 				<span class="title-logo-name">云顶电影榜</span>
 			</div>
             {% block login %}
-            <div class="title-right">
-                <a href="#" class="title-login title-a">登录|</a><a href="#" class="title-register title-a">注册</a>
-            </div>
+                {% if request.user.is_authenticated %}
+                    <div style="z-index: 5" class="user-title-right">
+                        <div style="text-align:center;width: 50px;height: 50px;margin-left: 0px;margin-top: 0px;">
+                            <img alt="" class="user-title-right" style="margin-right: 7px;margin-top: 2px;height: 40px;width: 40px" src="{% static request.user.poster %}">
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="{% url 'apps.user:home' %}">个人中心</a>
+                            <a href="{% url 'apps.user:logout' %}">安全退出</a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="title-right">
+                    <a href="{% url 'apps.user:login' %}" class="title-login title-a">登录 |</a><a href="{% url 'apps.user:register' %}" class="title-register title-a"> 注册</a>
+                    </div>
+                {% endif %}
             {% endblock %}
 			<div class="box">
                 <form name="search" method="post" autocomplete="off" action="{% url 'search' %}">

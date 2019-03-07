@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{ user.username }}的首页{% endblock %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user/reset.css' %}">
+{% endblock %}
+{% block main_body %}
+    <section>
+		<div class="center">
+			<div class="left">
+			  <p class="personal-data">个人资料</p>
+			  <div class="avatar"></div>
+			  <p class="name">姓名: {{ user.username }}</p>
+			  <p class="personal-data">账号资料</p>
+			  <div class="personal-information">
+			  	<p>手机号: 无</p>
+                <p>邮箱: {{ user.email }}</p>
+			  </div>
+			</div>
+			<div class="right">
+				<div class="right-personal">
+				<p class="right-personal-data  ">我的点评</p>
+				</div>
+				<div class="comment"></div>
+				<div class="comment"></div>
+				<div class="comment"></div>
+				<div class="comment"></div>
+				<div class="comment"></div>
+				<div class="comment"></div>
+				<div class="view-more">
+				<a href="#" style="color: gray" >查看更多</a>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+

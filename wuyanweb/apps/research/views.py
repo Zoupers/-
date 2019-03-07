@@ -19,7 +19,7 @@ def search(msg, mode):
         result.extend(Person.objects.filter(id=msg))
     elif mode == 2:
         result.extend(Movie.objects.filter(name__icontains=msg))
-        result.extend(Movie.objects.filter(name__icontains=msg))
+        result.extend(Person.objects.filter(name__icontains=msg))
     return result
 
 

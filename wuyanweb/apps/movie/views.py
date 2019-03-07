@@ -1,13 +1,9 @@
 from django.shortcuts import render, HttpResponse, Http404
 from django.views import View
-from .models import Movie
+
+from .models import Movie, MPR, Comment
 import json
 # Create your views here.
-from .models import MPR
-
-
-def test(request):
-    return render(request, 'base.html')
 
 
 class MovieView(View):
@@ -18,11 +14,13 @@ class MovieView(View):
         cast = MPR.objects.filter(movie_id=movie_id)
         images = json.loads(movie.image)
         image = json.loads(movie.image)[:5]
+        comments = Comment.objects.filter(movie_id=movie_id).order_by('comment_time')
         return render(request, 'movie_base.html', {'movie': movie,
                                                    'cast': cast[:9],
-                                                   'image': image,
+                                                   'image': image[:4],
                                                    'person_count': len(cast),
-                                                   'image_count': len(images)})
+                                                   'image_count': len(images),
+                                                   'comments': comments[:10]})
 
 
 class CastView(View):
@@ -30,13 +28,15 @@ class CastView(View):
     def get(self, request):
         movie_id = request.GET.get('id')
         movie_cast = MPR.objects.filter(movie_id=movie_id)
+        if not movie_cast:
+            raise Http404
         num_actor = len(movie_cast.filter(type='3'))
         l = num_actor % 6
         if l == 0:
             n = int(num_actor/6)
         else:
             n = int(num_actor/6) + 1
-        height = n * 195
+        height = n * 210
         return render(request, 'movie_cast.html', {'mpr': movie_cast, 'height': height, 'movie': movie_cast[0].movie})
 
 
@@ -49,4 +49,34 @@ class PhotoView(View):
             raise Http404(request)
         movie = movie[0]
         photo = json.loads(movie.image)
-        return render(request, 'movie_photo.html', {'movie': movie, 'image': photo})
+        return render(request, 'movie_photo.html', {'movie': movie, 'image': photo, 'image_count': len(photo)})
+
+
+class CommentView(View):
+
+    def post(self, request):
+        comment = Comment()
+        comment.movie_id = request.POST.get('movie_id')
+        comment.user_id = request.POST.get('user_id')
+        comment.comment = request.POST.get('comment')
+        comment.rank = int(request.POST.get('rank'))
+        comment.user_name = request.POST.get('user_name')
+        comment.save()
+        return HttpResponse('')
+
+    def get(self, request):
+        comment_ = Comment.objects.filter(movie_id=request.GET.get('id')).order_by('comment_time')
+        # comments = request.GET.get()
+        num = int(request.GET.get('n'))
+        comments = comment_[num:num+5]
+        final = []
+        for i in comments:
+            comment = dict()
+            comment['user_name'] = i.user_name
+            comment['poster'] = '/static/'+(i.image.replace('\\', '/'))
+            comment['comment'] = i.comment
+            comment['comment_time'] = i.comment_time.ctime()
+            final.append(comment)
+        return HttpResponse(json.dumps(final, ensure_ascii=False), content_type='application/json')
+
+

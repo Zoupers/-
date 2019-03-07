@@ -7,7 +7,6 @@
 {% block title %}电影{% endblock %}
 {% block main_body %}
     <section class="ranking-all">
-
 		<div class="center">
 			<p class="center-word">每天早上8点更新数据，统计昨日国内热映电影，并取评分前10</p>
 			<div class="ranking">
@@ -17,26 +16,25 @@
 				<div  class="item2">
 					<h1 class="item2-h">分类排行榜</h1>
                     {% block type %}
-                    <div class="classify"><a href="#">剧情</a></div> <div class="classify"><a href="#">喜剧</a></div> <div class="classify"><a href="#">动作</a></div> <div class="classify"><a href="#">爱情</a></div> <div class="classify"><a href="#">科幻</a></div> <div class="classify"><a href="#">动画</a></div>
-					<div class="classify"><a href="#">悬疑</a></div> <div class="classify"><a href="#">惊悚</a></div> <div class="classify"><a href="#">恐怖</a></div> <div class="classify"><a href="#">纪录片</a></div> <div class="classify"><a href="#">短片</a></div> <div class="classify"><a href="#">情色</a></div>
-                    <div class="classify"><a href="#">同性</a></div> <div class="classify"><a href="#">音乐</a></div> <div class="classify"><a href="#">歌舞</a></div> <div class="classify"><a href="#">家庭</a></div> <div class="classify"><a href="#">儿童</a></div> <div class="classify"><a href="#">传记</a></div>
-					<div class="classify"><a href="#">传记</a></div> <div class="classify"><a href="#">战争</a></div> <div class="classify"><a href="#">犯罪</a></div> <div class="classify"><a href="#">西部</a></div> <div class="classify"><a href="#">奇幻</a></div> <div class="classify"><a href="#">冒险</a></div>
-					<div class="classify"><a href="#">灾难</a></div> <div class="classify"><a href="#">武侠</a></div> <div class="classify"><a href="#">古装</a></div> <div class="classify"><a href="#">运动</a></div> <div class="classify"><a href="#">黑色电影</a></div>
+                        {% for foo in classify %}
+                            <div class="classify"><a style="color: black;" href="{% url 'apps.ranking:ranking' %}?type={{ foo }}">{{ foo }}</a></div>
+                        {% endfor %}
+
+{#                     <div class="classify"><a href="#">喜剧</a></div> <div class="classify"><a href="#">动作</a></div> <div class="classify"><a href="#">爱情</a></div> <div class="classify"><a href="#">科幻</a></div> <div class="classify"><a href="#">动画</a></div>#}
+{#					<div class="classify"><a href="#">悬疑</a></div> <div class="classify"><a href="#">惊悚</a></div> <div class="classify"><a href="#">恐怖</a></div> <div class="classify"><a href="#">纪录片</a></div> <div class="classify"><a href="#">短片</a></div> <div class="classify"><a href="#">情色</a></div>#}
+{#                    <div class="classify"><a href="#">同性</a></div> <div class="classify"><a href="#">音乐</a></div> <div class="classify"><a href="#">歌舞</a></div> <div class="classify"><a href="#">家庭</a></div> <div class="classify"><a href="#">儿童</a></div> <div class="classify"><a href="#">传记</a></div>#}
+{#					<div class="classify"><a href="#">传记</a></div> <div class="classify"><a href="#">战争</a></div> <div class="classify"><a href="#">犯罪</a></div> <div class="classify"><a href="#">西部</a></div> <div class="classify"><a href="#">奇幻</a></div> <div class="classify"><a href="#">冒险</a></div>#}
+{#					<div class="classify"><a href="#">灾难</a></div> <div class="classify"><a href="#">武侠</a></div> <div class="classify"><a href="#">古装</a></div> <div class="classify"><a href="#">运动</a></div> <div class="classify"><a href="#">黑色电影</a></div>#}
                     {% endblock %}
 				</div>
+                {% block nowplaying %}
 				<div  class="item3">
 					<h1 class="item2-h">周口碑榜<span class="right" style="font-size: 12px; color: gray" >1-30日更新</span></h1>
-					<p class="item3-name1 item3-rank"><span class="item3-rank-numb">1</span>1324</p>
-					<p class="item3-name2 item3-rank"><span class="item3-rank-numb">2</span>1324</p>
-					<p class="item3-name3 item3-rank"><span class="item3-rank-numb">3</span>1324</p>
-					<p class="item3-name4 item3-rank"><span class="item3-rank-numb">4</span>1324</p>
-					<p class="item3-name5 item3-rank"><span class="item3-rank-numb">5</span>1324</p>
-					<p class="item3-name6 item3-rank"><span class="item3-rank-numb">6</span>1324</p>
-					<p class="item3-name7 item3-rank"><span class="item3-rank-numb">7</span>1324</p>
-					<p class="item3-name8 item3-rank"><span class="item3-rank-numb">8</span>1324</p>
-					<p class="item3-name9 item3-rank"><span class="item3-rank-numb">9</span>1324</p>
-					<p class="item3-name10 item3-rank"><span class="item3-rank-numb">10</span>1324</p>
+                    {% for movie in nowplaying_|slice:":10" %}
+                        <p class="item3-rank"><span class="item3-rank-numb">{{ movie.rank }}</span><a style="color: black;" href="/movie/?id={{ movie.movie.id }}">{{ movie.movie.name }}</a></p>
+                    {% endfor %}
 				</div>
+                {% endblock %}
 				<div  class="item4">
 					<h1 class="item2-h">北美票房榜<span class="right" style="font-size: 12px; color: gray" >1-30日更新/美元</span></h1>
 					<p class="item3-name1 item3-rank"><span class="item3-rank-numb">1</span>1324</p>
@@ -50,19 +48,14 @@
 					<p class="item3-name9 item3-rank"><span class="item3-rank-numb">9</span>1324</p>
 					<p class="item3-name10 item3-rank"><span class="item3-rank-numb">10</span>1324</p>
 				</div>
+            {% block chart %}
 				<div  class="item5">
 					<h1 class="item2-h">周热议榜<span class="right" style="font-size: 12px; color: gray" >1-30日更新 (评论数)</span></h1>
-					<p class="item3-name1 item3-rank"><span class="item3-rank-numb">1</span>1324</p>
-					<p class="item3-name2 item3-rank"><span class="item3-rank-numb">2</span>1324</p>
-					<p class="item3-name3 item3-rank"><span class="item3-rank-numb">3</span>1324</p>
-					<p class="item3-name4 item3-rank"><span class="item3-rank-numb">4</span>1324</p>
-					<p class="item3-name5 item3-rank"><span class="item3-rank-numb">5</span>1324</p>
-					<p class="item3-name6 item3-rank"><span class="item3-rank-numb">6</span>1324</p>
-					<p class="item3-name7 item3-rank"><span class="item3-rank-numb">7</span>1324</p>
-					<p class="item3-name8 item3-rank"><span class="item3-rank-numb">8</span>1324</p>
-					<p class="item3-name9 item3-rank"><span class="item3-rank-numb">9</span>1324</p>
-					<p class="item3-name10 item3-rank"><span class="item3-rank-numb">10</span>1324</p>
+                    {% for movie in chart_ %}
+                        <p class="item3-rank"><span class="item3-rank-numb">{{ movie.rank }}</span><a style="color: black;" href="/movie/?id={{ movie.movie.id }}">{{ movie.movie.name }}</a></p>
+                    {% endfor %}
 				</div>
+            {% endblock %}
 			</div>
 		</div>
 	</section>

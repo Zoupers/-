@@ -1,11 +1,12 @@
+
 body,input,box-img{
 	margin:0;
 	padding:0;
 }
 a{
 	text-decoration: none;
-	color: gray;
+	color: grey;
 }
-i{
-	font-style:normal;
+li{
+	list-style-type: none;
 }

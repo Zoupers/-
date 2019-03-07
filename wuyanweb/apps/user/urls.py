@@ -18,7 +18,8 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.LoginView.as_view(), name='user_home'),
+    path('', views.UserView.as_view(), name='home'),
+    path('login/', views.LoginView.as_view(), name='login'),
     path('register/', views.register, name='register'),
     path('reset/', views.reset, name='reset'),
     path('refresh_captcha/', views.refresh_captcha, name='refresh_captcha'),
