@@ -143,13 +143,15 @@
                         {% for person in cast %}
 
                                 <div class="people">
+                                    <a href="{% url 'apps.person:person' %}?id={{ person.person.id }}">
                                     <div class="head">
                                         <img src="{% static person.person.poster %}" style="width: 104px;height: 148px" alt="">
                                     </div>
-                                    <p><a href="{% url 'apps.person:person' %}?id={{ person.person.id }}">{{ person.person.name }}</a></p>
+                                    <p>{{ person.person.name }}</p>
                                     {% if person.part %}
                                         <p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">({{ person.part }}</p>
                                     {% endif %}
+                                    </a>
                                 </div>
 
                         {% endfor %}
@@ -165,7 +167,7 @@
 					</div>
 				</div>
 				<div class="review">
-                    <p class="review-first">影评  &nbsp;&nbsp;&nbsp;&nbsp;xxxx条</p>
+                    <p class="review-first">影评  &nbsp;&nbsp;&nbsp;&nbsp;{{ comment_num }}条</p>
                     {% if request.user.is_authenticated %}
 					<i id='user_rank' class="score">评分 :</i>
 					<div id="showdiv">

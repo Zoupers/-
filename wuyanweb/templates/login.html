@@ -15,18 +15,18 @@
         	  <form autocomplete="off" action="{% url 'apps.user:login' %}" name="" method="post">
 	         <tr>
 	            <td class="tele">
-					<input type="text" name="userName" placeholder="请输入手机号" maxlength="11" style="text-align: center;border:0px;outline:none;">
+					<input type="text" name="userName" maxlength="30" placeholder="请输入您的用户名或者邮箱" style="width: 200px;text-align: center;border:0px;outline:none;">
 				</td>
 	         </tr>
 	         <tr>
                       <td class="password">
-                        <input type="password" name="userPassword" placeholder="请输入密码" style="text-align: center;border:0px;outline:none;">
+                        <input type="password" name="userPassword" placeholder="请输入您的密码" style="text-align: center;border:0px;outline:none;">
                         </td>
                     <tr>
                     <td class="graph-verification">
 {#                        {{ user_form.captcha }}#}
-                        <input type="text" name='captcha_1' class="form-control" placeholder="输入验证码" required style="border:0px;outline: none;width: 70%;margin-right: 8%;">
-                        <a href="javascript:change()" class="captcha"><img class="cpatcha-image" src="{{ image_url }}" alt="点击换一张" id="id_captcha"></a>
+                        <input type="text" name='captcha_1' class="form-control" placeholder="输入图片验证码" required>
+                        <a href="javascript:change()" class="captcha"><img class="captcha-image" src="{{ image_url }}" alt="点击换一张" id="id_captcha"></a>
                         <input value="{{ hashkey }}" name="captcha_0" type="hidden" id="id_captcha_0">
                     </td>
                     </tr>

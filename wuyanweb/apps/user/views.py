@@ -60,7 +60,7 @@ class LoginView(View):
             username = user_form.cleaned_data['userName']
             password = user_form.cleaned_data['userPassword']
             try:
-                user = User.objects.filter(username=username)
+                user = User.objects.filter(Q(username=username)|Q(email=username))
                 if check_password(password, user[0].password):
                     auth_login(request, user[0])
                     request.session['is_login'] = True
@@ -76,6 +76,8 @@ class LoginView(View):
                 message = '用户不存在！'
             return HttpResponse(message)
         else:
+            if user_form.errors['captcha'][0]:
+                return render(request, 'login.html', {'js': user_form.errors['captcha'][0]})
             return HttpResponse("输入错误！")
 
 
@@ -85,9 +87,9 @@ def register(request):
         return redirect('/user/home/')
 
     if request.method == 'POST':
-        username = request.POST.get('userName',None)
-        password1 = request.POST.get('userPassword1',None)
-        password2 = request.POST.get('userPassword2',None)
+        username = request.POST.get('userName', '').strip()
+        password1 = request.POST.get('userPassword1', '').strip()
+        password2 = request.POST.get('userPassword2', '').strip()
         email = request.POST.get('email',None)
         if username and password1 and password2 and email:
             if password1 != password2:
@@ -128,6 +130,9 @@ def active(request):
     if request.method == 'GET':
         token = request.GET.get('token')
         register_name = request.GET.get('name')
+        has_active = User.objects.filter(username=register_name)
+        if has_active:
+            return HttpResponse('已经激活')
         registing = Registing_User.objects.filter(name=register_name)
         if token == registing[0].Email_code:
             new_user = User.objects.create()
@@ -140,7 +145,7 @@ def active(request):
         else:
             return HttpResponse('激活失败')
 
-    return render(request,'email.html',locals())
+    return render(request,'email.html', locals())
 
 
 # 找回密码
@@ -149,18 +154,20 @@ def reset(request):
         return redirect('/ranking/')
 
     if request.method == 'POST':
-        username = request.POST.get('userName',None)
+        # username = request.POST.get('userName',None)
         email = request.POST.get('email', None)
         password1 = request.POST.get('userPassword1', None)
         password2 = request.POST.get('userPassword2', None)
-        if username:
-            username = username.strip()
-            user = User.objects.filter(Q(username=username)&Q(email=email))
+        if email:
+            # username = username.strip()
+            user = User.objects.filter(email=email)
             if user:
+                username = user[0].username
                 if password1 != password2:
                     message = '两次密码输入不一致，请重新输入'
                     return render(request, 'reset.html', {'js': message})
                 else:
+                    # 注意邮件地址的修改
                     res, msg = email_sent.send_B_email(user[0].email, username)
                     if res == 1:
                         Email = '邮件发送成功'

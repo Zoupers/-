@@ -18,9 +18,9 @@ def send_A_email(req,name):
     reciever = []
     reciever.append(req)
     random = random_str()
-    msg = '打开此链接激活账户：http://127.0.0.1:8000/user/active/?token='+random+'&name='+name
+    msg = '打开此链接激活账户：http://wuyan.ngrok.xiaomiqiu.cn/user/active/?token='+random+'&name='+name
     res = send_mail(title, msg,settings.EMAIL_HOST_USER, reciever)
-    return res,random
+    return res, random
 
 
 # 改密验证
@@ -29,6 +29,6 @@ def send_B_email(req,name):
     receiver = [req]
     # reciever.append()
     random = random_str()
-    msg = '打开此链接激活账户：http://127.0.0.1:8000/user/reactive/?token='+random+'&name='+name
+    msg = '打开此链接激活账户：http://wuyan.ngrok.xiaomiqiu.cn/user/reactive/?token='+random+'&name='+name
     res = send_mail(title, msg,settings.EMAIL_HOST_USER, receiver)
     return res, random

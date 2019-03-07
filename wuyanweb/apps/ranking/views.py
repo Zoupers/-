@@ -84,8 +84,7 @@ class RankingView(View):
                 return render(request, 'ranking.html', base)
             else:
                 raise Http404
-        # movies = movie[:10]
-        # return render(request, 'ranking.html', {'movies': movies, 'top250': True})
+
 
 
 class BoxOfficeView(View):

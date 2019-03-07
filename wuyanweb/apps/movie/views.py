@@ -20,7 +20,8 @@ class MovieView(View):
                                                    'image': image[:4],
                                                    'person_count': len(cast),
                                                    'image_count': len(images),
-                                                   'comments': comments[:10]})
+                                                   'comments': comments[:10],
+                                                   'comment_num': len(comments)})
 
 
 class CastView(View):
@@ -29,7 +30,7 @@ class CastView(View):
         movie_id = request.GET.get('id')
         movie_cast = MPR.objects.filter(movie_id=movie_id)
         if not movie_cast:
-            raise Http404
+            raise Http404(request)
         num_actor = len(movie_cast.filter(type='3'))
         l = num_actor % 6
         if l == 0:
@@ -73,7 +74,10 @@ class CommentView(View):
         for i in comments:
             comment = dict()
             comment['user_name'] = i.user_name
-            comment['poster'] = '/static/'+(i.image.replace('\\', '/'))
+            if i.image:
+                comment['poster'] = '/static/'+(i.image.replace('\\', '/'))
+            else:
+                i.image = ''
             comment['comment'] = i.comment
             comment['comment_time'] = i.comment_time.ctime()
             final.append(comment)

@@ -1,6 +1,6 @@
 
 .reset-all{
-	height: 440px;
+	height: 400px;
 	width: 400px;
 	margin: 0 auto;
 	background-color: white;
@@ -17,7 +17,7 @@
 	border: none;
 	font-size:16px;
 	font-family: "Arial";
-	text-align: center;
+	/*text-align: center;*/
 }
 .tele{
 	padding-top: 15px;

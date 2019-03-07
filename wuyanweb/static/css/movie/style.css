@@ -17,12 +17,12 @@
 	margin-top: 24px;
 	margin-left: 20px;
 }
-	.movie-picture{
-		height: 252px;
-		width: 182px;
-		background-color: white;
-		position: absolute;
-	}
+	/*.movie-picture{*/
+		/*height: 252px;*/
+		/*width: 182px;*/
+		/*background-color: white;*/
+		/*position: absolute;*/
+	/*}*/
 .movie-overview{
 	position: absolute;
 	margin-left: 250px;
@@ -172,8 +172,8 @@
 	width: 182px;
 	background-color: white;
 	position: absolute;
-	margin-top: 24px;
-	margin-left: 20px;
+	/*margin-top: 24px;*/
+	/*margin-left: 20px;*/
 	z-index: 2;
 }
 .movie-overview{

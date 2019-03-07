@@ -21,9 +21,11 @@ import apps.ranking.urls as ranking_urls
 import apps.user.urls as user_urls
 from apps.research.views import ResearchView
 import captcha.urls
+from .views import IndexView
 import xadmin
 
 urlpatterns = [
+    path('', IndexView.as_view(), name='index'),
     path('admin/', xadmin.site.urls),
     path('movie/', include((movie_urls, 'apps.movie'), namespace='movie')),
     path('person/', include((person_urls, 'apps.person'), namespace='person')),

@@ -20,20 +20,36 @@
 	text-align: center;
 }
 .tele{
-	padding-top: 15px;
+	padding-top: 25px;
 	text-align: center;
 	border: none;
 	border-bottom: 1.5px solid #FEF3F3;
 }
 .password{
-	padding-top: 30px;
+	padding-top: 24px;
 	text-align: center;
 	border: none;
 	border-bottom: 1.5px solid #FEF3F3;
 }
-.cpatcha-image{
-	width: 80px;
-	height: 30px;
+.graph-verification{
+	padding-top: 10px;
+	text-align: center;
+	border: none;
+	border-bottom: 1.5px solid #FEF3F3;
+}
+.form-control{
+	border: 0px;
+    outline: none;
+    width: 40%;
+    margin-left: 20%;
+    text-align: center;
+    padding-top: 20px;
+}
+.captcha-image{
+	width: 60px;
+    height: 22px;
+    margin-top: 15px;
+    float: right;
 }
 .else{
 	padding-top: 10px;
