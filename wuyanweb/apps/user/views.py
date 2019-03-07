@@ -74,7 +74,7 @@ class LoginView(View):
             except Exception as e:
                 print(e)
                 message = '用户不存在！'
-            return
+            return render(request, 'login.html', {'js': message})
         else:
             if user_form.errors['captcha'][0]:
                 return render(request, 'login.html', {'js': user_form.errors['captcha'][0]})
