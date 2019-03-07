@@ -5,6 +5,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/login/style.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/login/reset.css' %}">
 {% endblock %}
+{% block js %}
+{% if js %}
+<script>
+    alert("{{ js }}")
+</script>
+{% endif %}
+{% endblock %}
 {% block login %}{% endblock %}
 {% block main_body %}
     <div class="login-all">
