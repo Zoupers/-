@@ -221,7 +221,6 @@
                                 <label>请先登录再评论</label>
                             {% endif %}
 							<ul id="ul1">
-
 							</ul>
 						</div>
 						<a class="else" href="#">热门</a>
@@ -230,7 +229,12 @@
 
                         {% for comment in comments %}
                             <div class="member">
+                            {% if comment.image %}
                             <img src="{% static comment.image %}" alt="" class="portrait">
+                            {% else %}
+                            <img src="{% static 'source/boy.jpg' %}" alt="" class="portrait">
+                            {% endif %}
+
 							<i style="margin-left: 10px" class="name">{{ comment.user_name }}</i>
                             {% if comment.rank %}
                             <span style="float: right;">评分：{{ comment.rank }}</span>
@@ -248,28 +252,6 @@
 
 				</div>
                 <iframe style="display: none;" name="ifr" id="ifr"></iframe>
-
-{#					<div class="review-second">#}
-{#						<form action="#" method="post">#}
-{#						  <textarea cols="60" rows="5" class="input"></textarea>#}
-{#						  <br/><br/>#}
-{#						  <input id='rank' type="hidden" name="rank" value="0">#}
-{#						  <input class="submit" type="submit" value="提交"/>#}
-{#						</form>#}
-{#						<a class="else" href="#">热门</a>#}
-{#						<a class="else" href="#">最新</a>#}
-{#						<a class="else" href="#">楼层</a>#}
-{#						<div class="member">#}
-{#							<img src="{% url comment.user.poster %}" alt="" class="portrait">#}
-{#							<i style="margin-left: 10px" class="name">{{ comment.user_name }}</i>#}
-{#                            {% if comment.rank %}#}
-{#                            <span style="float: right;">评分：{{ comment.rank }}</span>#}
-{#                            {% endif %}#}
-{#							<p style="width:650px;" class="commet">#}
-{#								{{ comment.comment }}#}
-{#							</p>#}
-{#						</div>#}
-{#					</div>#}
 				</div>
 			</div>
 		</div>
