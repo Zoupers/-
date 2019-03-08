@@ -94,14 +94,7 @@ DATABASES = {
         'USER': 'wuyan',
         'PASSWORD': '123456',
         'HOST': 'localhost',
-    },
-    'comment': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'comment',
-        'USER': 'wuyan',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-    },
+    }
 }
 
 
