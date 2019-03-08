@@ -55,6 +55,7 @@ class RankingView(View):
         base['classify'] = classify
         base['chart_'] = RMR.objects.filter(type='新片榜').order_by('rank')
         base['nowplaying_'] = RMR.objects.filter(type='热映榜').order_by('rank')
+        base['boxoffice_'] = box_office()[:10]
         # 加载类别
         all_type = set()
         for movie_ in movie:

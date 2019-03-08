@@ -16,7 +16,7 @@
 {% block login %}{% endblock %}
 {% block main_body %}
     <div class="register-all">
-	  <form action="" name="" method="post">
+	  <form autocomplete="off" action="" name="" method="post">
 	     <table class="register">
 		    <tr>
 		        <td class="first">账号注册</td>
@@ -26,12 +26,6 @@
                         <input type="text" name="userName" placeholder="请输入用户名" maxlength="11" style="border:0px;outline:none;">
 				</td>
 	        </tr>
-{#              <tr>#}
-{#                  <td class="tele">#}
-{#                      <span style="font-size:13px;color: gray;">头像文件</span>#}
-{#                      <input enctype="multipart/form-data" style="float: right;width: 180px;" type="file" name="user_poster">#}
-{#                  </td>#}
-{#              </tr>#}
 		  	    <tr>
 	            <td class="tele">
 					<input type="text" name="email" placeholder="请输入您的邮箱" maxlength="30" style="border:0px;outline:none;">
