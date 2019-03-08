@@ -11,16 +11,6 @@
     var iframe = document.getElementById('ifr');
 
     function post() {
-	    {#var xmlhttp = new XMLHttpRequest();#}
-	    {#var movie_id = document.getElementById('movie_id').value;#}
-        {#var user_id = document.getElementById('user_id').value;#}
-        {#var user_name = document.getElementById('user_name').value;#}
-        {#var comment = document.getElementById('txt').value;#}
-        {#var csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value;#}
-        {#var url = '/movie/comment/?comment='+comment+'?movie_id='+movie_id+'?user_id='+user_id+'?user_name='+user_name+'?csrfmiddlewaretoken='+csrfmiddlewaretoken;#}
-        {#xmlhttp.open('POST', url, true);#}
-        {#xmlhttp.send(null);#}
-        {##}
         var x = document.getElementById('p');
         x.target = 'ifr';
         x.submit();
@@ -86,6 +76,19 @@
                         name.className = "name";
                         name.textContent = comment['user_name'];
 
+                        if(comment['rank']){
+                            var rank = document.createElement('span');
+                            oDiv.appendChild(rank);
+                            rank.style = 'float: right;';
+                            rank.textContent = '评分：'+comment['rank'];
+                        }
+
+
+                        var time = document.createElement('span');
+                        oDiv.appendChild(time);
+                        time.style = 'float: right';
+                        time.textContent = '评论时间：'+comment['comment_time'];
+
                         var br1 = document.createElement('br');
                         var br2 = document.createElement('br');
                         oDiv.appendChild(br1);oDiv.appendChild(br2);
@@ -128,7 +131,23 @@
 					<img class="movie-picture" src="{% static movie.poster %}" alt="">
 				</div>
 				<div class="movie-overview">
-					<p class="movie-name">{{ movie.name }}</p>
+					<p class="movie-name">影名：{{ movie.name }}</p>
+                    {% if movie.long %}
+                        <p class="movie-other">时长：{{ movie.long }}</p>
+                    {% endif %}
+                    {% if movie.year %}
+                        <p class="movie-other">上映日期：{{ movie.year }}</p>
+                    {% endif %}
+                    {% if movie.long %}
+                        <p class="movie-other">评分：{{ movie.rank }}&nbsp;&nbsp;
+                        {% if movie.star_num %}
+                            评分人数：{{ movie.star_num }}
+                        {% endif %}</p>
+                    {% endif %}
+
+                    {% if movie.review %}
+                        <p class="movie-other">短评：{{ movie.review }}</p>
+                    {% endif %}
 				</div>
 			</div>
 			<div class="movie-details">
@@ -216,6 +235,7 @@
                             {% if comment.rank %}
                             <span style="float: right;">评分：{{ comment.rank }}</span>
                             {% endif %}
+                            <span style="float: right;">评论时间：{{ comment.comment_time }}&nbsp;</span>
                             <br><br>
 							<p style="width:650px;height: 72px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="comment">
 								{{ comment.comment }}

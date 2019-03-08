@@ -2,6 +2,8 @@ from django.shortcuts import render, Http404
 from django.views import View
 from .models import RMR
 from apps.movie.models import MPR
+from fake_useragent import FakeUserAgent
+import requests
 # Create your views here.
 
 
@@ -86,6 +88,35 @@ class RankingView(View):
                 raise Http404
 
 
+def box_office():
+    fake = FakeUserAgent()
+    data = ''
+    for i in range(5):
+        z = requests.get('http://dianying.nuomi.com/movie/boxrefresh',
+                         headers={'User-Agent': fake.random, 'referer': 'http://dianying.nuomi.com/movie/boxoffice'})
+        try:
+            data = z.json() if len(z.text) > 1000 else data
+        except:
+            continue
+    movies = []
+    n = 1
+    for movie_ in data['real']['data']['detail']:
+        movie = dict()
+        movie['rank'] = n
+        movie['movieName'] = movie_['movieName']
+        movie['上映天数'] = movie_['attribute']['1']['attrValue']
+        movie['累计票房'] = movie_['attribute']['2']['attrValue']
+        movie['票房占比'] = movie_['attribute']['4']['attrValue']
+        movie['排片占比'] = movie_['attribute']['5']['attrValue']
+        movie['上座率'] = movie_['attribute']['6']['attrValue']
+        movie['排座占比'] = movie_['attribute']['7']['attrValue']
+        movie['场次'] = movie_['attribute']['8']['attrValue']
+        movie['人次'] = movie_['attribute']['9']['attrValue']
+        movies.append(movie)
+        n += 1
+    print(movies)
+    return movies
+
 
 class BoxOfficeView(View):
     """
@@ -97,7 +128,8 @@ class BoxOfficeView(View):
         base['classify'] = classify
         base['nowplaying_'] = RMR.objects.filter(type='热映榜').order_by('rank')
         base['chart_'] = RMR.objects.filter(type='新片榜').order_by('rank')
-        return render(request, 'box_office.html', {'boxoffice': True})
+        base['movies'] = box_office()
+        return render(request, 'box_office.html', base)
 
 
 class ChartView(View):
@@ -110,6 +142,7 @@ class ChartView(View):
         base['chart'] = True
         base['classify'] = classify
         base['nowplaying_'] = RMR.objects.filter(type='热映榜').order_by('rank')
+        base['boxoffice_'] = box_office()[:10]
         # 获取电影
         movies = RMR.objects.filter(type='新片榜').order_by('rank')
         base['movies'] = movies
@@ -130,6 +163,7 @@ class NowPlayingView(View):
         base['nowplaying'] = True
         base['classify'] = classify
         base['chart_'] = RMR.objects.filter(type='新片榜').order_by('rank')
+        base['boxoffice_'] = box_office()[:10]
         # 获取电影
         movies = RMR.objects.filter(type='热映榜')
         base['movies'] = movies

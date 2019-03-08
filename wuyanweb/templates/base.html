@@ -22,7 +22,7 @@
                 {% if request.user.is_authenticated %}
                     <div style="z-index: 5" class="user-title-right">
                         <div style="text-align:center;width: 50px;height: 50px;margin-left: 0px;margin-top: 0px;">
-                            <img alt="" class="user-title-right" style="margin-right: 7px;margin-top: 2px;height: 40px;width: 40px" src="{% static request.user.poster %}">
+                            <img alt="" class="user-title-right" style="margin-right: 7px;margin-top: 2px;height: 40px;width: 40px" src="{% static 'source/boy.jpg' %}">
                         </div>
                         <div class="dropdown-content">
                             <a href="{% url 'apps.user:home' %}">个人中心</a>

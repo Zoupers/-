@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, Http404
+from django.shortcuts import render, HttpResponse, Http404, redirect
 from django.views import View
 
 from .models import Movie, MPR, Comment
@@ -10,11 +10,13 @@ class MovieView(View):
 
     def get(self, request):
         movie_id = request.GET.get('id')
+        if not movie_id:
+            return redirect('apps.movie:ranking')
         movie = Movie.objects.filter(id=movie_id)[0]
         cast = MPR.objects.filter(movie_id=movie_id)
         images = json.loads(movie.image)
         image = json.loads(movie.image)[:5]
-        comments = Comment.objects.filter(movie_id=movie_id).order_by('comment_time')
+        comments = Comment.objects.filter(movie_id=movie_id).order_by('-comment_time')
         return render(request, 'movie_base.html', {'movie': movie,
                                                    'cast': cast[:9],
                                                    'image': image[:4],
@@ -66,7 +68,7 @@ class CommentView(View):
         return HttpResponse('')
 
     def get(self, request):
-        comment_ = Comment.objects.filter(movie_id=request.GET.get('id')).order_by('comment_time')
+        comment_ = Comment.objects.filter(movie_id=request.GET.get('id')).order_by('-comment_time')
         # comments = request.GET.get()
         num = int(request.GET.get('n'))
         comments = comment_[num:num+5]
@@ -79,7 +81,7 @@ class CommentView(View):
             else:
                 i.image = ''
             comment['comment'] = i.comment
-            comment['comment_time'] = i.comment_time.ctime()
+            comment['comment_time'] = str(i.comment_time)
             final.append(comment)
         return HttpResponse(json.dumps(final, ensure_ascii=False), content_type='application/json')
 

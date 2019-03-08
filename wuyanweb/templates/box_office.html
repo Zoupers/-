@@ -6,4 +6,20 @@
 {% endblock %}
 {% block title %}热映高分榜{% endblock %}
 {% block main_body %}
+    <div style="width: 80%;margin-left: 10%;margin-right: 10%;margin-top: 30px">
+    {% for movie in movies %}
+    <div style="padding-top: 10px">
+        <span style="float: left">
+            电影名：{{ movie.movieName }}
+        </span>
+        <span style="padding-left: 20px;">
+            上映天数：{{ movie.上映天数 }}
+        </span>
+        <span style="padding-left: 20px;">
+            累计票房：{{ movie.累计票房 }}
+        </span>
+    </div>
+    {% endfor %}
+    </div>
+
 {% endblock %}

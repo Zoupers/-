@@ -32,7 +32,10 @@
 	font-size: 20px;
 	color: #FFF
 }
-
+.movie-other{
+	font-size: 15px;
+	color: #FFF
+}
 .movie-details{
 	padding-top: 20px;
 }

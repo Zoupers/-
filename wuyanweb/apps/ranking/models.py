@@ -11,3 +11,7 @@ class RMR(models.Model):
     class Meta(object):
         verbose_name = '电影排行榜'
         verbose_name_plural = verbose_name
+
+
+class BoxOffice(models.Model):
+    pass

@@ -5,12 +5,17 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/user/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/user/reset.css' %}">
 {% endblock %}
+{% block js %}
+
+{% endblock %}
 {% block main_body %}
     <section>
 		<div class="center">
 			<div class="left">
 			  <p class="personal-data">个人资料</p>
-			  <div class="avatar"></div>
+			  <div class="avatar">
+                  <img style="width: 100px" src="{% static 'source/boy.jpg' %}">
+              </div>
 			  <p class="name">姓名: {{ user.username }}</p>
 			  <p class="personal-data">账号资料</p>
 			  <div class="personal-information">
@@ -21,7 +26,14 @@
 				<div class="right-personal">
 				<p class="right-personal-data  ">我的点评</p>
 				</div>
-				<div class="comment"></div>
+                {% for comment in comments %}
+                    <div style="margin-top: 30px" class="comment">
+                    <p>评论电影：{{ comment.movie.name }}</p>
+                    <p style="border-bottom: 2px solid #FEF3F3;">评论时间：{{ comment.comment_time }}</p>
+                    <p style="border-bottom: 2px solid #000000;font-family: 华文楷体">内容：{{ comment.comment }}</p>
+                    </div>
+                {% endfor %}
+
 				<div class="comment"></div>
 				<div class="comment"></div>
 				<div class="comment"></div>

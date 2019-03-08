@@ -8,8 +8,10 @@ from django.contrib.auth.views import auth_login, auth_logout
 from django.contrib.auth.hashers import make_password, check_password
 from .form import UserForm
 from . import email as email_sent
+from apps.movie.models import Comment
 from .models import Registing_User, Reset_User
 import json
+
 # Create your views here.
 
 
@@ -19,7 +21,8 @@ class UserView(View):
         if request.user.is_authenticated:
             user_name = request.session['user_name']
             user = User.objects.get(username=user_name)
-            return render(request, 'user.html', {'user': user})
+            comments = Comment.objects.filter(user_id=user.id).order_by('-comment_time')
+            return render(request, 'user.html', {'user': user, 'comments': comments})
         else:
             return redirect('apps.user:login')
 
@@ -55,7 +58,7 @@ class LoginView(View):
         form['captcha'] = request.POST.get('captcha')
         user_form = UserForm(request.POST)
         # print(user_form)
-        print(user_form.is_valid())
+        # print(user_form.is_valid())
         if user_form.is_valid():
             username = user_form.cleaned_data['userName']
             password = user_form.cleaned_data['userPassword']
@@ -72,7 +75,7 @@ class LoginView(View):
                 else:
                     message = '密码不正确！'
             except Exception as e:
-                print(e)
+                # print(e)
                 message = '用户不存在！'
             return render(request, 'login.html', {'js': message})
         else:

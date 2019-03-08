@@ -36,17 +36,10 @@
 				</div>
                 {% endblock %}
 				<div  class="item4">
-					<h1 class="item2-h">北美票房榜<span class="right" style="font-size: 12px; color: gray" >1-30日更新/美元</span></h1>
-					<p class="item3-name1 item3-rank"><span class="item3-rank-numb">1</span>1324</p>
-					<p class="item3-name2 item3-rank"><span class="item3-rank-numb">2</span>1324</p>
-					<p class="item3-name3 item3-rank"><span class="item3-rank-numb">3</span>1324</p>
-					<p class="item3-name4 item3-rank"><span class="item3-rank-numb">4</span>1324</p>
-					<p class="item3-name5 item3-rank"><span class="item3-rank-numb">5</span>1324</p>
-					<p class="item3-name6 item3-rank"><span class="item3-rank-numb">6</span>1324</p>
-					<p class="item3-name7 item3-rank"><span class="item3-rank-numb">7</span>1324</p>
-					<p class="item3-name8 item3-rank"><span class="item3-rank-numb">8</span>1324</p>
-					<p class="item3-name9 item3-rank"><span class="item3-rank-numb">9</span>1324</p>
-					<p class="item3-name10 item3-rank"><span class="item3-rank-numb">10</span>1324</p>
+					<h1 class="item2-h">国内票房榜<span class="right" style="font-size: 12px; color: gray" >每日更新</span></h1>
+                    {% for movie in boxoffice_ %}
+                        <p class="item3-name1 item3-rank"><span class="item3-rank-numb">{{ movie.rank }}</span>{{ movie.movieName }}</p>
+                    {% endfor %}
 				</div>
             {% block chart %}
 				<div  class="item5">
