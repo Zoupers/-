@@ -99,22 +99,18 @@
                         comm.className = "comment";
                         comm.textContent = comment['comment']
                     }
-
-	                {#document.getElementById('ul1').appendChild(oDiv);#}
-	                {#oDiv.createContainer();#}
-					{#oDiv.className = "touxiang";#}
-					{#oDiv.id = 'firstone';#}
-					{#alert(p['user_name']);#}
-					{#document.getElementById('firstone').textContent = p['user_name'];#}
-					{#var aDiv = document.createElement('div');#}
-                    {#document.getElementById('firstone').appendChild(aDiv);#}
-                    {#aDiv.textContent = p['user_name'];#}
-
 	            }
 	        };
 		};
     };
-{% endif %}
+    {% else %}
+    window.onload=function(){
+        var omore = document.getElementById("more");
+        omore.onclick=function () {
+            alert('请登录后再查看更多评论');
+        }
+    };
+    {% endif %}
 
 
 </script>

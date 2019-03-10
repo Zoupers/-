@@ -11,7 +11,7 @@ class MovieView(View):
     def get(self, request):
         movie_id = request.GET.get('id')
         if not movie_id:
-            return redirect('apps.movie:ranking')
+            return redirect('apps.ranking:ranking')
         movie = Movie.objects.filter(id=movie_id)[0]
         cast = MPR.objects.filter(movie_id=movie_id)
         images = json.loads(movie.image)

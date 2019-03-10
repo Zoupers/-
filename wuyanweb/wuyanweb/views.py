@@ -6,7 +6,7 @@ class IndexView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('apps.movie:ranking')
+            return redirect('apps.ranking:ranking')
         else:
             return redirect('apps.user:login')
 

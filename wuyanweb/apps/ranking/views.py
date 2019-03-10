@@ -115,7 +115,7 @@ def box_office():
         movie['人次'] = movie_['attribute']['9']['attrValue']
         movies.append(movie)
         n += 1
-    print(movies)
+    # print(movies)
     return movies
 
 
