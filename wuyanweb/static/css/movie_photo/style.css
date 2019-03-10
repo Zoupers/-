@@ -1,0 +1,25 @@
+
+.center{
+	margin:30px auto;
+	width: 1200px;
+	height: 1024px;
+}
+.left{
+	float: left;
+	width: 820px;
+}
+.photo{
+	border-left: red 3px solid;
+	font-size: 12px;
+	padding-left: 30px;
+}
+.photos{
+	width: 180px;
+	height: 180px;
+	margin: 10px;
+	float: left;
+}
+.right{
+	float: right;
+	width: 380px;
+}

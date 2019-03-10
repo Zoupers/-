@@ -1,6 +1,6 @@
 import requests
 from scrapy.handle_db.DBApi import DbHandle
-from scrapy.requests.request_handle import get_content
+from scrapy.requests.g_handle import GUrlHandle
 from lxml import etree
 
 db = DbHandle()

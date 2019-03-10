@@ -1,0 +1,45 @@
+
+
+.center{
+	width: 1200px;
+	height: 1200px;
+	margin:0 auto;
+}
+.left{
+	height: 200px;
+	width: 158px;
+	float: left;
+	padding:20px 30px;
+}
+.actor-position{
+	height: 188px;
+	width: 158px;
+}
+.actor-picture{
+	width: 160px;
+	height: 210px;
+}
+.right{
+	height: 250px;
+	width: 500px;
+	float: left;
+}
+.actor-details{
+	float: left;
+	height: 500px;
+	width: 718px;
+}
+.photo{
+	height: 128px;
+	width: 120px;
+	float: left;
+	padding: 0px 10px;
+}
+.normal-introduce{
+	margin-top: 30px;
+}
+.profile-first{
+	font-size: 14px;
+	border-left:4px solid red;
+	padding-left: 12px;
+}

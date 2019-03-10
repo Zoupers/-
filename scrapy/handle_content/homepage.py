@@ -1,46 +1,72 @@
 #!/usr/bin/env python 
 # -*- coding:utf-8 -*-
-import requests
+from scrapy.requests.g_handle import GUrlHandle
 from scrapy.handle_db.DBApi import DbHandle
-# from scrapy.requests.request_handle import get_content
 import re
+import json
 from bs4 import BeautifulSoup
 
 
-db = DbHandle(database='ranking')
-# db.create_table('')
-#url = "https://movie.douban.com/top250?start=200&filter="
-# a=[]
+def table_create(database=None):
+    # db = pymysql.connect(host='localhost', user='root', password='131421', database='ranking')
+    db = DbHandle(database='ranking')
+    # cursor = db.cursor()
+    sql = '''CREATE TABLE `movie`(
+        `movie_name` CHAR(30) NOT NULL ,
+        `rank` FLOAT,
+        `star_num` VARCHAR(15),
+        `director` VARCHAR(100),
+        `main_actors` VARCHAR(50),
+        `year` VARCHAR(200) ,
+        `class` VARCHAR(20),
+        `countries` VARCHAR(20),
+        `id` CHAR(15) PRIMARY KEY NOT NULL ,
+        `review` TEXT,
+        `details` TEXT
+        )'''
+    try:
+        db.execute(query=sql)
+    except Exception as e:
+        print(e)
 
 
 def get_url():
-    url_list = db.get(table='init', _range=('name', 'urls'))
-    for name, urls in url_list:
-        # get_content(url=urls, hook=handle_content)
-        print(name, urls)
+    table_create()
+    db = DbHandle(database='ranking')
+    request = GUrlHandle(content_handle=content_handle)
+    url_list = db.get(table='init', _range='name, urls')
+    for i in url_list:
+        urls = json.loads(i[1])
+        print(urls)
+        request.get_contents(urls)
 
 
-# def get_content(url):
-#     r = requests.get(url)
-#     demo = r.text
-
-
-def handle_content(demo):
+def content_handle(demo):
+    # db = pymysql.connect(host='localhost', user='root', password='131421', database='ranking')
+    # cursor = db.cursor()
+    db = DbHandle()
+    db.table = 'movie'
     soup = BeautifulSoup(demo, 'html.parser')
     ol = soup.find('ol', class_='grid_view')
-    #text = ol.prettify()
     for i in ol.find_all('li'):
-        movie_name = i.find('span', attrs={'class': 'title'}).get_text()       #名字
+        data = []
+        movie_name = i.find('span', attrs={'class': 'title'}).get_text()#名字
+        data.append(movie_name)
         rank = i.find('span', attrs={'class': 'rating_num'}).get_text()     #分数
+        data.append(rank)
         star = i.find('div', attrs={'class': 'star'})
         star_num = star.find(text=re.compile('评价'))     #评价人数
+        data.append(star_num)
         info = i.find('p', attrs={'class':''}).get_text() #基本信息
         info = info.strip().replace(' ','')
 
         info_one = info.split()     #弄出导演主演年份
         director = info_one[0]
+        data.append(director)
         main_actors = info_one[1]
+        data.append(main_actors)
         year = info_one[2]
+        data.append(year)
 
         info_two = info.replace('/','').split() #弄出地区和类型
         try:
@@ -49,41 +75,22 @@ def handle_content(demo):
         except IndexError:
             class_ = info_two[3]
             countries = info_two[2]
-
-        id = i.a['href']
-        id = id.replace('https://movie.douban.com/subject/','')
-        id = id.replace('/','')
-        #print(id)
+        data.append(class_)
+        data.append(countries)
+        _id = i.a['href']
+        _id = _id.replace('https://movie.douban.com/subject/','')
+        _id = _id.replace('/','')
+        data.append(_id)
 
         review = i.find('span', attrs={'class': 'inq'})     #判断是否有短评
         if review:
             review = review.get_text()
         else:
             review = 'none review'
-
-        content = {"movie_name" : movie_name,
-                   "rank" : rank,
-                   "star_num" : star_num,
-                   "id":id,
-                   "director" : director,
-                   "main_actors" : main_actors,
-                   "year" : year,
-                   "countries" : countries,
-                   "class" : class_,
-                   "review" : review
-        }
-        with open('d://movie.txt', 'w', encoding='utf-8') as f:
-            f.write('\n'.join([a+': '+b for a, b in content.items()]))
-        # db.save(table='brife_movie', data=content)
-        # a.append(content)
-        # print(a)
-
-
-
-def geturl(n):
-    url = 'https://movie.douban.com/top250?start='+str(25*n)+'&filter='
-
-    return url
+        data.append(review)
+        # print(data)
+        if db.execute('SELECT * FROM `movie` where id=%s', (_id, )) == 0:
+            db.save(data,_range='movie_name,rank,star_num,director,main_actors,year,class,countries,id,review')
 
 
 if __name__ == '__main__':

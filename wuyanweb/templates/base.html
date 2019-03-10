@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bas_head_style.css' %}">
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking/reset.css' %}">
+    {% endblock %}
+    {% block js %}{% endblock %}
+</head>
+<body>
+<header class="header">
+		<div class="title">
+			<img src="{% static 'source/logo.jpg' %}" class="title-logo-img" alt="">
+			<div class="title-logo">
+				<span class="title-logo-name">云顶电影榜</span>
+			</div>
+            {% block login %}
+                {% if request.user.is_authenticated %}
+                    <div style="z-index: 5" class="user-title-right">
+                        <div style="text-align:center;width: 50px;height: 50px;margin-left: 0px;margin-top: 0px;">
+                            <img alt="" class="user-title-right" style="margin-right: 7px;margin-top: 2px;height: 40px;width: 40px" src="{% static 'source/boy.jpg' %}">
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="{% url 'apps.user:home' %}">个人中心</a>
+                            <a href="{% url 'apps.user:logout' %}">安全退出</a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="title-right">
+                    <a href="{% url 'apps.user:login' %}" class="title-login title-a">登录 |</a><a href="{% url 'apps.user:register' %}" class="title-register title-a"> 注册</a>
+                    </div>
+                {% endif %}
+            {% endblock %}
+			<div class="box">
+                <form name="search" method="post" autocomplete="off" action="{% url 'search' %}">
+                    {% csrf_token %}
+                    <input type="text" name="msg" placeholder="请输入想搜索的电影..." class="title-input">
+                    <input formmethod="post" type="submit" class="search" style="background: url('{% static 'source/research.png' %}') no-repeat center center;" value=".">
+                </form>
+   			</div>
+   			<div class="title-choose">
+   				<ul class="title-choose-ul">
+                    <li class="title-choose-li"><a href="{% url 'apps.ranking:ranking' %}" {% if type %}{% ifnotequal type 'top250' %}style="color: white"{% endifnotequal %}{% endif %}>分类排行榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:top250' %}" {% ifequal type 'top250' %}style="color: white"{% endifequal %}>TOP250榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:box_office' %}" {% if boxoffice %}style="color: white"{% endif %}>国内票房榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:chart' %}" {% if chart %}style="color: white"{% endif %}>热议新片榜</a></li>
+   					<li class="title-choose-li"><a href="{% url 'apps.ranking:now_playing' %}" {% if nowplaying %}style="color: white"{% endif %}>热映高分榜</a></li>
+   				</ul>
+   			</div>
+		</div>
+	</header>
+    {% block main_body %}
+    {% endblock %}
+</body>
+</html>

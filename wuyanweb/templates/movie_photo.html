@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie_photo/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/movie_photo/style.css' %}">
+{% endblock %}
+{% block title %}{{ movie.name }}-剧照{% endblock %}
+{% block main_body %}
+    <section>
+		<div class="center">
+			<div class="left">
+				<p class="photo">剧照</p>
+                {% for photo in image %}
+                    <div ><img class="photos" src="{% static photo %}"></div>
+                {% endfor %}
+			</div>
+			<div class="right">
+				<h1 style="font-size: 12px;"><a href="/movie/?id={{ movie.id }}" style="font-size: 12px; color: black;">< 返回《{{ movie.name }}》电影主页</a></h1>
+				<p class="photo">相关电影</p>
+				<div class="photos"></div>
+				<div class="photos"></div>
+				<div class="photos"></div>
+				<div class="photos"></div>
+				<div class="photos"></div>
+				<div class="photos"></div>
+
+
+			</div>
+		</div>
+	</section>
+{% endblock %}

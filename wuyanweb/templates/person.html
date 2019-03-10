@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/person/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/person/reset.css' %}">
+{% endblock %}
+{% block title %}{{ actor.name }}{% endblock %}
+{% block main_body %}
+        <div class="main">
+        <div class="center">
+
+			<div class="left">
+                <div class="actor-position">
+                    <img class="actor-picture" src="/static/{{ actor.poster }}">
+                </div>
+            </div>
+			<div class="right">
+                <div class="actor-overview">
+                    <ul class="normal-introduce">
+                            <li>
+                                <span>姓名</span>:{{ actor.name }}
+                            </li>
+{#                            <li>#}
+{#                            <span>ID</span>#}
+{#                            :{{ actor.id }}#}
+{#                            </li>#}
+                        {% if actor.sex %}
+                            <li>
+                            <span>性别</span>
+                            :{{ actor.sex }}
+                            </li>
+                        {% endif %}
+                        {% if actor.constellation %}
+                            <li>
+                            <span>星座</span>
+                            :{{ actor.constellation }}
+                            </li>
+                        {% endif %}
+
+                        {% if actor.birthday %}
+                            <li>
+                                <span>出生日期</span>
+                                :{{ actor.birthday }}
+                            </li>
+                        {% endif %}
+
+                        {% if actor.birthplace %}
+                            <li>
+                            <span>出生地</span>
+                            :{{ actor.birthplace }}
+                            </li>
+                        {% endif %}
+
+                        {% if actor.profession %}
+                            <li>
+                            <span>职业</span>
+                            :{{ actor.profession }}
+                            </li>
+                        {% endif %}
+
+                        {% if actor.imdb %}
+                            <li>
+                            <span>imdb编号</span>
+                            :{{ actor.imdb }}
+                            </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+
+
+
+			<div class="actor-details">
+				<div class="personal profile">
+					<p class="profile-first">个人简介 · · · · · ·</p>
+					<p class="profile-second">{{ actor.introduce }}</p>
+				</div>
+				<div class="photo-all">
+                    <p class="profile-first">照片 · · · · · ·
+                    {% if image_count %}
+                        <a href="{% url 'apps.person:person_photo' %}?id={{ actor.id }}">{{ image_count }}张</a>
+                    {% endif %}
+                    </p>
+    					<div style="padding-top: 10px;padding-left: 10px" class="stills-second">
+                            <div class="photos">
+                                {% for foo in image %}
+                                    <img class="photo" src="{% static foo %}" alt="">
+                                {% endfor %}
+                            </div>
+                        </div>
+                </div>
+            </div>
+            </div>
+		</div>
+
+{% endblock %}
+

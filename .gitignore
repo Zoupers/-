@@ -13,3 +13,10 @@ scrapy/proxies_mine/Run/__pycache__/
 scrapy/proxies_mine/__pycache__/
 scrapy/proxies_mine/log/__pycache__/
 scrapy/requests/__pycache__/
+scrapy/handle_db/__pycache__/
+wuyanweb/wuyanweb/__pycache__/
+scrapy/handle_content/__pycache__/
+wuyanweb/__pycache__/
+wuyanweb/xadmin/__pycache__/
+wuyanweb/xadmin/plugins/__pycache__/
+wuyanweb/xadmin/views/__pycache__/

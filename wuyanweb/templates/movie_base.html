@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie/reset.css' %}">
+{% endblock %}
+{% block js %}
+
+<script>
+    {% if request.user.is_authenticated %}
+    var iframe = document.getElementById('ifr');
+
+    function post() {
+        var x = document.getElementById('p');
+        x.target = 'ifr';
+        x.submit();
+        for(var i=1;i<=10;i++){
+				document.getElementById(""+i).innerHTML="<h1>☆</h1>";
+				document.getElementById(""+i).setAttribute("style","color:black");}
+        document.getElementById('txt').value = null;
+        document.getElementById('rank').value = 0;
+        document.getElementById('user_rank').textContent = '评分：';
+        alert("提交成功");
+    }
+    function rank(myvalue){
+			for(var i=1;i<=10;i++){
+				document.getElementById(""+i).innerHTML="<h1>☆</h1>";
+				document.getElementById(""+i).setAttribute("style","color:black");
+			}
+			for(var i=1;i<=myvalue;i++){
+				document.getElementById(""+i).innerHTML="<h1>★</h1>";
+				document.getElementById(""+i).setAttribute("style","color:orange");
+			}
+			document.getElementById('rank').value = myvalue;
+			document.getElementById('user_rank').textContent = '评分：'+myvalue+'分';
+		}
+	window.onload=function(){
+	var oTxt = document.getElementById("txt");
+	var oBtn = document.getElementById("btn1");
+	var oUl1 = document.getElementById("ul1");
+	var omore = document.getElementById("more");
+	var xmlhttp=new XMLHttpRequest;
+
+	omore.onclick=function(){
+			var oBox = document.createElement("div");
+			oBox.className = "all";
+			var b = document.getElementsByClassName('member');
+			var url="/movie/comment/?id={{ movie.id }}&n="+b.length.toString();
+			xmlhttp.open("GET",url,true);
+			xmlhttp.send(null);
+			xmlhttp.onreadystatechange=function()
+	        {
+	            if (xmlhttp.readyState===4 && xmlhttp.status===200)
+	            {
+	                {#alert("in");#}
+	                var portrait_ = xmlhttp.responseText;
+	                var p = JSON.parse(portrait_);
+	                {#alert(p);#}
+	                var flag = 1;
+	                for(var i in p){
+                        var comment = p[i];
+	                    var oDiv = document.createElement('div');
+	                    document.getElementsByClassName('review-second')[0].appendChild(oDiv);
+	                    {#document.getElementsByClassName('review-second')[0].a#}
+	                    oDiv.className = "member";
+
+	                    var pic = document.createElement('img');
+                        oDiv.appendChild(pic);
+                        pic.className = "portrait";
+                        pic.src = comment['poster'];
+                        pic.alt = "";
+
+                        var name = document.createElement('i');
+                        oDiv.appendChild(name);
+                        name.style = "margin-left: 10px";
+                        name.className = "name";
+                        name.textContent = comment['user_name'];
+
+                        if(comment['rank']){
+                            var rank = document.createElement('span');
+                            oDiv.appendChild(rank);
+                            rank.style = 'float: right;';
+                            rank.textContent = '评分：'+comment['rank'];
+                        }
+
+
+                        var time = document.createElement('span');
+                        oDiv.appendChild(time);
+                        time.style = 'float: right';
+                        time.textContent = '评论时间：'+comment['comment_time'];
+
+                        var br1 = document.createElement('br');
+                        var br2 = document.createElement('br');
+                        oDiv.appendChild(br1);oDiv.appendChild(br2);
+
+                        var comm = document.createElement('p');
+                        oDiv.appendChild(comm);
+                        comm.style = "width:650px;height: 72px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+                        comm.className = "comment";
+                        comm.textContent = comment['comment']
+                    }
+	            }
+	        };
+		};
+    };
+    {% else %}
+    window.onload=function(){
+        var omore = document.getElementById("more");
+        omore.onclick=function () {
+            alert('请登录后再查看更多评论');
+        }
+    };
+    {% endif %}
+
+
+</script>
+{% endblock %}
+{% block title %}{{ movie.name }}{% endblock %}
+{% block main_body %}
+    <div class="main">
+		<div class="main-box">
+			<div class="movie" style="width: 100%;">
+                <div class="mask">
+					<img style="width: 1200px;height: 300px;" src="{% static movie.poster %}" alt="" class="dim">
+				</div>
+				<div class="movie-position">
+					<img class="movie-picture" src="{% static movie.poster %}" alt="">
+				</div>
+				<div class="movie-overview">
+					<p class="movie-name">影名：{{ movie.name }}</p>
+                    {% if movie.long %}
+                        <p class="movie-other">时长：{{ movie.long }}</p>
+                    {% endif %}
+                    {% if movie.year %}
+                        <p class="movie-other">上映日期：{{ movie.year }}</p>
+                    {% endif %}
+                    {% if movie.long %}
+                        <p class="movie-other">评分：{{ movie.rank }}&nbsp;&nbsp;
+                        {% if movie.star_num %}
+                            评分人数：{{ movie.star_num }}
+                        {% endif %}</p>
+                    {% endif %}
+
+                    {% if movie.review %}
+                        <p class="movie-other">短评：{{ movie.review }}</p>
+                    {% endif %}
+				</div>
+			</div>
+			<div class="movie-details">
+				<div class="synopsis">
+					<i class="synopsos-first">剧情简介 · · · · · ·</i>
+					<p class="synopsos-second">{{ movie.details }}</p>
+				</div>
+				<div class="performer">
+					<i class="performer-first">演职人员 · · · · · ·
+                    <a style="cursor: pointer" href="\movie\cast\?id={{ movie.id }}">全部{{ person_count }}人</a></i>
+                        <div class="performer-second">
+                        {% for person in cast %}
+
+                                <div class="people">
+                                    <a href="{% url 'apps.person:person' %}?id={{ person.person.id }}">
+                                    <div class="head">
+                                        <img src="{% static person.person.poster %}" style="width: 104px;height: 148px" alt="">
+                                    </div>
+                                    <p>{{ person.person.name }}</p>
+                                    {% if person.part %}
+                                        <p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">({{ person.part }}</p>
+                                    {% endif %}
+                                    </a>
+                                </div>
+
+                        {% endfor %}
+                        </div>
+				</div>
+				<div class="stills">
+					<i class="stills-first">剧照 · · · · · ·
+                    <a href="{% url 'apps.movie:movie_photo' %}?id={{ movie.id }}">全部{{ image_count }}张</a></i>
+					<div style="padding-top: 10px;padding-left: 10px" class="stills-second">
+                        {% for photo in image %}
+                            <img style="padding-right: 10px;" class="stills-photo" src="{% static photo %}" alt="">
+                        {% endfor %}
+					</div>
+				</div>
+				<div class="review">
+                    <p class="review-first">影评  &nbsp;&nbsp;&nbsp;&nbsp;{{ comment_num }}条</p>
+                    {% if request.user.is_authenticated %}
+					<i id='user_rank' class="score">评分 :</i>
+					<div id="showdiv">
+						<div id="1" class="myfloatleft" onmouseover="rank('1')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="2" class="myfloatleft" onmouseover="rank('2')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="3" class="myfloatleft" onmouseover="rank('3')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="4" class="myfloatleft" onmouseover="rank('4')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="5" class="myfloatleft" onmouseover="rank('5')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="6" class="myfloatleft" onmouseover="rank('6')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="7" class="myfloatleft" onmouseover="rank('7')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="8" class="myfloatleft" onmouseover="rank('8')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="9" class="myfloatleft" onmouseover="rank('9')" onmouseout="myclear()"><h1>☆</h1></div>
+						<div id="10" class="myfloatleft" onmouseover="rank('10')" onmouseout="myclear()"><h1>☆</h1></div>
+                    {% endif %}
+
+					<div class="review-second">
+						<div id="div1" >
+                            <form id="p" method="post" action="/movie/comment/">
+                            {% if request.user.is_authenticated %}
+
+                                <textarea id="txt" name="comment" style="height: 88px;width: 810px;" ></textarea><br />
+                                <input id="movie_id" name="movie_id" type="hidden" value="{{ movie.id }}">
+                                <input id='rank' type="hidden" name="rank" value="0">
+                                <input id="user_id" type="hidden" name="user_id" value="{{ request.session.user_id }}">
+                                <input id="user_name" type="hidden" name="user_name" value="{{ request.session.user_name }}">
+
+                                {% csrf_token %}
+                            </form>
+                            <a href="javascript:post()"><input class="submit" type="submit" value="提交"/></a>
+                            {% else %}
+                                <br>
+                                <label>请先登录再评论</label>
+                            {% endif %}
+							<ul id="ul1">
+							</ul>
+						</div>
+						<a class="else" href="#">热门</a>
+						<a class="else" href="#">最新</a>
+						<a class="else" href="#">楼层</a>
+
+                        {% for comment in comments %}
+                            <div class="member">
+                            {% if comment.image %}
+                            <img src="{% static comment.image %}" alt="" class="portrait">
+                            {% else %}
+                            <img src="{% static 'source/boy.jpg' %}" alt="" class="portrait">
+                            {% endif %}
+
+							<i style="margin-left: 10px" class="name">{{ comment.user_name }}</i>
+                            {% if comment.rank %}
+                            <span style="float: right;">评分：{{ comment.rank }}</span>
+                            {% endif %}
+                            <span style="float: right;">评论时间：{{ comment.comment_time }}&nbsp;</span>
+                            <br><br>
+							<p style="width:650px;height: 72px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="comment">
+								{{ comment.comment }}
+							</p>
+                            </div>
+                        {% endfor %}
+                        <ul id="ul1"></ul>
+					</div>
+                	<input id="more" type="button" value="查看更多"/>
+
+				</div>
+                <iframe style="display: none;" name="ifr" id="ifr"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

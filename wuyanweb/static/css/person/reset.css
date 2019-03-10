@@ -1,0 +1,12 @@
+
+body,input,box-img{
+	margin:0;
+	padding:0;
+}
+a{
+	text-decoration: none;
+	color: grey;
+}
+li{
+	list-style-type: none;
+}

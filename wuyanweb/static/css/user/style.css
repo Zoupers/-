@@ -1,0 +1,66 @@
+
+.center{
+	width: 1200px;
+	margin:0 auto;
+	height: 900px;
+}
+.left{
+	width: 260px;
+	height: 440px;
+	background-color: #fff;
+	margin-top: 20px;
+	margin-left: 20px;
+	
+}
+.personal-data{
+	border-left:  red solid 3px;
+	padding-left: 10px;
+	font-size: 12px;
+	float: left;
+}
+.avatar{
+	height: 96px;
+	width: 96px;
+	padding-top: 80px;
+	padding-bottom: 40px;
+	margin: 0 auto;
+}
+.name{
+	text-align: center;
+	font-size: 14px;
+}
+.personal-information{
+	margin-top: 100px;
+	margin-left: 10px;
+	font-size: 12px;
+}
+.right{
+
+	width: 900px;
+	height: 847px;
+	background-color: #fff;
+	margin-left: 300px;
+	margin-top: -440px;
+	
+}
+.right-personal{
+	padding-top: 6px;
+}
+.right-personal-data{
+
+	font-size: 12px;
+	
+	border-left: red 3px solid;
+	padding-left: 30px;
+}
+.comment{
+	width: 820px;
+	margin: 0 auto;
+	height: 100px;
+}
+.view-more{
+	text-align: center;
+	font-size: 12px;
+	color: gray;
+	margin-top: 150px;
+}

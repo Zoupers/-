@@ -2,8 +2,8 @@ import pymysql
 
 
 class DbHandle(object):
-    def __init__(self, host='localhost', port=3306, user='root', password='131421', database='ranking'):
-        self.db = pymysql.connect(host=host, port=port, user=user, password=password)
+    def __init__(self, host='localhost', port=3306, user='root', password='131421', database='ranking', charset='utf8mb4'):
+        self.db = pymysql.connect(host=host, port=port, user=user, password=password, charset=charset)
         self.cursor = self.db.cursor()
         self.cursor.execute('SHOW DATABASES')
         if (database,) not in self.cursor.fetchall():
@@ -11,14 +11,20 @@ class DbHandle(object):
         self.cursor.execute('USE %s' % database)
         self.table = None
 
-    def create_table(self, sql):
-        self.cursor.execute(sql)
+    def create_table(self, sql=None):
+        if not sql:
+            sql = 'CREATE TABLE `default`(`url` TEXT NOT NULL );'
+        self.execute(sql)
         return True
 
+    def delete_table(self, table=None):
+        self.execute('DROP TABLE `%s`' % table)
+
     def get(self, table=None, _filter=None, _range='*'):
+        sql = 'SELECT {range} FROM '.format(range=_range)
         if not table:
             table = self.table
-        select = 'SELECT * FROM %s' % table
+        select = sql + '`' + table + '`'
         if _filter:
             self.execute(select+' '+_filter)
         else:
@@ -44,29 +50,45 @@ class DbHandle(object):
         return self.get(table, _filter=_filter)
 
     def update(self, data, table=None):
-        sql = 'UPDATE {} set `{}`={} WHERE `id`={}'.format(table, *data)
-        self.execute(sql)
+        if not table:
+            table = self.table
+        sql = 'UPDATE {table} set `{col}`=%s WHERE `id`=%s'.format(table=table)
+        sql.format(col=data[0])
+        self.execute(sql, data[1:])
         self.db.commit()
 
     def updatemany(self, data, table=None):
-        for i in data:
-            sql = 'UPDATE {} set `{}`={} WHERE `id`={}'.format(table, *i)
-            self.execute(sql)
-            self.db.commit()
-
-    def save(self, data, table=None):
         if not table:
             table = self.table
-        insert_sql = 'INSERT INTO {table} VALUES {values}'.format(table=table, data=data)
-        self.execute(insert_sql)
+        for i in data:
+            sql = 'UPDATE {table} set `{col}`=%s WHERE `id`=%s'.format(table=table)
+            sql.format(col=i[0])
+            self.execute(sql, i[1:])
+            self.db.commit()
+
+    def save(self, data, table=None, _range=None):
+        sql1 = 'INSERT INTO `{table}`'
+        sql2 = '{_range} VALUES(%s)'
+        if _range:
+            sql2 = sql2.format(_range='('+_range+')')
+        else:
+            sql2 = sql2.format(_range='')
+        if not table:
+            table = self.table
+        sql1 = sql1.format(table=table)
+        insert_sql = sql1+sql2
+        insert_sql %= ('%s, '*(len(data)-1)+'%s')
+        self.execute(insert_sql, data)
         self.db.commit()
 
-    def execute(self, query, *args):
-        self.cursor.execute(query, *args)
-        return True
+    def commit(self):
+        self.db.commit()
+
+    def execute(self, query, *args, **kwargs):
+        return self.cursor.execute(query, *args, **kwargs)
 
     def executemany(self, *args, **kwargs):
-        self.cursor.executemany(*args, **kwargs)
+        return self.cursor.executemany(*args, **kwargs)
 
     def fetchall(self):
         return self.cursor.fetchall()
@@ -77,8 +99,8 @@ class DbHandle(object):
     def fetchmany(self, size):
         return self.cursor.fetchmany(size)
 
-    def do(self, method, *args, **kwargs):
-        pass
+    def close(self):
+        self.db.close()
 
 
 if __name__ == '__main__':

@@ -1,0 +1,85 @@
+{% extends 'ranking_base.html' %}
+{% load staticfiles %}
+{% block title %}
+    {% ifequal type 'top250' %}
+        Top250
+    {% else %}
+        {{ type }}排行榜
+    {% endifequal %}
+{% endblock %}
+{% block movies %}
+    {% for movie in movies %}
+                <div style=" width: 850px;height: 210px; margin:30px 0px;">
+						<div ><a href="/movie/?id={{ movie.movie_id }}"><img class="right-img" src="{% static movie.movie.poster %}" alt=""></a></div>
+						<div class="rank-name">
+                            <div style="float: left;">
+                                <h1 class="movie_name">
+                                    <span>{{ movie.rank }}.</span>
+                                    <a style="color: #3c3c3c" href="/movie/?id={{ movie.movie_id }}">{{ movie.movie.name }}</a>
+                                </h1>
+                            {% if movie.movie.year %}
+                                <p class="publishDate" style="font-size: 10px">上映日期: {{ movie.movie.year }}</p>
+                            {% endif %}
+                            {% if person %}
+                            <p style="font-size: 15px;width: 380px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">导演：
+                            {% for p in person %}
+                                {% ifequal p.movie_id movie.movie_id %}
+                                    {% ifequal p.type '1' %}
+                                        {{ p.person.name.split|first }}
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endfor %}
+                            </p>
+                            <p style="width: 380px;font-size: 15px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">编剧：
+                            {% for p in person %}
+                                {% ifequal p.movie_id movie.movie_id %}
+                                    {% ifequal p.type '2' %}
+                                        {{ p.person.name.split|first }}
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endfor %}
+                            </p>
+                            {% endif %}
+                            {% if movie.movie.long %}
+                                <p style="width: 380px;font-size: 15px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                    片长：{{ movie.movie.long }}
+                                </p>
+                            {% endif %}
+                            {% if movie.movie.review %}
+                            <p style="width: 450px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="review">{{ movie.movie.review }}</p>
+                            {% endif %}
+                            </div>
+
+
+						<div class="rank-grand">
+							<h1 class="rank">{{ movie.movie.rank }}</h1>
+							<p class="star_num">{{ movie.movie.star_num }}人评分</p>
+						</div>
+					</div>
+                </div>
+    {% endfor %}
+    <div class="paginator">
+        			<span class="prev">
+                        {% if pages.prev %}
+                            <link rel="prev" href="{{ pages.prev_url }}">
+                            <a href="{{ pages.prev_url }}">前页&gt;</a>
+                        {% endif %}
+			        </span>
+                        {% for page, url in pages.final %}
+                            {% ifequal page pages.now %}
+                                <span class="thispage">{{ page }}</span>
+                            {% else %}
+                                <a href="{{ url }}">{{ page }}</a>
+                            {% endifequal %}
+                        {% endfor %}
+                     <span class="next">
+                         {% if pages.next %}
+                            <link rel="next" href="{{ pages.next_url }}">
+                            <a href="{{ pages.next_url }}">后页&gt;</a>
+                        {% endif %}
+			        </span>
+
+            <span class="count">(共{{ pages.total }}条)</span>
+        </div>
+{% endblock %}
+

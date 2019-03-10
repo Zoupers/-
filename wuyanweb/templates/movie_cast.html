@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cast/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/cast/style.css' %}">
+{% endblock %}
+{% block title %}演职员{% endblock %}
+{% block main_body %}
+    <section class="all">
+		<div class="center">
+			<div class="left">
+				<p class="cast">演职人员(<span>123</span>人)</p>
+				<div class="left-first" style="height: 245px">
+					<p style="font-size: 12px;">导演Doctor</p>
+                    {% for foo in mpr %}
+                        {% ifequal foo.type '1' %}
+                            <div class="people">
+                            <div class="head">
+                                <img src="{% static foo.person.poster %}" style="width: 104px;height: 148px" alt="">
+                            </div>
+                            <p>{{ foo.person.name }}</p>
+                            </div>
+                        {% endifequal %}
+                    {% endfor %}
+				</div>
+
+				<div class="left-second" style="height: {{ height }}px">
+					<p style="font-size: 12px;">演员Cast</p>
+					{% for foo in mpr %}
+                        {% ifequal foo.type '3' %}
+                            <div class="people">
+                            <a style="color: black" href="/person/?id={{ foo.person.id }}">
+                                <div class="head">
+                                <img src="{% static foo.person.poster %}" style="width: 104px;height: 148px" alt="">
+                                </div>
+                                <p>{{ foo.person.name }}</p>
+                                <p>({{ foo.part }}</p>
+                            </a>
+                            </div>
+                        {% endifequal %}
+                    {% endfor %}
+
+				</div>
+				<div class="left-third">
+					<p style="font-size: 12px;">编剧 Screen</p>
+                    {% for foo in mpr %}
+                        {% ifequal foo.type '2' %}
+                            <div class="people">
+                            <div class="head">
+                                <img src="{% static foo.person.poster %}" style="width: 104px;height: 148px" alt="">
+                            </div>
+                            <p>{{ foo.person.name }}</p>
+                            </div>
+                        {% endifequal %}
+                    {% endfor %}
+				</div>
+			</div>
+			<div style="font-size: 15px" class="right">
+				<h1><a href="/movie/{{ movie.id }}" style="font-size: 12px; color: black;">< 返回《{{ movie.name }}》电影主页</a></h1>
+				<p class="cast">演职人员概览</p>
+				<p>导演: <span>
+                    {% for people in mpr %}
+                        {% ifequal people.type '1' %}
+                            {{ people.person.name.split|first }}&nbsp;&nbsp;
+                        {% endifequal %}
+                    {% endfor %}
+                </span></p>
+				<p>主演： <span>
+                    {% for people in mpr %}
+                        {% ifequal people.type '3' %}
+                            {{ people.person.name.split|first }}&nbsp;&nbsp;
+                        {% endifequal %}
+                    {% endfor %}
+                </span></p>
+				<p>编剧： <span>
+                    {% for people in mpr %}
+                        {% ifequal people.type '2' %}
+                            {{ people.person.name.split|first }}&nbsp;&nbsp;
+                        {% endifequal %}
+                    {% endfor %}
+                </span></p>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}账号注册{% endblock %}
+{% load staticfiles %}
+{% block js %}
+    {% if js %}
+    <script>
+        alert("{{ js }}");
+    </script>
+    {% endif %}
+
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/register/style.css' %}">
+{% endblock %}
+{% block login %}{% endblock %}
+{% block main_body %}
+    <div class="register-all">
+	  <form autocomplete="off" action="" name="" method="post">
+	     <table class="register">
+		    <tr>
+		        <td class="first">账号注册</td>
+		    </tr>
+	        <tr>
+	            <td class="tele">
+                        <input type="text" name="userName" placeholder="请输入用户名" maxlength="11" style="border:0px;outline:none;">
+				</td>
+	        </tr>
+		  	    <tr>
+	            <td class="tele">
+					<input type="text" name="email" placeholder="请输入您的邮箱" maxlength="30" style="border:0px;outline:none;">
+                    </td>
+	        </tr>
+	        <tr>
+	            <td class="tele">
+					<input type="password" name="userPassword1" placeholder="请输入您的密码" style="border:0px;outline:none;">
+				</td>
+	        </tr>
+	    	<tr>
+	            <td class="tele">
+					<input type="password" name="userPassword2" placeholder="请确认您的密码" style="border:0px;outline:none;">
+				</td>
+	        </tr>
+			<tr>
+				<td class="button">
+                    <button class="register-button">注册</button>
+				</td>
+			</tr>
+            {% csrf_token %}
+            {{ message }}
+            {{ Email }}
+			<tr>
+				<td class="foot">
+					<i class="absence">已有账号去<a class="login" href="{% url 'apps.user:login' %}">登录</a></i>
+				</td>
+			</tr>
+	     </table>
+	   </form>
+	</div>
+    <script>
+    function randomNum(min,max){
+        return Math.floor(Math.random()*(max-min)+min);
+    }
+    function randomColor(min,max){
+        var _r = randomNum(min,max);
+        var _g = randomNum(min,max);
+        var _b = randomNum(min,max);
+        return "rgb("+_r+","+_g+","+_b+")";
+    }
+    document.getElementById("canvas").onclick = function(e){
+        e.preventDefault();
+        drawPic();
+    };
+    function drawPic(){
+        var $canvas = document.getElementById("canvas");
+        var _str = "0123456789";
+        var _picTxt = "";
+        var _num = 4;
+        var _width = $canvas.width;
+        var _height = $canvas.height;
+        var ctx = $canvas.getContext("2d");
+        ctx.textBaseline = "bottom";
+        ctx.fillStyle = randomColor(180,240);
+        ctx.fillRect(0,0,_width,_height);
+        for(var i1=0; i1<_num; i1++){
+            var x = (_width-10)/_num*i1+10;
+            var y = randomNum(_height/2,_height);
+            var deg = randomNum(-45,45);
+            var txt = _str[randomNum(0,_str.length)];
+            _picTxt += txt;
+            ctx.fillStyle = randomColor(10,100);
+            ctx.font = randomNum(16,40)+"px SimHei";
+            ctx.translate(x,y);
+            ctx.rotate(deg*Math.PI/180);
+            ctx.fillText(txt, 0,0);
+            ctx.rotate(-deg*Math.PI/180);
+            ctx.translate(-x,-y);
+        }
+        for(var i2=0; i2<_num; i2++){
+            ctx.strokeStyle = randomColor(90,180);
+            ctx.beginPath();
+            ctx.moveTo(randomNum(0,_width), randomNum(0,_height));
+            ctx.lineTo(randomNum(0,_width), randomNum(0,_height));
+            ctx.stroke();
+        }
+        for(var i3=0; i3<_num*10; i3++){
+            ctx.fillStyle = randomColor(0,255);
+            ctx.beginPath();
+            ctx.arc(randomNum(0,_width),randomNum(0,_height), 1, 0, 2*Math.PI);
+            ctx.fill();
+        }
+        return _picTxt;
+    }
+    drawPic();
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/boxoffice/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/boxoffice/style.css' %}">
+{% endblock %}
+{% block title %}国内票房榜{% endblock %}
+{% block main_body %}
+    <div class="center">
+        {% for movie in movies %}
+            <div class="single">
+				<div class="item1 item" >{{ movie.movieName }}</div>
+                <div class="item-2 item"><b style="font-size: 19px;margin-left: -70px">实时票房：{{ movie.实时票房 }}</b></div>
+				<div class="item2 item"><b>累计票房：{{ movie.累计票房 }}</b></div>
+				<div class="item3 item">上映天数：{{ movie.上映天数 }}</div>
+				<div class="item4 item">票房占比：{{ movie.票房占比 }}%</div>
+				<div class="item5 item">排片占比：{{ movie.排片占比 }}</div>
+				<div class="item6 item">排座占比：{{ movie.排座占比 }}</div>
+				<div class="item7 item">场次占比：{{ movie.场次占比 }}</div>
+				<div class="item8 item">场次：{{ movie.场次 }}</div>
+				<div class="item9 item">人次：{{ movie.人次 }}</div>
+			</div>
+        {% endfor %}
+{% endblock %}

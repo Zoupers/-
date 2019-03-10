@@ -1,0 +1,80 @@
+.center{
+	margin:0 auto;
+	width: 1200px;
+}
+	.center-word{
+		font-size: 12px;
+		color: gray;
+		padding-left: 400px;
+	}
+	.ranking{
+		margin: 0 auto;
+		width: 1200px;
+	    display: grid;
+	    grid-template-columns: 880px 280px;
+	    grid-template-rows: 240px 376px 376px 376px; 
+	}
+	.item1 {
+	    grid-row-start: 1;
+	    grid-row-end: 5;
+	}
+		.right-img{
+			width: 152px;
+			height: 210px;
+			float: left;
+			margin-right: 20px;
+		}
+		.rank-name{
+			float: left;
+			height: 210px;
+			width: 550px;
+		}
+			.movie_name{
+				padding-top: 0px;
+				font-size: 20px;
+			}
+			.person{
+				padding-top: 14px;
+				font-size: 12px;
+				font-family: gary;
+			}
+			.review{
+				font-family: 华文楷体;
+			}
+			.publishDate{
+				font-size: 12px;
+			}
+			.rank-grand{
+			float: right;
+		}
+			.rank{
+				margin-top: 14px;
+				color: #E86263;
+				font-size: 36px;
+				margin-bottom: 5px;
+			}
+			.star_num{
+				font-size: 12px;
+				color: #999999;
+				margin-top: 5px;
+			}
+	.item2-h{
+		font-size: 14px;
+		border-left:4px solid red;
+		padding-left: 20px;
+	}
+		.classify{
+			width: 70px;
+			float: left;
+		}
+	.item3-rank{
+		font-size: 12px;
+		margin: 18px 0px;
+	}
+	.item3-rank-numb{
+		padding-right: 10px;
+	}
+	.paginator{
+		margin:0 auto;
+		width: 400px;
+	}

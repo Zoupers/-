@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}登录{% endblock %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/login/reset.css' %}">
+{% endblock %}
+{% block js %}
+{% if js %}
+<script>
+    alert("{{ js }}")
+</script>
+{% endif %}
+{% endblock %}
+{% block login %}{% endblock %}
+{% block main_body %}
+    <div class="login-all">
+	     <table class="login">
+		     <tr>
+		        <td class="first">账号登录</td>
+		     </tr>
+        	  <form autocomplete="off" action="{% url 'apps.user:login' %}" name="" method="post">
+	         <tr>
+	            <td class="tele">
+					<input type="text" name="userName" maxlength="30" placeholder="请输入您的用户名或者邮箱" style="width: 200px;text-align: center;border:0px;outline:none;">
+				</td>
+	         </tr>
+	         <tr>
+                      <td class="password">
+                        <input type="password" name="userPassword" placeholder="请输入您的密码" style="text-align: center;border:0px;outline:none;">
+                        </td>
+                    <tr>
+                    <td class="graph-verification">
+{#                        {{ user_form.captcha }}#}
+                        <input type="text" name='captcha_1' class="form-control" placeholder="输入图片验证码" required>
+                        <a href="javascript:change()" class="captcha"><img class="captcha-image" src="{{ image_url }}" alt="点击换一张" id="id_captcha"></a>
+                        <input value="{{ hashkey }}" name="captcha_0" type="hidden" id="id_captcha_0">
+                    </td>
+                    </tr>
+	         </tr>
+                  {% csrf_token %}
+
+	         <tr>
+	            <td class="else" colspan="2">
+					<a class="verification change" id="verification" href="">邮箱验证码登录</a>
+		            <a class="forget change" id="forget" href="{% url 'apps.user:reset' %}">忘记密码</a>
+				</td>
+	         </tr>
+			<tr>
+				<td>
+					<button class="login-button">登录</button>
+				</td>
+			</tr>
+                  </form>
+			<tr>
+				<td class="foot">
+					<i class="absence">没有账号去<a class="register" href="{% url 'apps.user:register' %}">注册</a></i>
+				</td>
+			</tr>
+	      </table>
+	   
+        {{ message }}
+	</div>
+<script>
+    function change(){
+        var url = "{% url 'apps.user:refresh_captcha' %}";
+        var x = new XMLHttpRequest;
+        x.open('GET', url);
+        x.onreadystatechange = function(){
+            if(x.readyState === 4 && x.status === 200) {
+                f(x.responseText);
+             }
+        };
+        function f(content) {
+            {#alert(content);#}
+            {#alert("now");#}
+            var j = JSON.parse(content);
+            {#alert(j['image_url']);#}
+            document.getElementById("id_captcha").src = j['image_url'];
+            document.getElementById("id_captcha_0").value = j['hashkey'];
+        }
+        x.send(null);
+    }
+</script>
+{% endblock %}
