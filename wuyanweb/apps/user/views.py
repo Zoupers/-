@@ -57,7 +57,6 @@ class LoginView(View):
         form['userPassword'] = request.POST.get('userPassword')
         form['captcha'] = request.POST.get('captcha')
         user_form = UserForm(request.POST)
-        # print(user_form)
         # print(user_form.is_valid())
         if user_form.is_valid():
             username = user_form.cleaned_data['userName']
@@ -144,16 +143,16 @@ def active(request):
             new_user.email = registing[0].email
             new_user.save()
             registing.delete()
-            return HttpResponse('激活成功')
+            return render(request, 'email.html', {'message': '激活账号成功'})
         else:
-            return HttpResponse('激活失败')
+            return render(request, 'email.html', {'message': '激活账号失败'})
 
-    return render(request,'email.html', locals())
+    return redirect('apps.user:login')
 
 
 # 找回密码
 def reset(request):
-    if request.session.get('is_login',None):
+    if request.session.get('is_login', None):
         return redirect('/ranking/')
 
     if request.method == 'POST':
@@ -161,7 +160,7 @@ def reset(request):
         email = request.POST.get('email', None)
         password1 = request.POST.get('userPassword1', None)
         password2 = request.POST.get('userPassword2', None)
-        if email:
+        if email and password1 and password2:
             # username = username.strip()
             user = User.objects.filter(email=email)
             if user:
@@ -181,8 +180,8 @@ def reset(request):
                         new_user.save()
                     else:
                         Email = '邮件发送失败'
-            else:
-                return render(request, 'reset.html', {'js': '有错误'})
+        else:
+            return render(request, 'reset.html', {'js': '有错误'})
 
     return render(request, 'reset.html', locals())
 
@@ -190,8 +189,11 @@ def reset(request):
 # 改密验证
 def reactive(request):
     if request.method == 'GET':
+
         token = request.GET.get('token')
         resetting_name = request.GET.get('name')
+        if not token and resetting_name:
+            return render(request, 'email.html', {'message': '您的链接不正确'})
         resetting = Reset_User.objects.get(name=resetting_name)
         if token == resetting.Email_code:
             new_user = User.objects.get(username=resetting_name)
@@ -200,9 +202,9 @@ def reactive(request):
             # new_user.password = make_password(resetting.password)
             new_user.save()
             resetting.delete()
-            return HttpResponse('验证成功')
+            return render(request, 'email.html', {'message': '验证成功'})
         else:
-            return HttpResponse('验证失败')
+            return render(request, 'email.html', {'message': '验证失败'})
 
     return render(request, 'email.html', locals())
 
