@@ -153,9 +153,9 @@ EMAIL_HOST = 'smtp.qq.com'
 
 EMAIL_PORT = 465
 
-EMAIL_HOST_USER = '1018471226@qq.com'
+EMAIL_HOST_USER = 'dabaiandxiaohei@qq.com'
 
-EMAIL_HOST_PASSWORD = 'wwrnujnatjpobffh'
+EMAIL_HOST_PASSWORD = 'ajjoaddpuclhhjdc'
 
 #验证码配置
 CAPTCHA_OUTPUT_FORMAT = '%(image)s %(text_field)s %(hidden_field)s '

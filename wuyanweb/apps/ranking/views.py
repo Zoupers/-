@@ -106,6 +106,7 @@ def box_office():
         movie['rank'] = n
         movie['movieName'] = movie_['movieName']
         movie['上映天数'] = movie_['attribute']['1']['attrValue']
+        movie['实时票房'] = movie_['attribute']['3']['attrValue']
         movie['累计票房'] = movie_['attribute']['2']['attrValue']
         movie['票房占比'] = movie_['attribute']['4']['attrValue']
         movie['排片占比'] = movie_['attribute']['5']['attrValue']
