@@ -211,8 +211,7 @@ def reactive(request):
 
 # 注销
 def logout(request):
-    if request.session.get('is_login',None):
-        request.session.flush()
-        auth_logout(request)
-        return redirect('/ranking/')
+    request.session.flush()
+    auth_logout(request)
+    return redirect('/ranking/')
 

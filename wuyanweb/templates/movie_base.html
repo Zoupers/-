@@ -147,6 +147,15 @@
 				</div>
 			</div>
 			<div class="movie-details">
+
+                <div class="collection" style="float: right;">
+                    {% if request.user.is_authenticated %}
+                    <button class="collection-button" style="width: 100px;height: 30px;border-width: 0px;">收藏</button>
+                    {% else %}
+                    <a href="{% url 'apps.user:login' %}">登录后收藏本电影</a>
+                    {% endif %}
+                </div>
+
 				<div class="synopsis">
 					<i class="synopsos-first">剧情简介 · · · · · ·</i>
 					<p class="synopsos-second">{{ movie.details }}</p>

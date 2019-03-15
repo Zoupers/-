@@ -17,12 +17,6 @@
 	margin-top: 24px;
 	margin-left: 20px;
 }
-	/*.movie-picture{*/
-		/*height: 252px;*/
-		/*width: 182px;*/
-		/*background-color: white;*/
-		/*position: absolute;*/
-	/*}*/
 .movie-overview{
 	position: absolute;
 	margin-left: 250px;
@@ -38,6 +32,18 @@
 }
 .movie-details{
 	padding-top: 20px;
+}
+.collection-button{
+	background: #E86263;
+	cursor: pointer;
+	outline: none;
+	font-family:"Arial";
+	color: white;
+	font-size: 14px;
+}
+.collection-button:hover{
+	background: #E86263;
+	opacity: 0.5;
 }
 .synopsos{
 	width: 810px;

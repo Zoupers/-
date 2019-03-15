@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
+from apps.movie.models import Movie
+from apps.person.models import Person
 
 
 # 待激活中账户
@@ -25,6 +27,16 @@ class Reset_User(models.Model):
 #     motto = models.CharField(max_length=200, null=True, verbose_name='座右铭', blank=True)
 #     introduce = models.TextField(verbose_name='个人简介', null=True, blank=True)
 
+
+class Relation(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    movie_id = models.CharField(max_length=50, default=None, blank=True)
+    person_id = models.CharField(max_length=50, default=None, blank=True)
+    type = models.CharField(choices=((1, '电影'), (2, '人物')), max_length=3)
+
+    class Meta(object):
+        pass
+    
 
 
 
