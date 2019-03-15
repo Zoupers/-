@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
-from apps.movie.models import Movie
-from apps.person.models import Person
 
 
 # 待激活中账户

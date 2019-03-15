@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': 'ranking',
         'USER': 'wuyan',
         'PASSWORD': '123456',
-        'HOST': 'localhost',
+        'HOST': '120.77.254.86',
     }
 }
 
