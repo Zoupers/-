@@ -19,7 +19,7 @@ def send_A_email(req,name):
     reciever.append(req)
     random = random_str()
     msg = '打开此链接激活账户：http://wuyan.ngrok.xiaomiqiu.cn/user/active/?token='+random+'&name='+name
-    res = send_mail(title, msg,settings.EMAIL_HOST_USER, reciever)
+    res = send_mail(title, msg, settings.EMAIL_HOST_USER, reciever)
     return res, random
 
 

@@ -2,7 +2,45 @@
 {% load staticfiles %}
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/person/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/person/iconfont.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/person/reset.css' %}">
+{% endblock %}
+{% block js %}
+<script>
+        var whetherLike = {% if Like %}'1'{% else %}'0'{% endif %};
+        function x(){
+            var hello1=document.getElementById("hello1");
+
+                    hello1.children[0].innerHTML="&#xe699;";
+                    hello1.children[1].innerHTML="取消喜欢";
+                    hello1.children[1].href="javascript:y();";
+                    personLove();
+                }
+        function y(){
+            var hello1=document.getElementById("hello1");
+
+                    hello1.children[0].innerHTML="&#xe607;";
+                    hello1.children[1].innerHTML="喜欢";
+                    hello1.children[1].href="javascript:x();";
+                    personLove();
+                }
+        var personLove = function(){
+        {#创建需要发送post请求的表单#}
+        var xmlpost = new XMLHttpRequest();
+
+        {#发送0代表用户还没有喜欢过这个电影，数据库删除关系或者将用户喜欢这部电影的激活码置为否#}
+        {#发送1代表用户喜欢过这个电影了，数据库增加关系或者将用户喜欢这部电影的激活码置为是#}
+        if (whetherLike === '0') {
+            xmlpost.open("POST", 'relation/?id={{ actor.id }}&type=2&user_id={{ request.user.id }}&whetherLike=0', true);
+            xmlpost.send(null);
+            whetherLike = '1';
+        }else if (whetherLike === '1'){
+            xmlpost.open("POST", 'relation/?id={{ actor.id }}&type=2&user_id={{ request.user.id }}&whetherLike=1', true);
+            xmlpost.send(null);
+            whetherLike = '0';
+        }
+        };
+</script>
 {% endblock %}
 {% block title %}{{ actor.name }}{% endblock %}
 {% block main_body %}
@@ -66,6 +104,17 @@
                         {% endif %}
 
                     </ul>
+                    {% if request.user.is_authenticated %}
+                    <div style="color: #fff;" id="hello1" href="javascript:x()" >
+                    {% if Like %}
+                        <i class="iconfont" style="width:22px;height:22px;" >&#xe699;</i>
+                        <a href="javascript:y()">取消喜欢</a>
+                    {% else %}
+                        <i class="iconfont" style="width:22px;height:22px;" >&#xe607;</i>
+                        <a href="javascript:x()">喜欢</a>
+                    {% endif %}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -90,6 +139,36 @@
                             </div>
                         </div>
                 </div>
+            </div>
+            <div style="width: 450px; float: left;">
+                 <p class="profile-first" >出演电影 · · · · · ·</p>
+                {% for movie in playMovie %}
+                    <div class="people">
+                        <a href="/movie/?id={{ movie.id }}">
+                        <div cmlass="head">
+                            <img src="{% static movie.poster %}" style="width: 104px;height: 148px" alt="">
+                            <p>{{ movie.name }}</p>
+                        </div>
+                        </a>
+                    </div>
+                {% endfor %}
+
+
+
+            </div>
+            <div style="width: 450px; float: left;">
+                <p class="profile-first" >合作影人 · · · · · ·</p>
+                    {% for person in cooperator %}
+                     <div class="people">
+                        <div class="head">
+                            <a href="/person/?id={{ person.person_id }}">
+                            <img src="{% static person.person.poster %}" style="width: 104px;height: 148px" alt="">
+                            <p>{{ person.person.name }}</p>
+                            </a>
+                        </div>
+                     </div>
+                    {% endfor %}
+
             </div>
             </div>
 		</div>

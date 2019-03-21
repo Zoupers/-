@@ -24,10 +24,17 @@
                                     </h1>
                                 <p class="publishDate" style="font-size: 10px">上映日期: {{ item.year }}</p>
                                 <p style="font-size: 15px;">导演：
+                                    {% for p in person %}
+                                    {% ifequal p.movie_id item.id %}
+                                        {% ifequal p.type '1' %}
+                                            {{ p.person.name.split|first }}
+                                        {% endifequal %}
+                                    {% endifequal %}
+                                {% endfor %}
                                 </p>
                                 <p style="font-size: 15px;">编剧：
                                 {% for p in person %}
-                                    {% ifequal p.movie_id item.movie_id %}
+                                    {% ifequal p.movie_id item.id %}
                                         {% ifequal p.type '2' %}
                                             {{ p.person.name.split|first }}
                                         {% endifequal %}
@@ -95,10 +102,17 @@
                                     </h1>
                                 <p class="publishDate" style="font-size: 10px">上映日期: {{ item.year }}</p>
                                 <p style="font-size: 15px;">导演：
+                                {% for p in person %}
+                                    {% ifequal p.movie_id item.id%}
+                                        {% ifequal p.type '1' %}
+                                            {{ p.person.name.split|first }}
+                                        {% endifequal %}
+                                    {% endifequal %}
+                                {% endfor %}
                                 </p>
                                 <p style="font-size: 15px;">编剧：
                                 {% for p in person %}
-                                    {% ifequal p.movie_id item.movie_id %}
+                                    {% ifequal p.movie_id item.id %}
                                         {% ifequal p.type '2' %}
                                             {{ p.person.name.split|first }}
                                         {% endifequal %}
@@ -122,6 +136,7 @@
                         </div>
                     </div>
                         {% endif %}
+                        {% if item.sex %}
                         <div style="height: 280px;width: 100%;">
                         <div>
 						<div ><img class="right-img" src="{% static item.poster %}" alt=""></div>
@@ -149,6 +164,8 @@
                             </div>
                         </div>
                     </div>
+                        {% endif %}
+
                     {% endfor %}
 				</div>
 			</div>

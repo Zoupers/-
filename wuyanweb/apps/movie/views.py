@@ -1,8 +1,10 @@
 from django.shortcuts import render, HttpResponse, Http404, redirect
 from django.views import View
-
-from .models import Movie, MPR, Comment
+from django.views.decorators.csrf import csrf_exempt
+from .models import Movie, MPR, Comment, Relation
+from apps.ranking.models import RMR
 import json
+from random import choice
 # Create your views here.
 
 
@@ -17,13 +19,43 @@ class MovieView(View):
         images = json.loads(movie.image)
         image = json.loads(movie.image)[:5]
         comments = Comment.objects.filter(movie_id=movie_id).order_by('-comment_time')
+        pre_rel_movie = RMR.objects.filter(movie_id=movie_id)
+        id_list = []
+        movie_list = []
+        for one_movie in pre_rel_movie:
+            if one_movie.movie_id not in id_list:
+                id_list.append(one_movie.movie_id)
+                if len(RMR.objects.filter(rank__gt=one_movie.rank, type=one_movie.type)) >= 4:
+                    movie_list.extend(RMR.objects.filter(rank__gt=one_movie.rank, type=one_movie.type))
+                elif len(RMR.objects.filter(rank__lt=one_movie.rank, type=one_movie.type)) >= 4:
+                    movie_list.extend(RMR.objects.filter(rank__lt=one_movie.rank, type=one_movie.type))
+        movie_list = list(set(movie_list))
+        relativeMovie = [choice(movie_list) for i in range(8)]
         return render(request, 'movie_base.html', {'movie': movie,
                                                    'cast': cast[:9],
                                                    'image': image[:4],
                                                    'person_count': len(cast),
                                                    'image_count': len(images),
                                                    'comments': comments[:10],
-                                                   'comment_num': len(comments)})
+                                                   'comment_num': len(comments),
+                                                   'Like': Relation.objects.filter(user_id=request.user.id, movie_id=movie_id, type=1),
+                                                   'relativeMovie': relativeMovie})
+
+
+@csrf_exempt
+def take_relation(request):
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return render(request, 'login.html')
+        id = request.GET.get('id', None)
+        user_id = request.GET.get('user_id')
+        list_ = Relation.objects.filter(movie_id=id, type=1, user_id=user_id)
+        if list_:
+            list_[0].delete()
+        else:
+            movie = Relation(user_id=user_id, movie_id=id, type=1)
+            movie.save()
+        return HttpResponse('')
 
 
 class CastView(View):

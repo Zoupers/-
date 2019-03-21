@@ -19,12 +19,39 @@ class UserView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            user_name = request.session['user_name']
+            user_name = request.user.username
             user = User.objects.get(username=user_name)
             comments = Comment.objects.filter(user_id=user.id).order_by('-comment_time')
-            return render(request, 'user.html', {'user': user, 'comments': comments})
+            if len(comments)>8:
+                havemore = True
+            else:
+                havemore = False
+            return render(request, 'user.html', {'user': user, 'comments': comments[:8], 'havemore': havemore})
         else:
             return redirect('apps.user:login')
+
+
+class LikeView(View):
+    def get(self, request):
+        pass
+
+
+class CommentsView(View):
+    def get(self, request):
+        count = request.GET.get('commentsCount', None)
+        if not count:
+            return redirect('apps.user:home')
+        count = int(count)
+        user = request.user
+        comment = Comment.objects.filter(user_id=user.id).order_by('-comment_time')
+        comments = []
+        for i in comment:
+            c = dict()
+            c['commentTime'] = i.comment_time.__str__()
+            c['comment'] = i.comment
+            c['movie'] = i.movie.name
+            comments.append(c)
+        return HttpResponse(json.dumps(comments, ensure_ascii=False), content_type='application/json')
 
 
 def captcha():
@@ -42,8 +69,8 @@ def refresh_captcha(request):
 class LoginView(View):
 
     def get(self, request, *args, **kwargs):
-        if request.session.get('is_login', None):
-            request.session.flush()
+        if request.user.is_authenticated:
+            # request.session.flush()
             return redirect('apps.user:home')
 
         hashkey = CaptchaStore.generate_key()
@@ -65,9 +92,9 @@ class LoginView(View):
                 user = User.objects.filter(Q(username=username)|Q(email=username))
                 if check_password(password, user[0].password):
                     auth_login(request, user[0])
-                    request.session['is_login'] = True
-                    request.session['user_id'] = user[0].id
-                    request.session['user_name'] = user[0].username
+                    # request.session['is_login'] = True
+                    # request.session['user_id'] = user[0].id
+                    # request.session['user_name'] = user[0].username
                     # request.user.is_authenticated = True
                     message = '登录成功'
                     return redirect('apps.user:home')
@@ -85,7 +112,7 @@ class LoginView(View):
 
 # 注册
 def register(request):
-    if request.session.get('is_login',None):
+    if request.user.is_authenticated:
         return redirect('/user/home/')
 
     if request.method == 'POST':
@@ -108,7 +135,10 @@ def register(request):
                     message = '此邮箱已注册，请重新输入'
                     return render(request,'register.html', {'js': message})
                 else:
-                    res,msg = email_sent.send_A_email(email,username)
+                    try:
+                        res,msg = email_sent.send_A_email(email,username)
+                    except:
+                        return render(request,'register.html', {'js': "邮箱错误"})
                     if res == 1:
                         Email = '邮件发送成功，请在三天内激活您的账号'
                     else:
@@ -130,6 +160,7 @@ def register(request):
 # 注册后激活
 def active(request):
     if request.method == 'GET':
+        request.encoding = 'gb2312'
         token = request.GET.get('token')
         register_name = request.GET.get('name')
         has_active = User.objects.filter(username=register_name)
@@ -152,7 +183,7 @@ def active(request):
 
 # 找回密码
 def reset(request):
-    if request.session.get('is_login', None):
+    if request.user.is_authenticated:
         return redirect('/ranking/')
 
     if request.method == 'POST':
@@ -211,7 +242,7 @@ def reactive(request):
 
 # 注销
 def logout(request):
-    request.session.flush()
+    # request.session.flush()
     auth_logout(request)
     return redirect('/ranking/')
 

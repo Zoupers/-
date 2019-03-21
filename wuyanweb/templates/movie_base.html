@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/movie/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie/iconfont.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/movie/reset.css' %}">
 {% endblock %}
 {% block js %}
@@ -9,6 +10,23 @@
 <script>
     {% if request.user.is_authenticated %}
     var iframe = document.getElementById('ifr');
+    {#收藏#}
+    function x(){
+            var hello1=document.getElementById("hello1");
+
+                    hello1.children[0].innerHTML="&#xe699;";
+                    hello1.children[1].innerHTML="取消收藏";
+                    hello1.children[1].href="javascript:y();";
+                    movieCollect();
+                }
+    function y(){
+        var hello1=document.getElementById("hello1");
+
+                hello1.children[0].innerHTML="&#xe607;";
+                hello1.children[1].innerHTML="收藏";
+                hello1.children[1].href="javascript:x();";
+                movieCollect();
+            }
 
     function post() {
         var x = document.getElementById('p');
@@ -103,6 +121,23 @@
 	        };
 		};
     };
+    var whetherLike = {% if Like %}'1'{% else %}'0'{% endif %};
+    var movieCollect = function(){
+        {#创建需要发送post请求的表单#}
+        var xmlpost = new XMLHttpRequest();
+
+        {#发送0代表用户还没有喜欢过这个电影，数据库删除关系或者将用户喜欢这部电影的激活码置为否#}
+        {#发送1代表用户喜欢过这个电影了，数据库增加关系或者将用户喜欢这部电影的激活码置为是#}
+        if (whetherLike === '0') {
+            xmlpost.open("POST", 'relation/?id={{ movie.id }}&type=1&user_id={{ request.user.id }}&whetherLike=0', true);
+            xmlpost.send(null);
+            whetherLike = '1';
+        }else if (whetherLike === '1'){
+            xmlpost.open("POST", 'relation/?id={{ movie.id }}&type=1&user_id={{ request.user.id }}&whetherLike=1', true);
+            xmlpost.send(null);
+            whetherLike = '0';
+        }
+    };
     {% else %}
     window.onload=function(){
         var omore = document.getElementById("more");
@@ -144,22 +179,48 @@
                     {% if movie.review %}
                         <p class="movie-other">短评：{{ movie.review }}</p>
                     {% endif %}
+                    {% if request.user.is_authenticated %}
+                    <div style="color: #fff;" id="hello1" href="javascript:x()" >
+                    {% if Like %}
+                        <i class="iconfont" style="width:22px;height:22px;" >&#xe699;</i>
+                        <a href="javascript:y()">取消收藏</a>
+                    {% else %}
+                        <i class="iconfont" style="width:22px;height:22px;" >&#xe607;</i>
+                        <a href="javascript:x()">收藏</a>
+                    {% endif %}
+                    </div>
+                    {% else %}
+                    <a href="{% url 'apps.user:login' %}">登录后收藏本电影</a>
+                    {% endif %}
 				</div>
 			</div>
 			<div class="movie-details">
 
-                <div class="collection" style="float: right;">
-                    {% if request.user.is_authenticated %}
-                    <button class="collection-button" style="width: 100px;height: 30px;border-width: 0px;">收藏</button>
-                    {% else %}
-                    <a href="{% url 'apps.user:login' %}">登录后收藏本电影</a>
-                    {% endif %}
-                </div>
+{#                <div class="collection" style="float: right;">#}
+{#                    {% if request.user.is_authenticated %}#}
+{#                    <button href="javascript:movieCollect()" class="collection-button" style="width: 100px;height: 30px;border-width: 0px;">收藏</button>#}
+{#                    {% else %}#}
+{#                    <a href="{% url 'apps.user:login' %}">登录后收藏本电影</a>#}
+{#                    {% endif %}#}
+{#                </div>#}
 
 				<div class="synopsis">
 					<i class="synopsos-first">剧情简介 · · · · · ·</i>
 					<p class="synopsos-second">{{ movie.details }}</p>
 				</div>
+                <div class="link">
+                    <p class="performer-first">相关电影</p>
+                        {% for relative_movie in relativeMovie %}
+                            <div class="people">
+                                    <a href="/movie/?id={{ relative_movie.movie.id }}">
+                                    <div class="head">
+                                        <img src="{% static relative_movie.movie.poster %}" style="width: 104px;height: 148px" alt="">
+                                    </div>
+                                    <p>{{ relative_movie.movie.name }}</p>
+                                    </a>
+                            </div>
+                        {% endfor %}
+                </div>
 				<div class="performer">
 					<i class="performer-first">演职人员 · · · · · ·
                     <a style="cursor: pointer" href="\movie\cast\?id={{ movie.id }}">全部{{ person_count }}人</a></i>

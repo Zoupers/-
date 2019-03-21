@@ -58,11 +58,16 @@
 	font-size: 18px;
 	font-family: 华文新魏;
 }
-
+.link{
+	width: 380px;
+	float: right;
+	height: 480px;
+}
 .performer{
 	padding-top: 20px;
-	/*width: 810px;*/
-	height: 240px;
+	width: 810px;
+	height: 480px;
+
 }
 .performer-first{
 	font-size: 14px;

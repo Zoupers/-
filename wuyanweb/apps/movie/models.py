@@ -64,3 +64,15 @@ class Comment(models.Model):
         return self.comment[:15]
 
 
+class Relation(models.Model):
+    user_id = models.CharField(max_length=50)
+    movie_id = models.CharField(max_length=50, default=None, blank=True, null=True)
+    person_id = models.CharField(max_length=50, default=None, blank=True, null=True)
+    type = models.CharField(choices=((1, '电影'), (2, '人物')), max_length=3)
+
+    class Meta(object):
+        pass
+
+    def __str__(self):
+        return self.type
+

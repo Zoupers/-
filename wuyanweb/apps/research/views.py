@@ -1,7 +1,7 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, Http404
 from django.views import View
 # Create your views here.
-from apps.movie.models import Movie
+from apps.movie.models import Movie, MPR
 from apps.person.models import Person
 
 
@@ -26,7 +26,7 @@ def search(msg, mode):
 class ResearchView(View):
 
     def get(self, request):
-        pass
+        raise Http404()
 
     def post(self, request):
         msg = request.POST.get('msg')
@@ -37,10 +37,13 @@ class ResearchView(View):
         else:
             return render(request, 'search.html', {})
         if result:
-            result_left = [result[i] for i in range(len(result)) if i % 2 == 0]
-            result_right = [result[i] for i in range(len(result)) if i % 2 != 0]
-            return render(request, 'search.html', {'result_left': result_left, 'result_right': result_right})
+            result_left = list(set([result[i] for i in range(len(result)) if i % 2 == 0]))
+            result_right = list(set([result[i] for i in range(len(result)) if i % 2 != 0]))
+            person = []
+            for m in result_left+result_right:
+                if hasattr(m, 'rank'):
+                    person.extend(MPR.objects.filter(movie_id=m.id))
+            return render(request, 'search.html', {'result_left': result_left, 'result_right': result_right, 'person': person})
         else:
             return render(request, 'search.html', {'result': None})
-
 

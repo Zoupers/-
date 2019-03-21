@@ -6,7 +6,42 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/user/reset.css' %}">
 {% endblock %}
 {% block js %}
+<script>
+    {% if havemore %}
+    function more() {
+        var url = '/user/comment/?commentsCount=';
+        var xmlget = new XMLHttpRequest();
+        var commentCount = document.getElementsByClassName('comment').length;
+        xmlget.open('GET', url+commentCount.toString(), true);
+        xmlget.onreadystatechange=function() {
+            if (xmlget.readyState === 4 && xmlget.status === 200) {
+                var c = JSON.parse(xmlget.responseText);
+                for(var i=0; i<c.length;i++){
+                    var div = document.createElement('div');
+                    var big = document.getElementsByClassName('right')[0];
+                    var m = document.getElementsByClassName('view-more')[0];
+                    big.insertBefore(div, m);
+                    div.style = "margin-top: 30px";
+                    div.className = 'comment';
+                    var content = document.createElement('p');
+                    div.appendChild(content);
+                    content.innerText = "评论电影："+c[i]['movie'];
+                    var commentTime = document.createElement('p');
+                    div.appendChild(commentTime);
+                    commentTime.style = "border-bottom: 2px solid #FEF3F3;";
+                    commentTime.innerText = "评论时间："+c[i]['commentTime'];
+                    var comment = document.createElement('p');
+                    div.appendChild(comment);
+                    comment.style = "border-bottom: 2px solid #000000;font-family: 华文楷体";
+                    comment.innerText = "内容："+c[i]['comment'];
+                }
+            }
+        };
+        xmlget.send(null);
+}
+    {% endif %}
 
+</script>
 {% endblock %}
 {% block main_body %}
     <section>
@@ -33,16 +68,13 @@
                     <p style="border-bottom: 2px solid #000000;font-family: 华文楷体">内容：{{ comment.comment }}</p>
                     </div>
                 {% endfor %}
-
-				<div class="comment"></div>
-				<div class="comment"></div>
-				<div class="comment"></div>
-				<div class="comment"></div>
-				<div class="comment"></div>
-				<div class="view-more">
-				<a href="#" style="color: gray" >查看更多</a>
-				</div>
+            {% if havemore %}
+                    <div class="view-more">
+                    <a href="javascript:more()" style="color: gray" >查看更多</a>
+                    </div>
+            {% endif %}
 			</div>
+
 		</div>
 	</section>
 {% endblock %}

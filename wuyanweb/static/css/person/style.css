@@ -35,6 +35,17 @@
 	float: left;
 	padding: 0px 10px;
 }
+.people {
+    width: 104px;
+    text-align: center;
+    font-size: 10px;
+    color: gray;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    float: left;
+    height: 195px;
+}
 .normal-introduce{
 	margin-top: 30px;
 }
